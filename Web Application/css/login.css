@@ -1,0 +1,109 @@
+:root {
+    --clr-light: #FFFFFF;
+    --clr-dark: #241C4F;
+    --clr-accent: #8C52FF;
+    --clr-accent-light: #F1F1F1;
+    --clr-accent-dark: #737373;
+    --clr-button: #8C52FF;
+    --clr-button-hover: #5B30B2;
+    --ff-body: "Open Sans", sans-serif;    
+    --fw-reg: 400;
+    --fw-bold: 700;
+
+    /* Font Size Base */
+    --fs-h1: 3.5rem;
+    --fs-h2: 1.8rem;
+    --fs-h3: 1.5rem;
+    --fs-body: 1.075rem; 
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--ff-body);
+    font-size: 16px;
+    color: var(--clr-dark);
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+nav h3 {
+    font-size: var(--fs-h3);
+}
+
+/* Registration Form */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    gap: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: var(--clr-dark);
+    font-size: var(--fs-h2);
+}
+
+form {
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--clr-dark);
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid var(--clr-light);
+    background-color: var(--clr-accent-light);
+}
+
+input[type="submit"] {
+    margin-top: 16px;
+    background-color: var(--clr-button);
+    color: var(--clr-light);
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: var(--fw-bold);
+}
+
+input[type="submit"]:hover {
+    background-color: var(--clr-button-hover);
+}
+
+a {
+    text-decoration: none;
+    font-weight: var(--fw-bold);
+}
+
+a:hover {
+    color: var(--clr-accent);
+}
+
+.toggle-link {
+    text-decoration: underline;
+    font-weight: var(--fw-reg);
+    color: var(--clr-accent-dark);
+}
