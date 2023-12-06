@@ -1,7 +1,7 @@
 <?php
 class UserPostModel {
 
-    public function submitPost($account_id, $post_topic, $post_content) {
+    public static function submitPost($account_id, $post_topic, $post_content) {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -35,7 +35,7 @@ class UserPostModel {
         }
     }    
 
-    public function getPost() {
+    public static function getPost() {
         try {
             $servername = "localhost";
             $dbUsername = "root";

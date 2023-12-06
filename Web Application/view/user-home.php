@@ -54,10 +54,9 @@
     </div>
 
     <?php
-    // Include the UserHomeController and get the posts
+    // Include the UserPostModel and get the posts; No need to create an instance since the method is static
     include("../controller/UserHomeController.php");
-    $userHomeController = new UserHomeController();
-    $posts = $userHomeController->handlePostRetrieval();
+    $posts = UserHomeController::handlePostRetrieval();
     ?>
 
     <!-- Displaying posts in HTML -->
@@ -66,7 +65,14 @@
         <?php foreach ($posts as $post): ?>
             <div>
                 <h3><?php echo $post['post_topic']; ?></h3>
+                <p><?php echo $post['post_date']; ?></p>
+                <h3><?php echo $post['account_id']; ?></h3>
                 <p><?php echo $post['post_content']; ?></p>
+                <form action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                    <label for="post_topic">Comments</label>
+                    <input type="text" name="post_topic" id="post_topic" maxlength="50" required>
+                    <input type="submit" value="Comment">
+                </form>
             </div>
         <?php endforeach; ?>
     </div>

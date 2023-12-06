@@ -1,10 +1,9 @@
 <?php
-include("../model/UserPostModel.php");
-include("../controller/SessionController.php");
 
 // Check for the action parameter in the URL
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $controller = new UserHomeController();
+
 if ($action === 'handlePostSubmission') {
     $controller->handlePostSubmission();
 }
@@ -17,6 +16,8 @@ class UserHomeController {
 
     
     public function handlePostSubmission() {
+        include("../controller/SessionController.php");
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Get session
             $sessionController = new SessionController();
@@ -31,9 +32,8 @@ class UserHomeController {
 
             // Example: Insert data into the tblPosts table using the model
             if ($account_id != "" && $post_topic != "" && $post_content != "") {
-
-                $model = new UserPostModel();
-                $success = $model->submitPost($account_id, $post_topic, $post_content);
+                include("../model/UserPostModel.php");
+                $success = UserPostModel::submitPost($account_id, $post_topic, $post_content);
             }
             else{
                 $_SESSION["error_message"] = "Fields should not be null";
@@ -41,20 +41,20 @@ class UserHomeController {
 
             // Load the appropriate view based on success or failure
             if ($success) {
-                include('../view/user-home.php');
+                header('Location:../view/user-home.php');
                 $_SESSION["error_message"] = "Post submitted successfully!";
                 return $success;
             } else {
-                include('../view/user-home.php');
+                header('Location:../view/user-home.php');
                 $_SESSION["error_message"] = "Error submitting post";
             }
         }
     }
 
-    public function handlePostRetrieval() {
+    public static function handlePostRetrieval() {
         try {
-            $model = new UserPostModel();
-            $posts = $model->getPost();
+            include("../model/UserPostModel.php");
+            $posts = UserPostModel::getPost();
 
             return $posts;
         }

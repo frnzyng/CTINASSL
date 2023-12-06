@@ -1,4 +1,5 @@
 <?php
+// Don't move; put session here too
 include("../model/AdminAuthModel.php");
 class AdminAuthController {
     private $model;

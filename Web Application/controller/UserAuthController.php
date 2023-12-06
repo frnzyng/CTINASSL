@@ -1,4 +1,5 @@
 <?php
+// Don't move
 include("../model/UserAuthModel.php");
 include("../controller/SessionController.php");
 class UserAuthController {
