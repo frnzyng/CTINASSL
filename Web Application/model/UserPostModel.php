@@ -1,7 +1,7 @@
 <?php
 class UserPostModel {
 
-    public static function submitPost($account_id, $post_topic, $post_content) {
+    public static function submitPost($account_id, $username, $post_topic, $post_content) {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -12,8 +12,9 @@ class UserPostModel {
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
             // Prepare and execute a query to insert a new post
-            $stmt = $db->prepare("INSERT INTO tblPosts (account_id, post_topic, post_content, post_date) VALUES (:account_id, :post_topic, :post_content, NOW())");
+            $stmt = $db->prepare("INSERT INTO tblPosts (account_id, username, post_topic, post_content, post_datetime) VALUES (:account_id, :username, :post_topic, :post_content, NOW())");
             $stmt->bindParam(':account_id', $account_id);
+            $stmt->bindParam(':username', $username);
             $stmt->bindParam(':post_topic', $post_topic);
             $stmt->bindParam(':post_content', $post_content);
     

@@ -21,7 +21,7 @@ class UserAuthController {
 
                 // Start a session and store user ID
                 $sessionController = new SessionController();
-                $sessionController->startSession($authenticatedUser["id"]);
+                $sessionController->startSession($authenticatedUser["account_id"], $authenticatedUser["username"]);
 
                 //session_start();
                 //$_SESSION["user_id"] = $authenticatedUser["id"];

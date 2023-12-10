@@ -8,7 +8,7 @@ class UserAuthModel {
 
     public function authenticateUser($username, $password) {
         // Prepare and execute a query to retrieve user data
-        $stmt = $this->db->prepare("SELECT id, username, password FROM tblUserAccounts WHERE username = :username");
+        $stmt = $this->db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE username = :username");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
 

@@ -19,7 +19,7 @@ class AdminAuthController {
             if ($authenticatedAdmin) {
                 // Start a session and store user ID
                 session_start();
-                $_SESSION["user_id"] = $authenticatedAdmin["id"];
+                $_SESSION["user_id"] = $authenticatedAdmin["account_id"];
 
                 // Redirect to home dashboard
                 header("Location: ../view/admin-dashboard.php");

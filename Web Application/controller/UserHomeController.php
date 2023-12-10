@@ -21,19 +21,19 @@ class UserHomeController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Get session
             $sessionController = new SessionController();
-            $currentAccountId = $sessionController->getAccountId();
 
             // Validate and sanitize form inputs
-            $account_id = $currentAccountId;
+            $account_id = $sessionController->getAccountId();
+            $username = $sessionController->getUsername();
             $post_topic = trim($_POST["post_topic"]);
             $post_content = trim($_POST["post_content"]);
 
             // You may want to perform additional validation here
 
             // Example: Insert data into the tblPosts table using the model
-            if ($account_id != "" && $post_topic != "" && $post_content != "") {
+            if ($account_id != "" && $username != "" && $post_topic != "" && $post_content != "") {
                 include("../model/UserPostModel.php");
-                $success = UserPostModel::submitPost($account_id, $post_topic, $post_content);
+                $success = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
             }
             else{
                 $_SESSION["error_message"] = "Fields should not be null";

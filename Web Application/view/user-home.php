@@ -18,10 +18,10 @@
                     $sessionController = new SessionController();
 
                     // Check if the account ID exists before displaying
-                    $accountId = $sessionController->getAccountId();
+                    $accountUsername = $sessionController->getUsername();
 
-                    if ($accountId !== null) {
-                        echo "<h3> Hi " . $accountId . "! </h3>";
+                    if ($accountUsername !== null) {
+                        echo "<h3> Hi " . $accountUsername . "! </h3>";
                     } else {
                         echo "<h3>Not logged in</h3>";
                     }
@@ -65,8 +65,9 @@
         <?php foreach ($posts as $post): ?>
             <div>
                 <h3><?php echo $post['post_topic']; ?></h3>
-                <p><?php echo $post['post_date']; ?></p>
+                <p><?php echo $post['post_datetime']; ?></p>
                 <h3><?php echo $post['account_id']; ?></h3>
+                <h3><?php echo $post['username']; ?></h3>
                 <p><?php echo $post['post_content']; ?></p>
                 <form action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
                     <label for="post_topic">Comments</label>
