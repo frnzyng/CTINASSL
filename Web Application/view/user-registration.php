@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -19,32 +19,34 @@
             </nav>
         </header>
     </div>
- 
-    <!-- Login Form -->
-    <div class="login-container">
-        <h2>Login</h2>
-        
+
+    <div class="registration-container">
+        <h2>Registration Form</h2>
+
         <?php
         session_start();
 
-        // Display any error messages
-        if (isset($_SESSION["error_message"])) {
-            echo $_SESSION["error_message"];
-            unset($_SESSION["error_message"]); // Clear the error message from session
+        // Display any status messages
+        if (isset($_SESSION["status_message"])) {
+            echo $_SESSION["status_message"];
+            unset($_SESSION["status_message"]); // Clear the error message from session
         }
         ?>
-
-        <form action="../controller/UserAuthController.php" method="post">
+        
+        <form action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
             <label for="username">Username</label>
             <input type="text" name="username" required><br>
     
             <label for="password">Password</label>
             <input type="password" name="password" required><br>
     
-            <input type="submit" value="Login">
+            <label for="email">Email</label>
+            <input type="email" name="email" required><br>
+    
+            <input type="submit" value="Register">
         </form>
-        <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
-        <p><a class="toggle-link" href="admin-login.php">Admin?</a></p>
+        <p>Already have an account? <a href="user-login.php">Login</a></p>
     </div>
+
 </body>
 </html>
