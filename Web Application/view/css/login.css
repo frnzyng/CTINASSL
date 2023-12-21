@@ -3,6 +3,7 @@
     --clr-dark: #241C4F;
     --clr-accent: #8C52FF;
     --clr-accent-light: #F1F1F1;
+    --clr-accent-light2: #A6A6A6;
     --clr-accent-dark: #737373;
     --clr-button: #8C52FF;
     --clr-button-hover: #5B30B2;
@@ -31,30 +32,24 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 50px;
-    padding-right: 50px;
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-nav h3 {
+nav a {
     font-size: var(--fs-h3);
 }
 
 /* Registration Form */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     height: 80vh;
-    gap: 15px;
 }
 
 h2 {
     text-align: center;
     color: var(--clr-dark);
     font-size: var(--fs-h2);
+    font-weight: var(--fw-bold);
 }
 
 form {
@@ -67,6 +62,10 @@ label {
     display: block;
     margin-bottom: 8px;
     color: var(--clr-dark);
+}
+
+p {
+    text-align: center;
 }
 
 input {
@@ -96,6 +95,7 @@ input[type="submit"]:hover {
 a {
     text-decoration: none;
     font-weight: var(--fw-bold);
+    color: var(--clr-dark);
 }
 
 a:hover {
@@ -105,5 +105,5 @@ a:hover {
 .toggle-link {
     text-decoration: underline;
     font-weight: var(--fw-reg);
-    color: var(--clr-accent-dark);
+    color: var(--clr-accent-light2);
 }
