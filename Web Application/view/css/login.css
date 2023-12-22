@@ -32,6 +32,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* padding-left: 50px;
+    padding-right: 50px; */
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -40,7 +42,7 @@ nav a {
     font-size: var(--fs-h3);
 }
 
-/* Registration Form */
+/* Login Form */
 .login-container {
     height: 80vh;
 }
@@ -54,7 +56,6 @@ h2 {
 
 form {
     padding: 30px;
-    border-radius: 12px;
     width: 500px;
 }
 
@@ -64,16 +65,12 @@ label {
     color: var(--clr-dark);
 }
 
-p {
-    text-align: center;
-}
-
 input {
     width: 100%;
     padding: 10px;
     margin-bottom: 16px;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: 15px;
     border: 1px solid var(--clr-light);
     background-color: var(--clr-accent-light);
 }
@@ -84,12 +81,16 @@ input[type="submit"] {
     color: var(--clr-light);
     cursor: pointer;
     border: none;
-    border-radius: 8px;
+    border-radius: 15px;
     font-weight: var(--fw-bold);
 }
 
 input[type="submit"]:hover {
     background-color: var(--clr-button-hover);
+}
+
+p {
+    text-align: center;
 }
 
 a {
@@ -106,4 +107,10 @@ a:hover {
     text-decoration: underline;
     font-weight: var(--fw-reg);
     color: var(--clr-accent-light2);
+}
+
+@media (max-width: 768px) {
+    nav {
+        justify-content: center;
+    }
 }

@@ -13,9 +13,9 @@
 <body>
 
     <!-- Navigation Bar -->
-    <div class="container">
+    <div class="container px-0">
         <header>        
-            <nav class="">
+            <nav>
                 <a href="user-login.php">BLOGSITE</a>
             </nav>
         </header>
@@ -23,33 +23,36 @@
  
     <!-- Login Form -->
     <div class="container">
-        <div class="row justify-content-center align-items-center py-5">
-            <h2>Login</h2>
-            
-            <?php
-            session_start();
+        <div class="row justify-content-center align-items-center login-container">
+            <div>
+                <h2>Login</h2>
+                
+                <?php
+                session_start();
 
-            // Display any error messages
-            if (isset($_SESSION["error_message"])) {
-                echo $_SESSION["error_message"];
-                unset($_SESSION["error_message"]); // Clear the error message from session
-            }
-            ?>
+                // Display any error messages
+                if (isset($_SESSION["error_message"])) {
+                    echo $_SESSION["error_message"];
+                    unset($_SESSION["error_message"]); // Clear the error message from session
+                }
+                ?>
 
-            <div class="col d-flex justify-content-center align-items-center">  
-                <form action="../controller/UserAuthController.php" method="post">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" required><br>
-            
-                    <label for="password">Password</label>
-                    <input type="password" name="password" required><br>
-            
-                    <input type="submit" value="Login">
-                </form>
+                <div class="col d-flex justify-content-center align-items-center">  
+                    <form action="../controller/UserAuthController.php" method="post">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" required><br>
+                
+                        <label for="password">Password</label>
+                        <input type="password" name="password" required><br>
+                
+                        <input type="submit" value="Login">
+                    </form>
+                </div>
+
+                <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
+                <p><a class="toggle-link" href="admin-login.php">Admin?</a></p>
             </div>
-
-            <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
-            <p><a class="toggle-link" href="admin-login.php">Admin?</a></p>
+            
         </div>
     </div>
     
