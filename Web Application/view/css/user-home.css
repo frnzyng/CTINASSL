@@ -27,12 +27,13 @@
     color: var(--clr-dark);
 }
 
+
 nav {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: 50px;
+    padding-right: 50px; */
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -40,10 +41,18 @@ nav {
 nav p {
     font-weight: var(--fw-bold);
     font-size: var(--fs-body);
+    margin: 0;
+}
+
+.greetings-container {
+    width: 100px;
+}
+
+ul {
+    width: 500px;
 }
 
 .icon-container {
-    display: flex;
     gap: 200px;
 }
 
@@ -59,10 +68,20 @@ nav p {
     color: var(--clr-accent-light2);
 }
 
+.fa-solid.fa-house:hover, .fa-solid.fa-user:hover, .fa-solid.fa-gear:hover {
+    color: var(--clr-accent);
+}
+
+.logout-container {
+    text-align: end;
+    width: 100px;
+}
+
 a {
     text-decoration: none;
     font-weight: var(--fw-bold);
     font-size: var(--fs-body);
+    color: var(--clr-dark);
 }
 
 a:hover {
@@ -289,4 +308,10 @@ h3 {
     border: 2px;
     border-style: solid;
     border-color: var(--clr-accent-light2);
+}
+
+@media (max-width: 1200px) {
+    nav {
+        
+    }
 }

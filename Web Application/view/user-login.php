@@ -50,7 +50,7 @@
                 </div>
 
                 <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
-                <p><a class="toggle-link" href="admin-login.php">Admin?</a></p>
+                <p><a class="toggle-link" href="admin-login.php">Switch to admin?</a></p>
             </div>
             
         </div>

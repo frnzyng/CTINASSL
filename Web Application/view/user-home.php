@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlogSite - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/user-home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +14,9 @@
 <body>
 
     <!-- Navigation Bar -->
-    <div>
+    <div class="container px-0">
         <header>        
-            <nav>
+            <nav class="nav justify-content-between align-items-center">
                 <?php
                     include("../controller/SessionController.php");
                     $sessionController = new SessionController();
@@ -24,18 +25,24 @@
                     $accountUsername = $sessionController->getUsername();
 
                     if ($accountUsername !== null) {
-                        echo "<p> Hi " . $accountUsername . "! </p>";
+                        echo "<p class='greetings-container'> Hi " . $accountUsername . "! </p>";
                     } else {
-                        echo "<p>Not logged in</p>";
+                        echo "<p class='greetings-container'>Not logged in</p>";
                     }
                 ?>
-                <div class="icon-container">
-                    <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
-                    <a href="#"><i class="fa-solid fa-user"></i></a>
-                    <a href="#"><i class="fa-solid fa-gear"></i></a>
-                </div>
+                <ul class="nav justify-content-between">
+                    <li class="nav-item">
+                        <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-user"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fa-solid fa-gear"></i></a>
+                    </li>
+                </ul>
 
-                <a href="user-login.php">Logout</a>
+                <a class='logout-container' href="user-login.php">Logout</a>
             </nav>
         </header>
     </div>
