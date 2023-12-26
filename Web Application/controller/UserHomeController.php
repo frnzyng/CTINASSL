@@ -114,5 +114,29 @@ class UserHomeController {
             echo $e->getMessage();
         }
     }
+
+    public function timeAgo($datetime) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+    
+        $diffString = '';
+    
+        if ($diff->y > 0) {
+            $diffString .= $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . ' ';
+        } elseif ($diff->m > 0) {
+            $diffString .= $diff->m . ' month' . ($diff->m > 1 ? 's' : '') . ' ';
+        } elseif ($diff->d > 0) {
+            $diffString .= $diff->d . ' day' . ($diff->d > 1 ? 's' : '') . ' ';
+        } elseif ($diff->h > 0) {
+            $diffString .= $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ';
+        } elseif ($diff->i > 0) {
+            $diffString .= $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') . ' ';
+        } else {
+            $diffString = 'Just now';
+        }
+    
+        return $diffString . 'ago';
+    }
 }
 ?>

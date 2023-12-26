@@ -14,20 +14,20 @@
 <body>
 
     <!-- Navigation Bar -->
-    <div class="container px-0">
+    <div class="container px-0 fixed-top bg-white">
         <header>        
             <nav class="nav justify-content-between align-items-center">
                 <?php
-                    include("../controller/SessionController.php");
+                    include_once("../controller/SessionController.php");
                     $sessionController = new SessionController();
 
                     // Check if the account ID exists before displaying
                     $accountUsername = $sessionController->getUsername();
 
                     if ($accountUsername !== null) {
-                        echo "<p class='greetings-container'> Hi " . $accountUsername . "! </p>";
+                        echo "<span class='greetings-container'> Hi " . $accountUsername . "! </span>";
                     } else {
-                        echo "<p class='greetings-container'>Not logged in</p>";
+                        echo "<span class='greetings-container'>Not logged in</span>";
                     }
                 ?>
                 <ul class="nav justify-content-between">
@@ -47,90 +47,100 @@
         </header>
     </div>
 
-    <div class="home-block">
-        <?php
-            // Display any error messages
-            if (isset($_SESSION["error_message"])) {
-                echo $_SESSION["error_message"];
-                unset($_SESSION["error_message"]); // Clear the error message from session
-            }
-        ?>
-
-        <div class="create-post-container">
-            <h2>Create Post</h2>
-            <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
-                <div class="topic-container">
-                    <label for="post_topic">Topic</label>
-                    <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required>
-                </div>  
-                <div class="content-container">
-                    <label for="post_content">Content</label>
-                    <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required></textarea>
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button">Cancel</button>
-                    <input class="submit-button" type="submit" value="Post">
-                </div>
-            </form>
+    <div class="container px-0">
+        <div class="row justify-content-center align-items-center mx-2">
+            <div class="create-post-container">
+                <?php
+                    // Display any error messages
+                    if (isset($_SESSION["error_message"])) {
+                        echo $_SESSION["error_message"];
+                        unset($_SESSION["error_message"]); // Clear the error message from session
+                    }
+                ?>
+                
+                <h4>Create Post</h4>
+                <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                    <div class="topic-container">
+                        <label for="post_topic">Topic</label>
+                        <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required>
+                    </div>  
+                    <div class="content-container">
+                        <label for="post_content">Content</label>
+                        <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required></textarea>
+                    </div>
+                    <div class="button-container">
+                        <button class="cancel-button">Cancel</button>
+                        <input class="submit-button" type="submit" value="Post">
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Displaying posts and comments -->
-        <?php include("../controller/UserHomeController.php"); ?>
-        <div class="all-post-container">
-            <div class="heading">
-                <h2>All Posts</h2>
-                <button class="create-post-button">Create Post</button>
+        <div class="row justify-content-center align-items-center mx-2">
+            <?php include_once("../controller/UserHomeController.php"); ?>
+            <div class="post-block">
+                <div class="heading">
+                    <h4>All Posts</h4>
+                    <button class="create-post-button">Create Post</button>
+                </div>
+                <?php
+                    try {
+                        $userHomeocntroller = new UserHomeController();
+                        $posts = UserHomeController::handlePostRetrieval();
+                    } 
+                    catch (Exception $e) {
+                        echo "Error retrieving posts: " . $e->getMessage();
+                    }
+                ?>
+
+                <?php foreach ($posts as $post): ?>
+                    <div class="post-container">
+                        <div class="section1-post">
+                            <h5><?php echo $post['post_topic']; ?></h5>
+                            <span><?php echo $userHomeocntroller->timeAgo($post['post_datetime']); ?></span>
+                        </div>
+
+                        <div class="section2-post">
+                            <p class="post-username">Posted by <?php echo $post['username']; ?></p>
+                            <p class="post-content"><?php echo $post['post_content']; ?></p>
+                            <a class="create-comment-button"><i class="fa-solid fa-comment-dots"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="comments-block">
+                        <h5>Comments</h5>
+                        <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
+                            <textarea class="comment-input" name="comment_content" id="comment_content" rows="1" maxlength="50" required></textarea>
+                            <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
+                            <input class="submit-button" type="submit" value="Comment">
+                        </form>
+
+                        <?php
+                            try {
+                                // Get comments for the current post
+                                $comments = UserHomeController::handleCommentRetrieval($post['post_id']);
+                            } catch (Exception $e) {
+                                echo "Error retrieving comments: " . $e->getMessage();
+                            }
+                        ?>
+                        <?php if (!empty($comments)): ?>
+                            <?php foreach ($comments as $comment): ?>
+                                <div class="comments-container">
+                                    <div class="section1-comment">
+                                        <span class="comment-username"><?php echo $comment['username']; ?></span>
+                                        <a class="comment-settings-button"><i class="fa-solid fa-ellipsis"></i></a>
+                                    </div>
+                                    <p class="comment-datetime"><?php echo $userHomeocntroller->timeAgo($comment['comment_datetime']); ?></p>
+                                    <p class="comment-content"><?php echo $comment['comment_content']; ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No comments for this post.</p>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <?php
-                try {
-                    $posts = UserHomeController::handlePostRetrieval();
-                } catch (Exception $e) {
-                    echo "Error retrieving posts: " . $e->getMessage();
-                }
-            ?>
-            <?php foreach ($posts as $post): ?>
-                <div class="posts-container">
-                    <div class="section1-post">
-                        <h3><?php echo $post['post_topic']; ?></h3>
-                        <p><?php echo $post['post_datetime']; ?></p>
-                    </div>
-
-                    <div class="section2-post">
-                        <p class="post-username">By: <?php echo $post['username']; ?></p>
-                        <p class="post-content"><?php echo $post['post_content']; ?></p>
-                        <a class="create-comment-button"><i class="fa-solid fa-message"></i></a>
-                    </div>
-                </div>
-
-                <div class="comments-block">
-                    <h3>Comments</h3>
-                    <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
-                        <textarea class="comment-input" name="comment_content" id="comment_content" rows="1" maxlength="50" required></textarea>
-                        <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
-                        <input class="submit-button" type="submit" value="Comment">
-                    </form>
-
-                    <?php
-                        try {
-                            // Get comments for the current post
-                            $comments = UserHomeController::handleCommentRetrieval($post['post_id']);
-                        } catch (Exception $e) {
-                            echo "Error retrieving comments: " . $e->getMessage();
-                        }
-                    ?>
-                    <?php if (!empty($comments)): ?>
-                        <?php foreach ($comments as $comment): ?>
-                            <div class="comments-container">
-                                <p><?php echo $comment['username']; ?></p>
-                                <p><?php echo $comment['comment_datetime']; ?></p>
-                                <p><?php echo $comment['comment_content']; ?></p>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No comments for this post.</p>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
         </div>
     </div>
     
