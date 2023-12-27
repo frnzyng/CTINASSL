@@ -75,9 +75,6 @@ class UserHomeController {
                 $username = $sessionController->getUsername();
                 $comment_content = trim($_POST["comment_content"]);
 
-                // You may want to perform additional validation here
-
-                // Example: Insert data into the tblPosts table using the model
                 if ($post_id != "" && $account_id != "" && $username != "" && $comment_content != "") {
                     include_once("../model/UserCommentModel.php");
                     $success = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);

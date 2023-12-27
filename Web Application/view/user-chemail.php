@@ -51,11 +51,18 @@
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
             <div class="change-email-container">
+                <?php
+                    // Display any error messages
+                    if (isset($_SESSION["error_message"])) {
+                        echo $_SESSION["error_message"];
+                        unset($_SESSION["error_message"]); // Clear the error message from session
+                    }
+                ?>
                 <h4>Change Email</h4>
-                <form class="change-email-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                <form class="change-email-form" action="../controller/UserSettingsController.php?action=handleChangeEmail" method="post">
                     <div class="email-container">
                         <label>Enter new email</label>
-                        <input class="email-input" type="text" name="new_email" id="new_email" maxlength="50" required>
+                        <input class="email-input" type="email" name="new_email" id="new_email" maxlength="50" required>
                     </div>  
                     <div class="password-container">
                         <label>Enter password to confirm</label>

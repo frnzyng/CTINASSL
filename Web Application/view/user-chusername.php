@@ -51,8 +51,15 @@
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
             <div class="change-username-container">
+                <?php
+                    // Display any error messages
+                    if (isset($_SESSION["error_message"])) {
+                        echo $_SESSION["error_message"];
+                        unset($_SESSION["error_message"]); // Clear the error message from session
+                    }
+                ?>
                 <h4>Change Username</h4>
-                <form class="change-username-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                <form class="change-username-form" action="../controller/UserSettingsController.php?action=handleChangeUsername" method="post">
                     <div class="username-container">
                         <label>Enter new username</label>
                         <input class="username-input" type="text" name="new_username" id="new_username" maxlength="50" required>

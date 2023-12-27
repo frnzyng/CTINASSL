@@ -47,7 +47,7 @@ class UserCommentModel {
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
             // Prepare and execute a query to insert a new post
-            $stmt = $db->prepare("SELECT * FROM tblComments WHERE post_id= :post_id");
+            $stmt = $db->prepare("SELECT * FROM tblComments WHERE post_id = :post_id");
             $stmt->bindParam(':post_id', $post_id);
             // Execute the query
             $stmt->execute();

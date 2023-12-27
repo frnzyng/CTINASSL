@@ -65,6 +65,13 @@ input[type="text"] {
     padding-right: 16px;
 }
 
+input[type="email"] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
 input[type="password"] {
     padding-top: 10px;
     padding-bottom: 10px;
