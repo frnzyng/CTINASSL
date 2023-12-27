@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlogSite - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/user-home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,14 +36,14 @@
                         <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><i class="fa-solid fa-user"></i></a>
+                        <a href="user-profile.php"><i class="fa-solid fa-user"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><i class="fa-solid fa-gear"></i></a>
+                        <a href="user-settings.php"><i class="fa-solid fa-gear"></i></a>
                     </li>
                 </ul>
 
-                <a class='logout-container' href="user-login.php">Logout</a>
+                <a class="logout-container" href="user-login.php">Logout</a>
             </nav>
         </header>
     </div>
@@ -62,11 +63,11 @@
                 <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
                     <div class="topic-container">
                         <label for="post_topic">Topic</label>
-                        <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required>
+                        <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required placeholder="What's on your mind?">
                     </div>  
                     <div class="content-container">
                         <label for="post_content">Content</label>
-                        <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required></textarea>
+                        <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required placeholder="Tell us more about it!"></textarea>
                     </div>
                     <div class="button-container">
                         <button class="cancel-button">Cancel</button>
@@ -111,7 +112,7 @@
                     <div class="comments-block">
                         <h5>Comments</h5>
                         <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
-                            <textarea class="comment-input" name="comment_content" id="comment_content" rows="1" maxlength="50" required></textarea>
+                            <input class="comment-input" type="text" name="comment_content" id="comment_content" rows="1" maxlength="50" required placeholder="Write a comment..."></input>
                             <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
                             <input class="submit-button" type="submit" value="Comment">
                         </form>
@@ -148,6 +149,6 @@
     
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/user-registration.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -16,7 +17,7 @@
     <div class="container px-0">
         <header>        
             <nav>
-                <a href="user-login.php">BLOGSITE</a>
+                <h4><a href="user-login.php">BLOGSITE</a></h4>
             </nav>
         </header>
     </div>
@@ -24,7 +25,7 @@
     <div class="container">
         <div class="row justify-content-center align-items-center registration-container">
             <div>
-                <h2>Registration Form</h2>
+                <h3>Registration Form</h3>
 
                 <?php
                 session_start();
@@ -37,17 +38,17 @@
                 ?>
 
                 <div class="col d-flex justify-content-center align-items-center">
-                    <form action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
+                    <form class="registration-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
                         <label for="username">Username</label>
-                        <input type="text" name="username" required><br>
+                        <input class="username-input" type="text" name="username" required><br>
 
                         <label for="password">Password</label>
-                        <input type="password" name="password" required><br>
+                        <input class="password-input" type="password" name="password" required><br>
 
                         <label for="email">Email</label>
-                        <input type="email" name="email" required><br>
+                        <input class="email-input" type="email" name="email" required><br>
 
-                        <input type="submit" value="Register">
+                        <input class="submit-button" type="submit" value="Register">
                     </form>
                 </div>
 
