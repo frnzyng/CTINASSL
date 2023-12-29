@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlogSite - Home</title>
+    <title>BlogSite - User Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/user-home.css">
+    <link rel="stylesheet" href="css/user-profile.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
                     include_once("../controller/SessionController.php");
                     $sessionController = new SessionController();
 
-                    // Check if the account ID exists before displaying
+                    // Check if the account username exists before displaying
                     $accountUsername = $sessionController->getUsername();
 
                     if ($accountUsername !== null) {
@@ -64,7 +64,7 @@
                 ?>
                 
                 <h4>Create Post</h4>
-                <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                <form class="post-form" action="../controller/UserProfileController.php?action=handlePostSubmission" method="post">
                     <div class="topic-container">
                         <label for="post_topic">Topic</label>
                         <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required placeholder="What's on your mind?">
@@ -83,16 +83,16 @@
 
         <!-- Displaying posts and comments -->
         <div class="row justify-content-center align-items-center mx-2">
-            <?php include_once("../controller/UserHomeController.php"); ?>
+            <?php include_once("../controller/UserProfileController.php"); ?>
             <div class="post-block">
                 <div class="heading">
-                    <h4>All Posts</h4>
+                    <h4>User Profile</h4>
                     <button class="create-post-button">Create Post</button>
                 </div>
                 <?php
                     try {
-                        $userHomeController = new UserHomeController();
-                        $posts = UserHomeController::handlePostRetrieval();
+                        $userProfileController = new UserProfileController();
+                        $posts = UserProfileController::handlePostRetrieval();
                     } 
                     catch (Exception $e) {
                         echo "Error retrieving posts: " . $e->getMessage();
@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="section2-post">
-                            <p class="post-username">Posted by <?php echo $post['username'] . " - " . $userHomeController->timeAgo($post['post_datetime']); ?></p>
+                            <p class="post-username">Posted by <?php echo $post['username'] . " - " . $userProfileController->timeAgo($post['post_datetime']); ?></p>
                             <p class="post-content"><?php echo $post['post_content']; ?></p>
                             <a class="create-comment-button"><i class="fa-solid fa-message"></i></a>
                         </div>
@@ -115,7 +115,18 @@
 
                     <div class="comments-block">
                         <h5>Comments</h5>
-                        <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
+                        <?php
+                            // Display any status messages
+                            if (isset($_SESSION["success_message"])) {
+                                echo $_SESSION["success_message"];
+                                unset($_SESSION["success_message"]); // Clear the error message from session
+                            }
+                            else if (isset($_SESSION["error_message"])) {
+                                echo $_SESSION["error_message"];
+                                unset($_SESSION["error_message"]); // Clear the error message from session
+                            }
+                        ?>
+                        <form class="comment-form" action="../controller/UserProfileController.php?action=handleCommentSubmission" method="post">
                             <input class="comment-input" type="text" name="comment_content" id="comment_content" rows="1" maxlength="50" required placeholder="Write a comment..."></input>
                             <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
                             <input class="submit-button" type="submit" value="Comment">
@@ -124,7 +135,7 @@
                         <?php
                             try {
                                 // Get comments for the current post
-                                $comments = UserHomeController::handleCommentRetrieval($post['post_id']);
+                                $comments = UserProfileController::handleCommentRetrieval($post['post_id']);
                             } catch (Exception $e) {
                                 echo "Error retrieving comments: " . $e->getMessage();
                             }
@@ -136,7 +147,7 @@
                                         <span class="comment-username"><?php echo $comment['username']; ?></span>
                                         <a class="comment-settings-button"><i class="fa-solid fa-ellipsis"></i></a>
                                     </div>
-                                    <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>
+                                    <p class="comment-datetime"><?php echo $userProfileController->timeAgo($comment['comment_datetime']); ?></p>
                                     <p class="comment-content"><?php echo $comment['comment_content']; ?></p>
                                 </div>
                             <?php endforeach; ?>

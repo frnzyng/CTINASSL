@@ -1,8 +1,7 @@
 <?php
-
 // Check for the action parameter in the URL
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$controller = new UserHomeController();
+$controller = new UserProfileController();
 
 if ($action === 'handlePostSubmission') {
     $controller->handlePostSubmission();
@@ -11,8 +10,7 @@ else if ($action === 'handleCommentSubmission') {
     $controller->handleCommentSubmission();
 }
 
-class UserHomeController {
-    
+class UserProfileController {
     public function handlePostSubmission() {
         try {
             include_once("../controller/SessionController.php");
@@ -29,11 +27,11 @@ class UserHomeController {
 
                 if ($account_id === null && $username === null) {
                     $_SESSION["error_message"] = "Session Expired";
-                    header('Location:../view/user-home.php');             
+                    header('Location:../view/user-profile.php');             
                 } 
                 else if ($post_topic === "" && $post_content === "") {
                     $_SESSION["error_message"] = "Fields should not be blank";
-                    header('Location:../view/user-home.php');
+                    header('Location:../view/user-profile.php');
                 }
                 else{
                     include_once("../model/UserPostModel.php");
@@ -41,12 +39,12 @@ class UserHomeController {
 
                     if ($submittedPost === true) {
                         $_SESSION["success_message"] = "Posted successfully!";
-                        header('Location:../view/user-home.php');
+                        header('Location:../view/user-profile.php');
                     } 
                     else if ($submittedPost === false) {
                         // If an exception occurred in the model, store the error in the session
                         $_SESSION["error_message"] = "Error posting";
-                        header('Location:../view/user-home.php');
+                        header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
                 }
@@ -59,8 +57,13 @@ class UserHomeController {
 
     public static function handlePostRetrieval() {
         try {
+            include_once("../controller/SessionController.php");
+            // Get session
+            $sessionController = new SessionController();
+            $account_id = $sessionController->getAccountId();
+
             include_once("../model/UserPostModel.php");
-            $retrievedPosts = UserPostModel::getPost();
+            $retrievedPosts = UserPostModel::getUserPost($account_id);
 
             return $retrievedPosts;
         }
@@ -85,11 +88,11 @@ class UserHomeController {
 
                 if ($account_id === null && $username === null) {
                     $_SESSION["error_message"] = "Session Expired";
-                    header('Location:../view/user-home.php');             
+                    header('Location:../view/user-profile.php');             
                 } 
                 else if ($comment_content === "") {
                     $_SESSION["error_message"] = "Fields should not be blank";
-                    header('Location:../view/user-home.php');
+                    header('Location:../view/user-profile.php');
                 }
                 else{
                     include_once("../model/UserCommentModel.php");
@@ -97,12 +100,12 @@ class UserHomeController {
     
                     if ($submittedComment === true) {
                         $_SESSION["success_message"] = "Comment posted successfully!";
-                        header('Location:../view/user-home.php');
+                        header('Location:../view/user-profile.php');
                     } 
                     else if ($submittedComment === false) {
                         // If an exception occurred in the model, store the error in the session
                         $_SESSION["error_message"] = "Error posting comment";
-                        header('Location:../view/user-home.php');
+                        header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
                 }
@@ -151,6 +154,6 @@ class UserHomeController {
         }
     
         return $diffString;
-    }    
+    }   
 }
 ?>
