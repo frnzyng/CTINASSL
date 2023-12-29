@@ -14,47 +14,55 @@ else if ($action === 'handleCommentSubmission') {
 class UserHomeController {
     
     public function handlePostSubmission() {
-        include_once("../controller/SessionController.php");
+        try {
+            include_once("../controller/SessionController.php");
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Get session
-            $sessionController = new SessionController();
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Get session
+                $sessionController = new SessionController();
 
-            // Validate and sanitize form inputs
-            $account_id = $sessionController->getAccountId();
-            $username = $sessionController->getUsername();
-            $post_topic = trim($_POST["post_topic"]);
-            $post_content = trim($_POST["post_content"]);
+                // Validate and sanitize form inputs
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                $post_topic = trim($_POST["post_topic"]);
+                $post_content = trim($_POST["post_content"]);
 
-            // You may want to perform additional validation here
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message"] = "Session Expired";
+                    header('Location:../view/user-home.php');             
+                } 
+                else if ($post_topic === "" && $post_content === "") {
+                    $_SESSION["error_message"] = "Fields should not be blank";
+                    header('Location:../view/user-home.php');
+                }
+                else{
+                    include_once("../model/UserPostModel.php");
+                    $submittedPost = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
 
-            // Example: Insert data into the tblPosts table using the model
-            if ($account_id != "" && $username != "" && $post_topic != "" && $post_content != "") {
-                include_once("../model/UserPostModel.php");
-                $success = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
+                    if ($submittedPost === true) {
+                        $_SESSION["success_message"] = "Posted successfully!";
+                        header('Location:../view/user-home.php');
+                    } 
+                    else if ($submittedPost === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_message"] = "Error posting";
+                        header('Location:../view/user-home.php');
+                    }
+                    // Don't put else block here
+                }
             }
-            else{
-                $_SESSION["error_message"] = "Fields should not be null";
-            }
-
-            // Load the appropriate view based on success or failure
-            if ($success) {
-                header('Location:../view/user-home.php');
-                $_SESSION["error_message"] = "Post submitted successfully!";
-                return $success;
-            } else {
-                header('Location:../view/user-home.php');
-                $_SESSION["error_message"] = "Error submitting post";
-            }
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
         }
     }
 
     public static function handlePostRetrieval() {
         try {
             include_once("../model/UserPostModel.php");
-            $posts = UserPostModel::getPost();
+            $retrievedPosts = UserPostModel::getPost();
 
-            return $posts;
+            return $retrievedPosts;
         }
         catch (Exception $e) {  
             echo $e->getMessage();
@@ -75,24 +83,29 @@ class UserHomeController {
                 $username = $sessionController->getUsername();
                 $comment_content = trim($_POST["comment_content"]);
 
-                if ($post_id != "" && $account_id != "" && $username != "" && $comment_content != "") {
-                    include_once("../model/UserCommentModel.php");
-                    $success = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message"] = "Session Expired";
+                    header('Location:../view/user-home.php');             
+                } 
+                else if ($comment_content === "") {
+                    $_SESSION["error_message"] = "Fields should not be blank";
+                    header('Location:../view/user-home.php');
                 }
                 else{
-                    $_SESSION["error_message"] = "Fields should not be null";
+                    include_once("../model/UserCommentModel.php");
+                    $success = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);
+    
+                    if ($submittedPost === true) {
+                        $_SESSION["success_message"] = "Comment posted successfully!";
+                        header('Location:../view/user-home.php');
+                    } 
+                    else if ($submittedPost === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_message"] = "Error posting comment";
+                        header('Location:../view/user-home.php');
+                    }
+                    // Don't put else block here
                 }
-
-                // Load the appropriate view based on success or failure
-                if ($success) {
-                    header('Location:../view/user-home.php');
-                    $_SESSION["error_message"] = "Comment submitted successfully!";
-                    return $success;
-                } else {
-                    header('Location:../view/user-home.php');
-                    $_SESSION["error_message"] = "Error submitting comment";
-                }
-                header('Location:../view/user-home.php');
             }         
         }
         catch (Exception $e) {
@@ -103,9 +116,9 @@ class UserHomeController {
     public static function handleCommentRetrieval($post_id) {
         try {
             include_once("../model/UserCommentModel.php");
-            $comments = UserCommentModel::getComment($post_id);
+            $retrievedComments = UserCommentModel::getComment($post_id);
 
-            return $comments;
+            return $retrievedComments;
         }
         catch (Exception $e) {  
             echo $e->getMessage();
@@ -121,15 +134,20 @@ class UserHomeController {
     
         if ($diff->y > 0) {
             $diffString .= $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . ' ';
-        } elseif ($diff->m > 0) {
+        } 
+        elseif ($diff->m > 0) {
             $diffString .= $diff->m . ' month' . ($diff->m > 1 ? 's' : '') . ' ';
-        } elseif ($diff->d > 0) {
+        } 
+        elseif ($diff->d > 0) {
             $diffString .= $diff->d . ' day' . ($diff->d > 1 ? 's' : '') . ' ';
-        } elseif ($diff->h > 0) {
+        } 
+        elseif ($diff->h > 0) {
             $diffString .= $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ';
-        } elseif ($diff->i > 0) {
+        } 
+        elseif ($diff->i > 0) {
             $diffString .= $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') . ' ';
-        } else {
+        } 
+        else {
             $diffString = 'Just now';
         }
     

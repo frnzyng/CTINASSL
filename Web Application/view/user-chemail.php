@@ -52,8 +52,12 @@
         <div class="row justify-content-center align-items-center mx-2">
             <div class="change-email-container">
                 <?php
-                    // Display any error messages
-                    if (isset($_SESSION["error_message"])) {
+                    // Display any status messages
+                    if (isset($_SESSION["success_message"])) {
+                        echo $_SESSION["success_message"];
+                        unset($_SESSION["success_message"]); // Clear the error message from session
+                    }
+                    else if (isset($_SESSION["error_message"])) {
                         echo $_SESSION["error_message"];
                         unset($_SESSION["error_message"]); // Clear the error message from session
                     }

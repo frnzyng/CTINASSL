@@ -40,7 +40,7 @@ class UserAccountModel {
         }
     }  
 
-    public static function updateUsername($account_id, $new_username, $password) {
+    public static function updateAccountUsername($account_id, $new_username, $password) {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -50,18 +50,19 @@ class UserAccountModel {
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
+            // Prepare query to check if account with the given account id exists
             $stmtAccountExist = $db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE account_id = :account_id");
             $stmtAccountExist->bindParam(':account_id', $account_id);
             $stmtAccountExist->execute();
 
+            // Fetches the row from the result set
             $account = $stmtAccountExist->fetch(PDO::FETCH_ASSOC);
 
-            // Check if an account with the given account id exists
+            // Verify account
             if ($account) {
-                // Verify the password
+                // Verify the password of the account
                 if (password_verify($password, $account["password"])) {
-
+                    // Prepare query to check if username already exists
                     $stmtUsernameExist = $db->prepare("SELECT username FROM tblUserAccounts WHERE username = :new_username");
                     $stmtUsernameExist->bindParam(':new_username', $new_username);
                     $stmtUsernameExist->execute();
@@ -71,7 +72,7 @@ class UserAccountModel {
                         return "Username already exists";
                     }
                     else {
-                        // Update username
+                        // Prepare query to update username
                         $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET username = :new_username WHERE account_id = :account_id");
                         $stmtUpdate->bindParam(':new_username', $new_username);
                         $stmtUpdate->bindParam(':account_id', $account_id);
@@ -79,6 +80,7 @@ class UserAccountModel {
                         // Execute the query
                         $result = $stmtUpdate->execute();
 
+                        // Returns 1 if true, 0 if false
                         return $result;
                     }
                 }
@@ -86,18 +88,20 @@ class UserAccountModel {
                     return "Password is incorrect";
                 }
             }
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
             
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }
     }
     
 
-    public static function updateUserEmail($account_id, $new_email, $password) {
+    public static function updateAccountEmail($account_id, $new_email, $password) {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -107,32 +111,39 @@ class UserAccountModel {
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            // Prepare query to check if account with the given account id exists
+            $stmtAccountExist = $db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE account_id = :account_id");
+            $stmtAccountExist->bindParam(':account_id', $account_id);
+            $stmtAccountExist->execute();
 
-            $stmt1 = $db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE account_id = :account_id");
-            $stmt1->bindParam(':account_id', $account_id);
-            $stmt1->execute();
+            // Fetches the row from the result set
+            $account = $stmtAccountExist->fetch(PDO::FETCH_ASSOC);
 
-            $user = $stmt1->fetch(PDO::FETCH_ASSOC);
+            // Verify account
+            if ($account) {
+                // Verify the password of the account
+                if (password_verify($password, $account["password"])) {
+                    // Prepare query to update email
+                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET email = :new_email WHERE account_id = :account_id");
+                    $stmtUpdate->bindParam(':new_email', $new_email);
+                    $stmtUpdate->bindParam(':account_id', $account_id);
 
-            // Check if a user with the given username exists
-            if ($user) {
-                // Verify the password
-                if (password_verify($password, $user["password"])) {
-                    // Prepare and execute a query to update email
-                    $stmt = $db->prepare("UPDATE tblUserAccounts SET email = :new_email WHERE account_id = :account_id");
-                    $stmt->bindParam(':new_email', $new_email);
-                    $stmt->bindParam(':account_id', $account_id);
                     // Execute the query
-                    $result = $stmt->execute();
+                    $result = $stmtUpdate->execute();
                     
+                    // Returns 1 if true, 0 if false
                     return $result;
                 }
+                else {
+                    return "Password is incorrect";
+                }
             }
-
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }
@@ -148,27 +159,30 @@ class UserAccountModel {
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $new_password1 = password_hash($new_password, PASSWORD_BCRYPT);
+            // Encrypt new password
+            $new_password = password_hash($new_password, PASSWORD_BCRYPT);
 
-
+            // Prepare query to check if account with the given account id exists
             $stmtAccountExist = $db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE account_id = :account_id");
             $stmtAccountExist->bindParam(':account_id', $account_id);
             $stmtAccountExist->execute();
 
+            // Fetches the row from the result set
             $account = $stmtAccountExist->fetch(PDO::FETCH_ASSOC);
 
-            // Check if an account with the given account id exists
+            // Verify account
             if ($account) {
-                // Verify the password
+                // Verify the password of the account
                 if (password_verify($current_password, $account["password"])) {
-                    // Update username
-                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET passwords = :new_password WHERE account_id = :account_id");
-                    $stmtUpdate->bindParam(':new_password', $new_password1);
+                    // Prepare query to update password
+                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET password = :new_password WHERE account_id = :account_id");
+                    $stmtUpdate->bindParam(':new_password', $new_password);
                     $stmtUpdate->bindParam(':account_id', $account_id);
 
                     // Execute the query
                     $result = $stmtUpdate->execute();
 
+                    // Returns 1 if true, 0 if false
                     return $result;
                 }
                 else {
@@ -176,11 +190,12 @@ class UserAccountModel {
                 }
             }
             
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-            
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }

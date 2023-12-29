@@ -11,26 +11,24 @@ class UserCommentModel {
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-            // Prepare and execute a query to insert a new comment
-            $stmt = $db->prepare("INSERT INTO tblComments (post_id, account_id, username, comment_content, comment_datetime) VALUES (:post_id, :account_id, :username, :comment_content, NOW())");
-            $stmt->bindParam(':post_id', $post_id);
-            $stmt->bindParam(':account_id', $account_id);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':comment_content', $comment_content);
+            // Prepare query to insert a new comment
+            $stmtComment = $db->prepare("INSERT INTO tblComments (post_id, account_id, username, comment_content, comment_datetime) VALUES (:post_id, :account_id, :username, :comment_content, NOW())");
+            $stmtComment->bindParam(':post_id', $post_id);
+            $stmtComment->bindParam(':account_id', $account_id);
+            $stmtComment->bindParam(':username', $username);
+            $stmtComment->bindParam(':comment_content', $comment_content);
     
             // Execute the query
-            $success = $stmt->execute();
+            $result = $stmtComment->execute();
     
-            // Check if the query was successful
-            if ($success) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
+            // Returns 1 if true, 0 if false
+            return $result;
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }
@@ -46,21 +44,24 @@ class UserCommentModel {
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-            // Prepare and execute a query to insert a new post
-            $stmt = $db->prepare("SELECT * FROM tblComments WHERE post_id = :post_id");
-            $stmt->bindParam(':post_id', $post_id);
+            // Prepare query to retrieve comments
+            $stmtGetComments = $db->prepare("SELECT * FROM tblComments WHERE post_id = :post_id");
+            $stmtGetComments->bindParam(':post_id', $post_id);
+
             // Execute the query
-            $stmt->execute();
+            $stmtGetComments->execute();
 
-            // Fetch all results as an associative array
-            $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Retrieve all results as an associative array
+            $retrievedComments = $stmtGetComments->fetchAll(PDO::FETCH_ASSOC);
 
-            // Return the result
-            return $comments;
-        } catch (PDOException $e) {
+            // Return the retrieved comments
+            return $retrievedComments;
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }
