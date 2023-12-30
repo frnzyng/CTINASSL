@@ -50,20 +50,23 @@
 
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
-            <div class="create-post-container">
-                <?php
-                    // Display any status messages
-                    if (isset($_SESSION["success_message"])) {
-                        echo $_SESSION["success_message"];
-                        unset($_SESSION["success_message"]); // Clear the error message from session
-                    }
-                    else if (isset($_SESSION["error_message"])) {
-                        echo $_SESSION["error_message"];
-                        unset($_SESSION["error_message"]); // Clear the error message from session
-                    }
-                ?>
-                
+            <div class="create-post-container">   
                 <h4>Create Post</h4>
+
+                <p class="status-message">
+                    <?php
+                        // Display any status messages
+                        if (isset($_SESSION["success_messagePost"])) {
+                            echo $_SESSION["success_messagePost"];
+                            unset($_SESSION["success_messagePost"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_messagePost"])) {
+                            echo $_SESSION["error_messagePost"];
+                            unset($_SESSION["error_messagePost"]); // Clear the error message from session
+                        }
+                    ?>
+                </p>
+
                 <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
                     <div class="topic-container">
                         <label for="post_topic">Topic</label>
@@ -115,6 +118,19 @@
 
                     <div class="comments-block">
                         <h5>Comments</h5>
+                        <p class="status-message">
+                            <?php
+                                // Display any status messages
+                                if (isset($_SESSION["success_messageComment"])) {
+                                    echo $_SESSION["success_messageComment"];
+                                    unset($_SESSION["success_messageComment"]); // Clear the error message from session
+                                }
+                                else if (isset($_SESSION["error_messageComment"])) {
+                                    echo $_SESSION["error_messageComment"];
+                                    unset($_SESSION["error_messageComment"]); // Clear the error message from session
+                                }
+                            ?>
+                        </p>
                         <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
                             <input class="comment-input" type="text" name="comment_content" id="comment_content" rows="1" maxlength="50" required placeholder="Write a comment..."></input>
                             <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">

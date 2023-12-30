@@ -9,16 +9,27 @@ nav {
 
 /* Registration Form */
 .registration-container {
+    width: 500px;
     height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
 h3 {
     text-align: center;
 }
 
+.status-message {
+    padding: 10px;
+    text-align: center;
+}
+
 .registration-form {
-    padding: 30px;
-    width: 500px;
+    width: 100%;
+    padding-bottom: 20px;
 }
 
 label {
@@ -27,6 +38,7 @@ label {
 
 .username-input, .password-input, .email-input {
     width: 100%;
+    padding: 10px;
     margin-bottom: 16px;
     box-sizing: border-box;
     border-radius: 15px;
@@ -52,6 +64,6 @@ p {
 
 @media (max-width: 768px) {
     nav {
-        justify-content: center;
+        justify-content: center!important;
     }
 }

@@ -38,9 +38,6 @@ class UserAuthController {
                 exit();
             }
         }
-
-        // Load login view (form)
-        include('../view/user-login.php');
     }
 }
 

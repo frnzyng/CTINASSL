@@ -51,18 +51,20 @@
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
             <div class="change-email-container">
-                <?php
-                    // Display any status messages
-                    if (isset($_SESSION["success_message"])) {
-                        echo $_SESSION["success_message"];
-                        unset($_SESSION["success_message"]); // Clear the error message from session
-                    }
-                    else if (isset($_SESSION["error_message"])) {
-                        echo $_SESSION["error_message"];
-                        unset($_SESSION["error_message"]); // Clear the error message from session
-                    }
-                ?>
                 <h4>Change Email</h4>
+                <p class="status-message">
+                    <?php
+                        // Display any status messages
+                        if (isset($_SESSION["success_message"])) {
+                            echo $_SESSION["success_message"];
+                            unset($_SESSION["success_message"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_message"])) {
+                            echo $_SESSION["error_message"];
+                            unset($_SESSION["error_message"]); // Clear the error message from session
+                        }
+                    ?>
+                </p>
                 <form class="change-email-form" action="../controller/UserSettingsController.php?action=handleChangeEmail" method="post">
                     <div class="email-container">
                         <label>Enter new email</label>

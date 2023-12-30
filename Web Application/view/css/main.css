@@ -58,6 +58,12 @@ h5 {
     font-weight: var(--fw-bold);
 }
 
+.status-message {
+    color: var(--clr-accent);
+    font-weight: var(--fw-bold);
+    margin: 0;
+}
+
 input[type="text"] {
     padding-top: 10px;
     padding-bottom: 10px;

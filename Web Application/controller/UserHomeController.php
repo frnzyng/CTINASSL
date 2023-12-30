@@ -40,12 +40,12 @@ class UserHomeController {
                     $submittedPost = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
 
                     if ($submittedPost === true) {
-                        $_SESSION["success_message"] = "Posted successfully!";
+                        $_SESSION["success_messagePost"] = "Posted successfully!";
                         header('Location:../view/user-home.php');
                     } 
                     else if ($submittedPost === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_message"] = "Error posting";
+                        $_SESSION["error_messagePost"] = "Error posting";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here
@@ -96,12 +96,12 @@ class UserHomeController {
                     $submittedComment = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);
     
                     if ($submittedComment === true) {
-                        $_SESSION["success_message"] = "Comment posted successfully!";
+                        $_SESSION["success_messageComment"] = "Comment posted successfully!";
                         header('Location:../view/user-home.php');
                     } 
                     else if ($submittedComment === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_message"] = "Error posting comment";
+                        $_SESSION["error_messageComment"] = "Error posting comment";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here

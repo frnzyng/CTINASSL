@@ -24,34 +24,36 @@
  
     <!-- Login Form -->
     <div class="container">
-        <div class="row justify-content-center align-items-center login-container">
-            <div>
+        <div class="row justify-content-center align-items-center mx-2">
+            <div class = "login-container">
                 <h3>Login</h3>
                 
-                <?php
-                session_start();
+                <p class="status-message">
+                    <?php
+                        session_start();
 
-                // Display any error messages
-                if (isset($_SESSION["error_message"])) {
-                    echo $_SESSION["error_message"];
-                    unset($_SESSION["error_message"]); // Clear the error message from session
-                }
-                ?>
+                        // Display any error messages
+                        if (isset($_SESSION["error_message"])) {
+                            echo $_SESSION["error_message"];
+                            unset($_SESSION["error_message"]); // Clear the error message from session
+                        }
+                    ?>
+                </p>
 
-                <div class="col d-flex justify-content-center align-items-center">  
-                    <form class="login-form" action="../controller/UserAuthController.php" method="post">
-                        <label for="username">Username</label>
-                        <input class="username-input" type="text" name="username" required><br>
-                
-                        <label for="password">Password</label>
-                        <input class="password-input" type="password" name="password" required><br>
-                
-                        <input class="submit-button" type="submit" value="Login">
-                    </form>
+                <form class="login-form" action="../controller/UserAuthController.php" method="post">
+                    <label for="username">Username</label>
+                    <input class="username-input" type="text" name="username" required><br>
+            
+                    <label for="password">Password</label>
+                    <input class="password-input" type="password" name="password" required><br>
+            
+                    <input class="submit-button" type="submit" value="Login">
+                </form>
+
+                <div>
+                    <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
+                    <p><a class="toggle-link" href="admin-login.php">Switch to admin?</a></p>
                 </div>
-
-                <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
-                <p><a class="toggle-link" href="admin-login.php">Switch to admin?</a></p>
             </div>
             
         </div>

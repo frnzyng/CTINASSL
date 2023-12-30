@@ -23,34 +23,34 @@
     </div>
 
     <div class="container">
-        <div class="row justify-content-center align-items-center registration-container">
-            <div>
+        <div class="row justify-content-center align-items-center mx-2">
+            <div class="registration-container">
                 <h3>Registration Form</h3>
 
-                <?php
-                session_start();
+                <p class="status-message">
+                    <?php
+                        session_start();
 
-                // Display any status messages
-                if (isset($_SESSION["status_message"])) {
-                    echo $_SESSION["status_message"];
-                    unset($_SESSION["status_message"]); // Clear the error message from session
-                }
-                ?>
+                        // Display any error messages
+                        if (isset($_SESSION["error_message"])) {
+                            echo $_SESSION["error_message"];
+                            unset($_SESSION["error_message"]); // Clear the error message from session
+                        }
+                    ?>
+                </p>
 
-                <div class="col d-flex justify-content-center align-items-center">
-                    <form class="registration-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
-                        <label for="username">Username</label>
-                        <input class="username-input" type="text" name="username" required><br>
+                <form class="registration-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
+                    <label for="username">Username</label>
+                    <input class="username-input" type="text" name="username" required><br>
 
-                        <label for="password">Password</label>
-                        <input class="password-input" type="password" name="password" required><br>
+                    <label for="password">Password</label>
+                    <input class="password-input" type="password" name="password" required><br>
 
-                        <label for="email">Email</label>
-                        <input class="email-input" type="email" name="email" required><br>
+                    <label for="email">Email</label>
+                    <input class="email-input" type="email" name="email" required><br>
 
-                        <input class="submit-button" type="submit" value="Register">
-                    </form>
-                </div>
+                    <input class="submit-button" type="submit" value="Register">
+                </form>
 
                 <p>Already have an account? <a href="user-login.php">Login</a></p>
             </div>
