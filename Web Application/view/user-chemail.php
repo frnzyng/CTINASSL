@@ -72,7 +72,7 @@
                     </div>  
                     <div class="password-container">
                         <label>Enter password to confirm</label>
-                        <input class="password-input" type="password" name="password" id="password" required>
+                        <input class="password-input" type="password" name="password" id="password" minlength="4" required>
                     </div>
                     <div class="button-container">
                         <input class="submit-button" type="submit" value="Save Changes">

@@ -1,9 +1,5 @@
 <?php 
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
 class UserAccountModel {
 
     public static function registerUser($username, $password, $email) {
@@ -15,26 +11,42 @@ class UserAccountModel {
     
             $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-            // Prepare and execute a query to insert a new post
-            $stmt = $db->prepare("INSERT INTO tblUserAccounts (username, password, email) VALUES (:username, :password, :email)");
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
-            $stmt->bindParam(':email', $email);
-            // Execute the query
-            $result = $stmt->execute();
-            
-            if ($result) {
-                return true;
-            } else {
-                return false;
+
+            // Prepare query to check if username already exists
+            $stmtUsernameExist = $db->prepare("SELECT username FROM tblUserAccounts WHERE username = :username");
+            $stmtUsernameExist->bindParam(':username', $username);
+            $stmtUsernameExist->execute();
+
+            // Prepare query to check if email already exists
+            $stmtEmailExist = $db->prepare("SELECT email FROM tblUserAccounts WHERE email = :email");
+            $stmtEmailExist->bindParam(':email', $email);
+            $stmtEmailExist->execute();
+
+            // Verify if username and email already exists
+            if ($stmtUsernameExist->rowCount() > 0) {
+                return "Username already exists";
             }
-            // Return the result
-            //return $result;
-        } catch (PDOException $e) {
+            else if ($stmtEmailExist->rowCount() > 0) {
+                return "Email already exists";
+            }
+            else {
+                // Prepare and execute a query to insert a new post
+                $stmtRegisterUser = $db->prepare("INSERT INTO tblUserAccounts (username, password, email) VALUES (:username, :password, :email)");
+                $stmtRegisterUser->bindParam(':username', $username);
+                $stmtRegisterUser->bindParam(':password', $password);
+                $stmtRegisterUser->bindParam(':email', $email);
+                // Execute the query
+                $result = $stmtRegisterUser->execute();
+                
+                // Returns 1 if true, 0 if false
+                return $result;
+            }
+        } 
+        catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-        } finally {
+        } 
+        finally {
             // Close the database connection
             $db = null;
         }
@@ -92,7 +104,6 @@ class UserAccountModel {
         catch (PDOException $e) {
             // Handle PDO exceptions
             echo "PDO Exception: " . $e->getMessage();
-            
         } 
         finally {
             // Close the database connection
@@ -123,16 +134,36 @@ class UserAccountModel {
             if ($account) {
                 // Verify the password of the account
                 if (password_verify($password, $account["password"])) {
-                    // Prepare query to update email
-                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET email = :new_email WHERE account_id = :account_id");
-                    $stmtUpdate->bindParam(':new_email', $new_email);
-                    $stmtUpdate->bindParam(':account_id', $account_id);
+                    // Prepare query to check if user tries to use the same email
+                    $stmtSameEmail = $db->prepare("SELECT email, account_id FROM tblUserAccounts WHERE email = :new_email AND account_id = :account_id");
+                    $stmtSameEmail->bindParam(':new_email', $new_email);
+                    $stmtSameEmail->bindParam(':account_id', $account_id);
+                    $stmtSameEmail->execute();
 
-                    // Execute the query
-                    $result = $stmtUpdate->execute();
-                    
-                    // Returns 1 if true, 0 if false
-                    return $result;
+                    // Prepare query to check if email already exists
+                    $stmtEmailExist = $db->prepare("SELECT email FROM tblUserAccounts WHERE email = :new_email");
+                    $stmtEmailExist->bindParam(':new_email', $new_email);
+                    $stmtEmailExist->execute();
+
+                    // Verify if email already exists
+                    if ($stmtSameEmail->rowCount() > 0) {
+                        return "Current and new email should not be the same";
+                    } 
+                    else if ($stmtEmailExist->rowCount() > 0) {
+                        return "Email already exists";
+                    } 
+                    else {
+                        // Prepare query to update email
+                        $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET email = :new_email WHERE account_id = :account_id");
+                        $stmtUpdate->bindParam(':new_email', $new_email);
+                        $stmtUpdate->bindParam(':account_id', $account_id);
+
+                        // Execute the query
+                        $result = $stmtUpdate->execute();
+                        
+                        // Returns 1 if true, 0 if false
+                        return $result;
+                    }
                 }
                 else {
                     return "Password is incorrect";

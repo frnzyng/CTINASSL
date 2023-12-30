@@ -68,11 +68,11 @@
                 <form class="change-username-form" action="../controller/UserSettingsController.php?action=handleChangeUsername" method="post">
                     <div class="username-container">
                         <label>Enter new username</label>
-                        <input class="username-input" type="text" name="new_username" id="new_username" maxlength="50" required>
+                        <input class="username-input" type="text" name="new_username" id="new_username" maxlength="25" required>
                     </div>  
                     <div class="password-container">
                         <label>Enter password to confirm</label>
-                        <input class="password-input" type="password" name="password" id="password" required>
+                        <input class="password-input" type="password" name="password" id="password" minlength="4" required>
                     </div>
                     <div class="button-container">
                         <input class="submit-button" type="submit" value="Save Changes">

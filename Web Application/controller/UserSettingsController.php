@@ -1,9 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
 // Check for the action parameter in the URL
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $controller = new UserSettingsController();
@@ -38,7 +34,7 @@ class UserSettingsController {
                     $_SESSION["error_message"] = "Session Expired";
                     header('Location:../view/user-chusername.php');             
                 } 
-                else if ($new_username === "" && $password === "") {
+                else if ($new_username === "" && $password === null) {
                     $_SESSION["error_message"] = "Fields should not be blank";
                     header('Location:../view/user-chusername.php');
                 }
@@ -94,7 +90,7 @@ class UserSettingsController {
                     $_SESSION["error_message"] = "Session Expired";
                     header('Location:../view/user-chemail.php');             
                 } 
-                else if ($new_email === "" && $password === "") {
+                else if ($new_email === "" && $password === null) {
                     $_SESSION["error_message"] = "Fields should not be blank";
                     header('Location:../view/user-chemail.php');
                 }
@@ -114,6 +110,14 @@ class UserSettingsController {
                     else if ($updatedAccount === "Password is incorrect") {
                         // If an exception occurred in the model, store the error in the session
                         $_SESSION["error_message"] = "Password is incorrect";
+                        header('Location:../view/user-chemail.php');
+                    }
+                    else if ($updatedAccount === "Current and new email should not be the same") {
+                        $_SESSION["error_message"] = "Current and new email should not be the same";
+                        header('Location:../view/user-chemail.php');
+                    }
+                    else if ($updatedAccount === "Email already exists") {
+                        $_SESSION["error_message"] = "Email already exists";
                         header('Location:../view/user-chemail.php');
                     }
                     // Don't put else block here
@@ -143,7 +147,7 @@ class UserSettingsController {
                     $_SESSION["error_message"] = "Session Expired";
                     header('Location:../view/user-chpassword.php');             
                 } 
-                else if ($current_password === "" && $new_password === "" && $retyped_password === "") {
+                else if ($current_password === null && $new_password === null && $retyped_password === null) {
                     $_SESSION["error_message"] = "Fields should not be blank";
                     header('Location:../view/user-chpassword.php');
                 }

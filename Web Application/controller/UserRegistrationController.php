@@ -6,38 +6,51 @@ $controller = new UserRegistrationController();
 if ($action === 'handleUserRegistration') {
     $controller->handleUserRegistration();
 }
-    class UserRegistrationController {
+class UserRegistrationController {
 
-        public function handleUserRegistration() {
-            // Process form submission
+    public function handleUserRegistration() {
+        try {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                session_start(); //kailangan siya
+
                 $username = trim($_POST["username"]);
                 $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
                 $email = trim($_POST["email"]);
+                
             
-                if ($username != "" && $password != "" && $email != "") {
+                if ($username === "" && $password === "" && $email === "") {
+                    $_SESSION["error_message"] = "Fields should not be blank";
+                    header('Location:../view/user-registration.php');
+                }
+                else {
                     include_once("../model/UserAccountModel.php");
-                    $success = UserAccountModel::registerUser($username, $password, $email);
-                }
-                else{
-                    session_start();
-                    $_SESSION["status_message"] = "Fields should not be null";
-                    exit();
-                }
-    
-                // Load the appropriate view based on success or failure
-                if ($success) {
-                    session_start();
-                    header('Location:../view/user-registration.php');
-                    $_SESSION["status_message"] = "User registered successfully!";
-                    exit();
-                } else {
-                    session_start();
-                    header('Location:../view/user-registration.php');
-                    $_SESSION["status_message"] = "Error on registering user";
-                    exit();
+                    $registeredUser = UserAccountModel::registerUser($username, $password, $email);
+                    
+
+                    if ($registeredUser === true) {
+                        $_SESSION["success_message"] = "User registered successfully!";
+                        header('Location:../view/user-registration.php');
+                    } 
+                    else if ($registeredUser === false) {
+                        $_SESSION["error_message"] = "Error on registering user";
+                        header('Location:../view/user-registration.php');
+                    }
+                    else if ($registeredUser === "Username already exists") {
+                        $_SESSION["error_message"] = "Username already exists";
+                        header('Location:../view/user-registration.php');
+                    }
+                    else if ($registeredUser === "Email already exists") {
+                        $_SESSION["error_message"] = "Email already exists";
+                        header('Location:../view/user-registration.php');
+                    }
+                    // Don't put else block here
                 }
             }
         }
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
+    
+}
 ?>

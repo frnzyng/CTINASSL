@@ -18,13 +18,9 @@ class UserAuthController {
             $authenticatedUser = $this->model->authenticateUser($username, $password);
 
             if ($authenticatedUser) {
-
                 // Start a session and store user ID
                 $sessionController = new SessionController();
                 $sessionController->startSession($authenticatedUser["account_id"], $authenticatedUser["username"]);
-
-                //session_start();
-                //$_SESSION["user_id"] = $authenticatedUser["id"];
 
                 // Redirect to home dashboard
                 header("Location: ../view/user-home.php");

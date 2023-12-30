@@ -68,15 +68,15 @@
                 <form class="change-password-form" action="../controller/UserSettingsController.php?action=handleChangePassword" method="post">
                     <div class="current-password-container">
                         <label>Enter current password</label>
-                        <input class="current-password-input" type="password" name="current_password" id="current_password" maxlength="50" required>
+                        <input class="current-password-input" type="password" name="current_password" id="current_password" minlength="4" required>
                     </div>  
                     <div class="new-password-container">
                         <label>Enter new password</label>
-                        <input class="new-password-input" type="password" name="new_password" id="new_password" maxlength="50" required>
+                        <input class="new-password-input" type="password" name="new_password" id="new_password" minlength="4" required>
                     </div>  
                     <div class="new-password-container">
                         <label>Re-type new password</label>
-                        <input class="new-password-input" type="password" name="retyped_password" id="retyped_password" maxlength="50" required>
+                        <input class="new-password-input" type="password" name="retyped_password" id="retyped_password" minlength="4" required>
                     </div>
                     <div class="button-container">
                         <input class="submit-button" type="submit" value="Save Changes">

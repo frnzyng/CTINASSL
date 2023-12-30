@@ -31,8 +31,12 @@
                     <?php
                         session_start();
 
-                        // Display any error messages
-                        if (isset($_SESSION["error_message"])) {
+                        // Display any status messages
+                        if (isset($_SESSION["success_message"])) {
+                            echo $_SESSION["success_message"];
+                            unset($_SESSION["success_message"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_message"])) {
                             echo $_SESSION["error_message"];
                             unset($_SESSION["error_message"]); // Clear the error message from session
                         }
@@ -41,13 +45,13 @@
 
                 <form class="registration-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
                     <label for="username">Username</label>
-                    <input class="username-input" type="text" name="username" required><br>
+                    <input class="username-input" type="text" name="username" id="username" maxlength="25" required><br>
 
                     <label for="password">Password</label>
-                    <input class="password-input" type="password" name="password" required><br>
+                    <input class="password-input" type="password" name="password" id="password" minlength="4" required><br>
 
                     <label for="email">Email</label>
-                    <input class="email-input" type="email" name="email" required><br>
+                    <input class="email-input" type="email" name="email" id="email" maxlength="50" required><br>
 
                     <input class="submit-button" type="submit" value="Register">
                 </form>
