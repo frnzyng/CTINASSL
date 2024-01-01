@@ -102,11 +102,52 @@
                     }
                 ?>
 
+                <p class="status-message">
+                    <?php
+                        // Display any status messages
+                        if (isset($_SESSION["success_messagePost"])) {
+                            echo $_SESSION["success_messagePost"];
+                            unset($_SESSION["success_messagePost"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_messagePost"])) {
+                            echo $_SESSION["error_messagePost"];
+                            unset($_SESSION["error_messagePost"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["success_messageDeletePost"])) {
+                            echo $_SESSION["success_messageDeletePost"];
+                            unset($_SESSION["success_messageDeletePost"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_messageDeletePost"])) {
+                            echo $_SESSION["error_messageDeletePost"];
+                            unset($_SESSION["error_messageDeletePost"]); // Clear the error message from session
+                        }
+                    ?>
+                </p>
+
                 <?php foreach ($posts as $post): ?>
                     <div class="post-container">
                         <div class="section1-post">
                             <h5><?php echo $post['post_topic']; ?></h5>
-                            <a class="post-settings-button"><i class="fa-solid fa-ellipsis"></i></a>
+                            <a class="post-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Edit post</a>
+                                </li>
+                                <li>
+                                    <?php if ($post['username'] == $sessionController->getUsername()) { ?>
+                                        <form action="../controller/UserHomeController.php?action=handleDeletePost" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                            <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
+                                            <button class="dropdown-item" type="submit">Delete post</button>
+                                        </form>
+                                    <?php } else { ?>
+                                        <form action="../controller/UserHomeController.php?action=handleDeletePost" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                            <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
+                                            <button class="dropdown-item" type="submit" disabled >Delete post</button>
+                                        </form>
+                                    <?php } ?>
+                                </li>
+                            </ul>
+
+                            </a>
                         </div>
 
                         <div class="section2-post">
@@ -129,6 +170,14 @@
                                     echo $_SESSION["error_messageComment"];
                                     unset($_SESSION["error_messageComment"]); // Clear the error message from session
                                 }
+                                else if (isset($_SESSION["success_messageDeleteComment"])) {
+                                    echo $_SESSION["success_messageDeleteComment"];
+                                    unset($_SESSION["success_messageDeleteComment"]); // Clear the error message from session
+                                }
+                                else if (isset($_SESSION["error_messageDeleteComment"])) {
+                                    echo $_SESSION["error_messageDeleteComment"];
+                                    unset($_SESSION["error_messageDeleteComment"]); // Clear the error message from session
+                                }
                             ?>
                         </p>
                         <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
@@ -150,7 +199,27 @@
                                 <div class="comments-container">
                                     <div class="section1-comment">
                                         <span class="comment-username"><?php echo $comment['username']; ?></span>
-                                        <a class="comment-settings-button"><i class="fa-solid fa-ellipsis"></i></a>
+                                        <a class="comment-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Edit comment</a>
+                                            </li>
+                                            <li>
+                                                <?php if ($comment['username'] == $sessionController->getUsername()) { ?>
+                                                    <form action="../controller/UserHomeController.php?action=handleDeleteComment" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                        <input type="hidden" name="comment_id" id="comment_id" value="<?php echo $comment['comment_id']; ?>">
+                                                        <input type="hidden" name="comment_username" id="comment_username" value="<?php echo $comment['username']; ?>">
+                                                        <button class="dropdown-item" type="submit">Delete comment</button>
+                                                    </form>
+                                                <?php } else { ?>
+                                                    <form action="../controller/UserHomeController.php?action=handleDeleteComment" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                        <input type="hidden" name="comment_id" id="comment_id" value="<?php echo $comment['comment_id']; ?>">
+                                                        <input type="hidden" name="comment_username" id="comment_username" value="<?php echo $comment['username']; ?>">
+                                                        <button class="dropdown-item" type="submit" disabled >Delete comment</button>
+                                                    </form>
+                                                <?php } ?>
+                                            </li>
+                                        </ul>
+                                        </a>
                                     </div>
                                     <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>
                                     <p class="comment-content"><?php echo $comment['comment_content']; ?></p>

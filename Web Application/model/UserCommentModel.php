@@ -66,5 +66,44 @@ class UserCommentModel {
             $db = null;
         }
     }   
+
+    public static function deleteComment($comment_id) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Prepare query to insert a new post
+            $stmtDeleteComment = $db->prepare("DELETE FROM tblComments WHERE comment_id = :comment_id");
+            $stmtDeleteComment->bindParam(':comment_id', $comment_id);
+    
+            // Execute the query
+            $result = $stmtDeleteComment->execute();
+    
+            if ($result) {
+                return true;
+            }
+            else if (!$result) {
+                // Check if an error occured
+                $errorInfo = $stmtDeleteComment->errorInfo();
+                if ($errorInfo) {
+                    return false;
+                }
+            }
+            
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
 }
 ?>

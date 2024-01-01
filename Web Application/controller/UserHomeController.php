@@ -10,6 +10,12 @@ if ($action === 'handlePostSubmission') {
 else if ($action === 'handleCommentSubmission') {
     $controller->handleCommentSubmission();
 }
+else if ($action === 'handleDeletePost') {
+    $controller->handleDeletePost();
+}
+else if ($action === 'handleDeleteComment') {
+    $controller->handleDeleteComment();
+}
 
 class UserHomeController {
     
@@ -46,6 +52,43 @@ class UserHomeController {
                     else if ($submittedPost === false) {
                         // If an exception occurred in the model, store the error in the session
                         $_SESSION["error_messagePost"] = "Error posting";
+                        header('Location:../view/user-home.php');
+                    }
+                    // Don't put else block here
+                }
+            }
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public static function handleDeletePost() {
+        try {
+            include_once("../controller/SessionController.php");
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Validate and sanitize form 
+                $sessionController = new SessionController();
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                $post_id = $_POST["post_id"];
+
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message"] = "Session Expired";
+                    header('Location:../view/user-home.php');             
+                }
+                else {
+                    include_once("../model/UserPostModel.php");
+                    $deletedPost = UserPostModel::deletePost($post_id);
+        
+                    if ($deletedPost === true) {
+                        $_SESSION["success_messageDeletePost"] = "Post is deleted successfully!";
+                        header('Location:../view/user-home.php');           
+                    } 
+                    else if ($deletedPost === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_messageDeletePost"] = "Error in deleting post";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here
@@ -109,6 +152,48 @@ class UserHomeController {
             }         
         }
         catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function handleDeleteComment() {
+        try {
+            include_once("../controller/SessionController.php");
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Validate and sanitize form 
+                $sessionController = new SessionController();
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                $comment_id = $_POST["comment_id"];
+                $comment_username = $_POST["comment_username"];
+
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message"] = "Session Expired";
+                    header('Location:../view/user-home.php');             
+                }
+                else if ($username !== $comment_username) {
+                    $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                    header('Location:../view/user-home.php');             
+                }
+                else {
+                    include_once("../model/UserCommentModel.php");
+                    $deletedComment = UserCommentModel::deleteComment($comment_id);
+        
+                    if ($deletedComment === true) {
+                        $_SESSION["success_messageDeleteComment"] = "Comment is deleted successfully!";
+                        header('Location:../view/user-home.php');           
+                    } 
+                    else if ($deletedComment === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                        header('Location:../view/user-home.php');
+                    }
+                    // Don't put else block here
+                }
+            }
+        }
+        catch (Exception $e) {  
             echo $e->getMessage();
         }
     }

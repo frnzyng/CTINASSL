@@ -7,19 +7,20 @@ class UserAuthModel {
     }
 
     public function authenticateUser($username, $password) {
-        // Prepare and execute a query to retrieve user data
-        $stmt = $this->db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+        // Prepare and execute a query to authenticate user account
+        $stmtAuthenticate = $this->db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE username = :username");
+        $stmtAuthenticate->bindParam(':username', $username);
+        $stmtAuthenticate->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Fetches the row from the result set
+        $result = $stmtAuthenticate->fetch(PDO::FETCH_ASSOC);
 
-        // Check if a user with the given username exists
-        if ($user) {
-            // Verify the password
-            if (password_verify($password, $user["password"])) {
+        // Check if the user account exists
+        if ($result) {
+            // Verify the password of the account
+            if (password_verify($password, $result["password"])) {
                 // Authentication successful
-                return $user;
+                return $result;
             }
         }
 

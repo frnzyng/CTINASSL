@@ -66,7 +66,7 @@ class UserPostModel {
         }
     }    
 
-    public static function getUserPost($account_id) {
+    public static function getUserAccountPost($account_id) {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -88,6 +88,45 @@ class UserPostModel {
 
             // Return the retrieved posts
             return $retrievedPosts;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
+
+    public static function deletePost($post_id) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Prepare query to insert a new post
+            $stmtDeletePost = $db->prepare("DELETE FROM tblPosts WHERE post_id = :post_id");
+            $stmtDeletePost->bindParam(':post_id', $post_id);
+    
+            // Execute the query
+            $result = $stmtDeletePost->execute();
+    
+            if ($result) {
+                return true;
+            }
+            else if (!$result) {
+                // Check if an error occured
+                $errorInfo = $stmtDeletePost->errorInfo();
+                if ($errorInfo) {
+                    return false;
+                }
+            }
+            
         } 
         catch (PDOException $e) {
             // Handle PDO exceptions

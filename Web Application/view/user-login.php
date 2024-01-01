@@ -30,7 +30,7 @@
                 
                 <p class="status-message">
                     <?php
-                        session_start();
+                        //session_start();
 
                         // Display any error messages
                         if (isset($_SESSION["error_message"])) {

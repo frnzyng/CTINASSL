@@ -11,7 +11,7 @@ class UserRegistrationController {
     public function handleUserRegistration() {
         try {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                session_start(); //kailangan siya
+                session_start(); //Need to start session to display the status/alert message
 
                 $username = trim($_POST["username"]);
                 $password = password_hash($_POST["password"], PASSWORD_BCRYPT);

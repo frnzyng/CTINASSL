@@ -63,7 +63,7 @@ class UserProfileController {
             $account_id = $sessionController->getAccountId();
 
             include_once("../model/UserPostModel.php");
-            $retrievedPosts = UserPostModel::getUserPost($account_id);
+            $retrievedPosts = UserPostModel::getUserAccountPost($account_id);
 
             return $retrievedPosts;
         }
