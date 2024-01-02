@@ -11,6 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/1f47064a19.js" crossorigin="anonymous"></script>
+    <!-- TOGGLE EDIT FORM -->
+    <script>
+        function toggleEditForm(post_id) {
+            var editPost = document.getElementById('edit-post-container' + post_id);
+            var post = document.getElementById('post-container' + post_id);
+            editPost.style.display = (editPost.style.display === 'none') ? 'block' : 'none';
+            post.style.display = (post.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
 </head>
 <body>
 
@@ -115,12 +124,12 @@
                 </p>
 
                 <?php foreach ($posts as $post): ?>
-                    <div class="post-container">
+                    <div class="post-container" id="post-container<?php echo $post['post_id']; ?>" style="display: block;">
                         <div class="section1-post">
                             <h5><?php echo $post['post_topic']; ?></h5>
                             <a class="post-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Edit post</a>
+                                    <li><a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Edit post</a>
                                     </li>
                                     <li>
                                         <?php if ($post['username'] == $sessionController->getUsername()) { ?>
@@ -144,6 +153,25 @@
                             <p class="post-content"><?php echo $post['post_content']; ?></p>
                             <a class="create-comment-button"><i class="fa-solid fa-message"></i></a>
                         </div>
+                    </div>
+
+                    <div class="edit-post-container" id="edit-post-container<?php echo $post['post_id']; ?>" style="display: none;">   
+                        <h4>Edit Post</h4>
+                        <form class="post-form" id="edit-post-container" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                            <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
+                            <div class="topic-container">
+                                <label for="post_topic">Topic</label>
+                                <input class="edit-topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required value="<?php echo $post['post_topic']; ?>">
+                            </div>  
+                            <div class="content-container">
+                                <label for="post_content">Content</label>
+                                <textarea class="edit-content-input" name="post_content" id="post_content" rows="5" maxlength="250" required><?php echo $post['post_content']; ?></textarea>
+                            </div>
+                            <div class="button-container">
+                                <button class="cancel-button">Cancel</button>
+                                <input class="submit-button" type="submit" value="Post">
+                            </div>
+                        </form>
                     </div>
 
                     <div class="comments-block">
