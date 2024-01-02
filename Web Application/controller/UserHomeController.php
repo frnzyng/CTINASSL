@@ -34,11 +34,11 @@ class UserHomeController {
                 $post_content = trim($_POST["post_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_message"] = "Session Expired";
+                    $_SESSION["error_messagePost"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 } 
                 else if ($post_topic === "" && $post_content === "") {
-                    $_SESSION["error_message"] = "Fields should not be blank";
+                    $_SESSION["error_messagePost"] = "Fields should not be blank";
                     header('Location:../view/user-home.php');
                 }
                 else{
@@ -75,7 +75,7 @@ class UserHomeController {
                 $post_id = $_POST["post_id"];
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_message"] = "Session Expired";
+                    $_SESSION["error_messageDeletePost"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 }
                 else {
@@ -127,11 +127,11 @@ class UserHomeController {
                 $comment_content = trim($_POST["comment_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_message"] = "Session Expired";
+                    $_SESSION["error_messageComment"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 } 
                 else if ($comment_content === "") {
-                    $_SESSION["error_message"] = "Fields should not be blank";
+                    $_SESSION["error_messageComment"] = "Fields should not be blank";
                     header('Location:../view/user-home.php');
                 }
                 else{
@@ -169,7 +169,7 @@ class UserHomeController {
                 $comment_username = $_POST["comment_username"];
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_message"] = "Session Expired";
+                    $_SESSION["error_messageDeleteComment"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 }
                 else if ($username !== $comment_username) {
