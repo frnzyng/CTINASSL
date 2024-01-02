@@ -38,11 +38,10 @@ label {
 
 .username-input, .password-input {
     width: 100%;
-    padding: 10px;
     margin-bottom: 16px;
     box-sizing: border-box;
     border-radius: 15px;
-    border: 1px solid var(--clr-light);
+    border-style: none;
     background-color: var(--clr-accent-light);
 }
 

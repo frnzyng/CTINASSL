@@ -17,7 +17,7 @@
     <!-- Navigation Bar -->
     <div class="container px-0 fixed-top bg-white">
         <header>        
-            <nav class="nav justify-content-between align-items-center">
+            <nav class="nav justify-content-center align-items-center mx-3">
                 <?php
                     include_once("../controller/SessionController.php");
                     $sessionController = new SessionController();
@@ -26,9 +26,9 @@
                     $accountUsername = $sessionController->getUsername();
 
                     if ($accountUsername !== null) {
-                        echo "<span class='greetings-container'> Hi " . $accountUsername . "! </span>";
+                        echo "<span class='greetings'> Hi " . $accountUsername . "! </span>";
                     } else {
-                        echo "<span class='greetings-container'>Not logged in</span>";
+                        echo "<span class='greetings'>Not logged in</span>";
                     }
                 ?>
                 <ul class="nav justify-content-between">
@@ -43,7 +43,9 @@
                     </li>
                 </ul>
 
-                <a class="logout-container" href="user-login.php">Logout</a>
+                <form action="../controller/UserAuthController.php?action=handleLogout" method="post">
+                    <button class="logout-button" type="submit">Logout</button>
+                </form>
             </nav>
         </header>
     </div>

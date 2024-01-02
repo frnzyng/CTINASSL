@@ -33,14 +33,14 @@
                         session_start();
 
                         // Display any error messages
-                        if (isset($_SESSION["error_message"])) {
-                            echo $_SESSION["error_message"];
-                            unset($_SESSION["error_message"]); // Clear the error message from session
+                        if (isset($_SESSION["error_messageLogin"])) {
+                            echo $_SESSION["error_messageLogin"];
+                            unset($_SESSION["error_messageLogin"]); // Clear the error message from session
                         }
                     ?>
                 </p>
 
-                <form class="login-form" action="../controller/AdminAuthController.php" method="post">
+                <form class="login-form" action="../controller/AdminAuthController.php?action=handleLogin" method="post">
                     <label for="username">Username</label>
                     <input class="username-input" type="text" name="username" required><br>
             

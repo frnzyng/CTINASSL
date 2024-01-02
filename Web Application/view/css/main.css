@@ -116,8 +116,8 @@ nav {
     padding-bottom: 30px;
 }
 
-.greetings-container {
-    width: 150px;
+.greetings {
+    width: 300px;
     font-weight: bold;
 }
 
@@ -135,7 +135,21 @@ nav ul {
     color: var(--clr-accent);
 }
 
-.logout-container {
-    width: 150px;
-    text-align: end;
+.logout-button {
+    width: 300px;
+    padding: 0px;
+    background-color: var(--clr-light);
+    border-style: none;
+    text-align: end; 
+}
+
+.logout-button:hover {
+    background-color: var(--clr-light);
+    color: var(--clr-accent);
+}
+
+@media (max-width: 1200px) {
+    .greetings, .logout-button {
+        display: none;
+    }  
 }

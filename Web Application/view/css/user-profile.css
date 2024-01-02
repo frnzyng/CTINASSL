@@ -43,10 +43,8 @@
   
 .topic-input {
     width: 100%;
-    border-color: var(--clr-light);
     border-radius: 15px;
-    border-style: solid;
-    border-width: 1px; 
+    border-style: none;
     background-color: var(--clr-accent-light);
 }
   
@@ -60,11 +58,9 @@
 }
   
 .content-input {
-    width: 100%;
-    border-color: var(--clr-light);       
+    width: 100%;     
     border-radius: 20px;
-    border-style: solid; 
-    border-width: 1px; 
+    border-style: none; 
     background-color: var(--clr-accent-light);
     resize: none;
 }
@@ -209,7 +205,7 @@
     border-color: var(--clr-accent-light2);
     border-radius: 15px;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     resize: none;
 }
 
@@ -224,7 +220,7 @@
     border-color: var(--clr-accent-light2);
     border-radius: 20px;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
 }
 
 .section1-comment {
@@ -239,10 +235,4 @@
 
 .comment-content {
     margin: 0px;
-}
-
-@media (max-width: 1200px) {
-    nav {
-        
-    }
 }

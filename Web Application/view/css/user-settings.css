@@ -13,3 +13,15 @@
     flex-direction: column;
     gap: 80px;
 }
+
+.logout-button-settings {
+    width: 200px;
+    padding: 0px;
+    background-color: var(--clr-light);
+    border-style: none;
+}
+
+.logout-button-settings:hover {
+    background-color: var(--clr-light);
+    color: var(--clr-accent);
+}

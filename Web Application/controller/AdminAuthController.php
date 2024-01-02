@@ -1,6 +1,23 @@
 <?php
 // Don't move; put session here too
-include("../model/AdminAuthModel.php");
+include_once("../model/AdminAuthModel.php");
+include_once("../controller/SessionController.php");
+
+$db = new PDO("mysql:host=localhost;dbname=BlogSite", "root", "");
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$model = new AdminAuthModel($db); // The database connection will be injected later
+
+// Check for the action parameter in the URL
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$controller = new AdminAuthController($model);
+
+if ($action == 'handleLogin') {
+    $controller->handleLogin();
+}
+else if ($action == 'handleLogout') {
+    $controller->handleLogout();
+}
+
 class AdminAuthController {
     private $model;
 
@@ -26,7 +43,7 @@ class AdminAuthController {
                 exit();
             } else {
                 session_start();
-                $_SESSION["error_message"] = "Invalid username or password";
+                $_SESSION["error_messageLogin"] = "Invalid username or password";
 
                 // Redirect back to the login page
                 header("Location: ../view/admin-login.php");
@@ -37,11 +54,16 @@ class AdminAuthController {
         // Load login view (form)
         include('../view/admin-login.php');
     }
-}
 
-$db = new PDO("mysql:host=localhost;dbname=BlogSite", "root", "");
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$model = new AdminAuthModel($db); // The database connection will be injected later
-$controller = new AdminAuthController($model);
-$controller->handleLogin();
+    public function handleLogout() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $sessionController = new SessionController();
+
+            $sessionController->endSession();
+
+            header("Location: ../view/admin-login.php");
+            exit();
+        }
+    }
+}
 ?>

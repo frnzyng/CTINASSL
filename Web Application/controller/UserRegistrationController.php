@@ -28,19 +28,19 @@ class UserRegistrationController {
                     
 
                     if ($registeredUser === true) {
-                        $_SESSION["success_message"] = "User registered successfully!";
+                        $_SESSION["success_messageRegister"] = "User registered successfully!";
                         header('Location:../view/user-registration.php');
                     } 
                     else if ($registeredUser === false) {
-                        $_SESSION["error_message"] = "Error on registering user";
+                        $_SESSION["error_messageRegister"] = "Error on registering user";
                         header('Location:../view/user-registration.php');
                     }
                     else if ($registeredUser === "Username already exists") {
-                        $_SESSION["error_message"] = "Username already exists";
+                        $_SESSION["error_messageRegister"] = "Username already exists";
                         header('Location:../view/user-registration.php');
                     }
                     else if ($registeredUser === "Email already exists") {
-                        $_SESSION["error_message"] = "Email already exists";
+                        $_SESSION["error_messageRegister"] = "Email already exists";
                         header('Location:../view/user-registration.php');
                     }
                     // Don't put else block here

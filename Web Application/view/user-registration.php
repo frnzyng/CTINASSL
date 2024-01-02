@@ -32,13 +32,13 @@
                         session_start();
 
                         // Display any status messages
-                        if (isset($_SESSION["success_message"])) {
-                            echo $_SESSION["success_message"];
-                            unset($_SESSION["success_message"]); // Clear the error message from session
+                        if (isset($_SESSION["success_messageRegister"])) {
+                            echo $_SESSION["success_messageRegister"];
+                            unset($_SESSION["success_messageRegister"]); // Clear the error message from session
                         }
-                        else if (isset($_SESSION["error_message"])) {
-                            echo $_SESSION["error_message"];
-                            unset($_SESSION["error_message"]); // Clear the error message from session
+                        else if (isset($_SESSION["error_messageRegister"])) {
+                            echo $_SESSION["error_messageRegister"];
+                            unset($_SESSION["error_messageRegister"]); // Clear the error message from session
                         }
                     ?>
                 </p>
