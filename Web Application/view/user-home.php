@@ -76,7 +76,7 @@
                         <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required placeholder="Tell us more about it!"></textarea>
                     </div>
                     <div class="button-container">
-                        <button class="cancel-button">Cancel</button>
+                        <a class="cancel-button">Cancel</a>
                         <input class="submit-button" type="submit" value="Post">
                     </div>
                 </form>
@@ -120,6 +120,14 @@
                             echo $_SESSION["error_messageDeletePost"];
                             unset($_SESSION["error_messageDeletePost"]); // Clear the error message from session
                         }
+                        else if (isset($_SESSION["success_message_edit_post"])) {
+                            echo $_SESSION["success_message_edit_post"];
+                            unset($_SESSION["success_message_edit_post"]); // Clear the error message from session
+                        }
+                        else if (isset($_SESSION["error_message_edit_post"])) {
+                            echo $_SESSION["error_message_edit_post"];
+                            unset($_SESSION["error_message_edit_post"]); // Clear the error message from session
+                        }
                     ?>
                 </p>
 
@@ -129,7 +137,12 @@
                             <h5><?php echo $post['post_topic']; ?></h5>
                             <a class="post-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Edit post</a>
+                                    <li>
+                                        <?php if ($post['username'] == $sessionController->getUsername()) { ?>
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Edit post</a>
+                                        <?php } else { ?>
+                                            <a class="dropdown-item disabled">Edit post</a>
+                                        <?php } ?>
                                     </li>
                                     <li>
                                         <?php if ($post['username'] == $sessionController->getUsername()) { ?>
@@ -155,20 +168,21 @@
                         </div>
                     </div>
 
+                    <!-- EDIT POST -->
                     <div class="edit-post-container" id="edit-post-container<?php echo $post['post_id']; ?>" style="display: none;">   
                         <h4>Edit Post</h4>
-                        <form class="post-form" id="edit-post-container" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
+                        <form class="post-form" id="edit-post-container" action="../controller/UserHomeController.php?action=handleEditPost" method="post">
                             <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
                             <div class="topic-container">
                                 <label for="post_topic">Topic</label>
-                                <input class="edit-topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required value="<?php echo $post['post_topic']; ?>">
+                                <input class="edit-topic-input" type="text" name="new_post_topic" id="new_post_topic" maxlength="50" required value="<?php echo $post['post_topic']; ?>">
                             </div>  
                             <div class="content-container">
                                 <label for="post_content">Content</label>
-                                <textarea class="edit-content-input" name="post_content" id="post_content" rows="5" maxlength="250" required><?php echo $post['post_content']; ?></textarea>
+                                <textarea class="edit-content-input" name="new_post_content" id="new_post_content" rows="5" maxlength="250" required><?php echo $post['post_content']; ?></textarea>
                             </div>
                             <div class="button-container">
-                                <button class="cancel-button">Cancel</button>
+                                <a class="cancel-button" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Cancel</a>
                                 <input class="submit-button" type="submit" value="Post">
                             </div>
                         </form>

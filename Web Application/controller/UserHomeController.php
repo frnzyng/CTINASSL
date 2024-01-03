@@ -16,6 +16,9 @@ else if ($action === 'handleDeletePost') {
 else if ($action === 'handleDeleteComment') {
     $controller->handleDeleteComment();
 }
+else if ($action === 'handleEditPost') {
+    $controller->handleEditPost();
+}
 
 class UserHomeController {
     
@@ -72,7 +75,7 @@ class UserHomeController {
                 $sessionController = new SessionController();
                 $account_id = $sessionController->getAccountId();
                 $username = $sessionController->getUsername();
-                $post_id = $_POST["post_id"];
+                $post_id = trim($_POST["post_id"]);
 
                 if ($account_id === null && $username === null) {
                     $_SESSION["error_messageDeletePost"] = "Session Expired";
@@ -106,6 +109,55 @@ class UserHomeController {
             $retrievedPosts = UserPostModel::getPost();
 
             return $retrievedPosts;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public function handleEditPost() {
+        try {
+            include_once("../controller/SessionController.php");
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Get session
+                $sessionController = new SessionController();
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                
+                // Validate and sanitize form inputs  
+                $post_id = trim($_POST["post_id"]);
+                $new_post_topic = trim($_POST["new_post_topic"]);
+                $new_post_content = trim($_POST["new_post_content"]);
+
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message_edit_post"] = "Session Expired";
+                    header('Location:../view/user-home.php');             
+                } 
+                else if ($post_id === "" && $post_id === null) {
+                    $_SESSION["error_message_edit_post"] = "Invalid post";
+                    header('Location:../view/user-home.php');
+                }
+                else if ($new_post_topic === "" && $new_post_content === "") {
+                    $_SESSION["error_message_edit_post"] = "Fields should not be blank";
+                    header('Location:../view/user-home.php');
+                }
+                else{
+                    include_once("../model/UserPostModel.php");
+                    $editedPost = UserPostModel::editPost($post_id, $new_post_topic, $new_post_content);
+
+                    if ($editedPost === true) {
+                        $_SESSION["success_message_edit_post"] = "Posted is updated successfully!";
+                        header('Location:../view/user-home.php');
+                    } 
+                    else if ($editedPost === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_message_edit_post"] = "Error updating post";
+                        header('Location:../view/user-home.php');
+                    }
+                    // Don't put else block here
+                }
+            }
         }
         catch (Exception $e) {  
             echo $e->getMessage();

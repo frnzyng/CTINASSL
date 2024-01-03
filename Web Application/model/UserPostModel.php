@@ -137,5 +137,37 @@ class UserPostModel {
             $db = null;
         }
     }
+
+    public static function editPost($post_id, $new_post_topic, $new_post_content) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Prepare query to update a post
+            $stmtUpdatePost = $db->prepare("UPDATE tblPosts SET post_topic = :new_post_topic, post_content = :new_post_content, post_datetime = NOW() WHERE post_id = :post_id");
+            $stmtUpdatePost->bindParam(':new_post_topic', $new_post_topic);
+            $stmtUpdatePost->bindParam(':new_post_content', $new_post_content);
+            $stmtUpdatePost->bindParam(':post_id', $post_id);
+    
+            // Execute the query
+            $result = $stmtUpdatePost->execute();
+    
+            // Returns 1 if true, 0 if false
+            return $result;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }    
 }
 ?>
