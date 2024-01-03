@@ -19,6 +19,13 @@
             editPost.style.display = (editPost.style.display === 'none') ? 'block' : 'none';
             post.style.display = (post.style.display === 'block') ? 'none' : 'block';
         }
+
+        function toggleEditComment(comment_id) {
+            var editComment = document.getElementById('edit-comment-container' + comment_id);
+            var comment = document.getElementById('comment-container' + comment_id);
+            editComment.style.display = (editComment.style.display === 'none') ? 'block' : 'none';
+            comment.style.display = (comment.style.display === 'block') ? 'none' : 'block';
+        }
     </script>
 </head>
 <body>
@@ -209,6 +216,14 @@
                                     echo $_SESSION["error_messageDeleteComment"];
                                     unset($_SESSION["error_messageDeleteComment"]); // Clear the error message from session
                                 }
+                                else if (isset($_SESSION["success_message_edit_comment"])) {
+                                    echo $_SESSION["success_message_edit_comment"];
+                                    unset($_SESSION["success_message_edit_comment"]); // Clear the error message from session
+                                }
+                                else if (isset($_SESSION["error_message_edit_comment"])) {
+                                    echo $_SESSION["error_message_edit_comment"];
+                                    unset($_SESSION["error_message_edit_comment"]); // Clear the error message from session
+                                }
                             ?>
                         </p>
                         <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
@@ -227,13 +242,18 @@
                         ?>
                         <?php if (!empty($comments)): ?>
                             <?php foreach ($comments as $comment): ?>
-                                <div class="comments-container">
+                                <div class="comment-container" id="comment-container<?php echo $comment['comment_id']; ?>" style="display: block;">
                                     <div class="section1-comment">
                                         <span class="comment-username"><?php echo $comment['username']; ?></span>
                                         <a class="comment-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#">Edit comment</a>
-                                                </li>
+                                            <li>
+                                                <?php if ($comment['username'] == $sessionController->getUsername()) { ?>
+                                                    <a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditComment(<?php echo $comment['comment_id']; ?>)">Edit comment</a>
+                                                <?php } else { ?>
+                                                    <a class="dropdown-item disabled">Edit comment</a>
+                                                <?php } ?>
+                                            </li>
                                                 <li>
                                                     <?php if ($comment['username'] == $sessionController->getUsername()) { ?>
                                                         <form action="../controller/UserHomeController.php?action=handleDeleteComment" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
@@ -254,6 +274,15 @@
                                     </div>
                                     <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>
                                     <p class="comment-content"><?php echo $comment['comment_content']; ?></p>
+                                </div>
+
+                                <!-- EDIT COMMENT -->
+                                <div class="edit-comment-container" id="edit-comment-container<?php echo $comment['comment_id']; ?>" style="display: none;">
+                                    <form class="comment-form" action="../controller/UserHomeController.php?action=handleEditComment" method="post">
+                                        <input class="comment-input" type="text" name="new_comment_content" id="new_comment_content" rows="1" maxlength="50" required value="<?php echo $comment['comment_content']; ?>"></input>
+                                        <input type="hidden" name="comment_id" id="comment_id" value="<?php echo $comment['comment_id']; ?>">
+                                        <input class="submit-button" type="submit" value="Update">
+                                    </form>
                                 </div>
                             <?php endforeach; ?>
                         <?php else: ?>
