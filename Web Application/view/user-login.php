@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
     <!-- Navigation Bar -->
     <div class="container px-0">
         <header>        
@@ -22,7 +24,7 @@
         </header>
     </div>
  
-    <!-- Login Form -->
+    <!-- Login -->
     <div class="container">
         <div class="row justify-content-center align-items-center mx-2">
             <div class = "login-container">
@@ -32,10 +34,10 @@
                     <?php
                         session_start();
 
-                        // Display any error messages
-                        if (isset($_SESSION["error_messageLogin"])) {
-                            echo $_SESSION["error_messageLogin"];
-                            unset($_SESSION["error_messageLogin"]); // Clear the error message from session
+                        // Display any status messages
+                        if (isset($_SESSION["error_message_login"])) {
+                            echo $_SESSION["error_message_login"];
+                            unset($_SESSION["error_message_login"]);
                         }    
                     ?>
                 </p>
@@ -43,10 +45,10 @@
                 <form class="login-form" action="../controller/UserAuthController.php?action=handleLogin" method="post">
                     <label for="username">Username</label>
                     <input class="username-input" type="text" name="username" required><br>
-            
+
                     <label for="password">Password</label>
                     <input class="password-input" type="password" name="password" required><br>
-            
+                    
                     <input class="submit-button" type="submit" value="Login">
                 </form>
 
@@ -54,12 +56,10 @@
                     <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
                     <p><a class="toggle-link" href="admin-login.php">Switch to admin?</a></p>
                 </div>
-            </div>
-            
+            </div>      
         </div>
     </div>
-    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
 </body>
 </html>

@@ -13,8 +13,10 @@
     <script src="https://kit.fontawesome.com/1f47064a19.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!-- Scripts -->
+    <script src="js/toggler.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-<script src="js/toggler.js"></script>
     <!-- Navigation Bar -->
     <div class="container px-0 fixed-top bg-white">
         <header>        
@@ -28,10 +30,12 @@
 
                     if ($accountUsername !== null) {
                         echo "<span class='greetings'> Hi " . $accountUsername . "! </span>";
-                    } else {
+                    } 
+                    else {
                         echo "<span class='greetings'>Not logged in</span>";
                     }
                 ?>
+
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
@@ -53,7 +57,7 @@
 
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
-            <div class="create-post-container" id="create-post-container" style="display: none;">   
+            <div class="create-post-container" id="create-post-container">   
                 <h4>Create Post</h4>
 
                 <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
@@ -61,22 +65,26 @@
                         <label for="post_topic">Topic</label>
                         <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required placeholder="What's on your mind?">
                     </div>  
+
                     <div class="content-container">
                         <label for="post_content">Content</label>
                         <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required placeholder="Tell us more about it!"></textarea>
                     </div>
+
                     <div class="button-container">
                         <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Cancel</a>
                         <input class="submit-button" type="submit" value="Post">
                     </div>
                 </form>
+
             </div>
         </div>
 
         <!-- Displaying posts and comments -->
         <div class="row justify-content-center align-items-center mx-2">
             <?php include_once("../controller/UserHomeController.php"); ?>
-            <div class="post-block" id="post-block" style="display: flex;">
+            
+            <div class="post-block" id="post-block">
                 <div class="heading">
                     <h4>All Posts</h4>
                     <a class="create-post-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Create Post</a>
@@ -94,35 +102,35 @@
                 <p class="status-message">
                     <?php
                         // Display any status messages
-                        if (isset($_SESSION["success_messagePost"])) {
-                            echo $_SESSION["success_messagePost"];
-                            unset($_SESSION["success_messagePost"]); // Clear the error message from session
+                        if (isset($_SESSION["success_message_submit_post"])) {
+                            echo $_SESSION["success_message_submit_post"];
+                            unset($_SESSION["success_message_submit_post"]);
                         }
-                        else if (isset($_SESSION["error_messagePost"])) {
-                            echo $_SESSION["error_messagePost"];
-                            unset($_SESSION["error_messagePost"]); // Clear the error message from session
-                        }
-                        else if (isset($_SESSION["success_messageDeletePost"])) {
-                            echo $_SESSION["success_messageDeletePost"];
-                            unset($_SESSION["success_messageDeletePost"]); // Clear the error message from session
-                        }
-                        else if (isset($_SESSION["error_messageDeletePost"])) {
-                            echo $_SESSION["error_messageDeletePost"];
-                            unset($_SESSION["error_messageDeletePost"]); // Clear the error message from session
+                        else if (isset($_SESSION["error_message_submit_post"])) {
+                            echo $_SESSION["error_message_submit_post"];
+                            unset($_SESSION["error_message_submit_post"]);
                         }
                         else if (isset($_SESSION["success_message_edit_post"])) {
                             echo $_SESSION["success_message_edit_post"];
-                            unset($_SESSION["success_message_edit_post"]); // Clear the error message from session
+                            unset($_SESSION["success_message_edit_post"]);
                         }
                         else if (isset($_SESSION["error_message_edit_post"])) {
                             echo $_SESSION["error_message_edit_post"];
-                            unset($_SESSION["error_message_edit_post"]); // Clear the error message from session
+                            unset($_SESSION["error_message_edit_post"]);
+                        }
+                        else if (isset($_SESSION["success_message_delete_post"])) {
+                            echo $_SESSION["success_message_delete_post"];
+                            unset($_SESSION["success_message_delete_post"]);
+                        }
+                        else if (isset($_SESSION["error_message_delete_post"])) {
+                            echo $_SESSION["error_message_delete_post"];
+                            unset($_SESSION["error_message_delete_post"]);
                         }
                     ?>
                 </p>
 
                 <?php foreach ($posts as $post): ?>
-                    <div class="post-container" id="post-container<?php echo $post['post_id']; ?>" style="display: block;">
+                    <div class="post-container" id="post-container<?php echo $post['post_id']; ?>">
                         <div class="section1-post">
                             <h5><?php echo $post['post_topic']; ?></h5>
                             <a class="post-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
@@ -141,10 +149,7 @@
                                                 <button class="dropdown-item" type="submit">Delete post</button>
                                             </form>
                                         <?php } else { ?>
-                                            <form action="../controller/UserHomeController.php?action=handleDeletePost" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                                <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
-                                                <button class="dropdown-item" type="submit" disabled >Delete post</button>
-                                            </form>
+                                            <a class="dropdown-item disabled">Delete post</a>
                                         <?php } ?>
                                     </li>
                                 </ul>
@@ -159,7 +164,7 @@
                     </div>
 
                     <!-- Edit Post -->
-                    <div class="edit-post-container" id="edit-post-container<?php echo $post['post_id']; ?>" style="display: none;">   
+                    <div class="edit-post-container" id="edit-post-container<?php echo $post['post_id']; ?>">   
                         <h4>Edit Post</h4>
                         <form class="post-form" id="edit-post-container" action="../controller/UserHomeController.php?action=handleEditPost" method="post">
                             <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
@@ -173,39 +178,39 @@
                             </div>
                             <div class="button-container">
                                 <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleEditPost(<?php echo $post['post_id']; ?>)">Cancel</a>
-                                <input class="submit-button" type="submit" value="Post">
+                                <input class="submit-button" type="submit" value="Save">
                             </div>
                         </form>
                     </div>
 
-                    <div class="comments-block" id="comments-block<?php echo $post['post_id']; ?>" style="display: none;">
+                    <div class="comments-block" id="comments-block<?php echo $post['post_id']; ?>">
                         <h5>Comments</h5>
                         <p class="status-message">
                             <?php
                                 // Display any status messages
-                                if (isset($_SESSION["success_messageComment"])) {
-                                    echo $_SESSION["success_messageComment"];
-                                    unset($_SESSION["success_messageComment"]); // Clear the error message from session
+                                if (isset($_SESSION["success_message_submit_comment"])) {
+                                    echo $_SESSION["success_message_submit_comment"];
+                                    unset($_SESSION["success_message_submit_comment"]);
                                 }
-                                else if (isset($_SESSION["error_messageComment"])) {
-                                    echo $_SESSION["error_messageComment"];
-                                    unset($_SESSION["error_messageComment"]); // Clear the error message from session
-                                }
-                                else if (isset($_SESSION["success_messageDeleteComment"])) {
-                                    echo $_SESSION["success_messageDeleteComment"];
-                                    unset($_SESSION["success_messageDeleteComment"]); // Clear the error message from session
-                                }
-                                else if (isset($_SESSION["error_messageDeleteComment"])) {
-                                    echo $_SESSION["error_messageDeleteComment"];
-                                    unset($_SESSION["error_messageDeleteComment"]); // Clear the error message from session
+                                else if (isset($_SESSION["error_message_submit_comment"])) {
+                                    echo $_SESSION["error_message_submit_comment"];
+                                    unset($_SESSION["error_message_submit_comment"]);
                                 }
                                 else if (isset($_SESSION["success_message_edit_comment"])) {
                                     echo $_SESSION["success_message_edit_comment"];
-                                    unset($_SESSION["success_message_edit_comment"]); // Clear the error message from session
+                                    unset($_SESSION["success_message_edit_comment"]);
                                 }
                                 else if (isset($_SESSION["error_message_edit_comment"])) {
                                     echo $_SESSION["error_message_edit_comment"];
-                                    unset($_SESSION["error_message_edit_comment"]); // Clear the error message from session
+                                    unset($_SESSION["error_message_edit_comment"]);
+                                }
+                                else if (isset($_SESSION["success_message_delete_comment"])) {
+                                    echo $_SESSION["success_message_delete_comment"];
+                                    unset($_SESSION["success_message_delete_comment"]);
+                                }
+                                else if (isset($_SESSION["error_message_delete_comment"])) {
+                                    echo $_SESSION["error_message_delete_comment"];
+                                    unset($_SESSION["error_message_delete_comment"]);
                                 }
                             ?>
                         </p>
@@ -225,7 +230,7 @@
                         ?>
                         <?php if (!empty($comments)): ?>
                             <?php foreach ($comments as $comment): ?>
-                                <div class="comment-container" id="comment-container<?php echo $comment['comment_id']; ?>" style="display: block;">
+                                <div class="comment-container" id="comment-container<?php echo $comment['comment_id']; ?>">
                                     <div class="section1-comment">
                                         <span class="comment-username"><?php echo $comment['username']; ?></span>
                                         <a class="comment-settings-button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i>
@@ -245,11 +250,7 @@
                                                             <button class="dropdown-item" type="submit">Delete comment</button>
                                                         </form>
                                                     <?php } else { ?>
-                                                        <form action="../controller/UserHomeController.php?action=handleDeleteComment" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
-                                                            <input type="hidden" name="comment_id" id="comment_id" value="<?php echo $comment['comment_id']; ?>">
-                                                            <input type="hidden" name="comment_username" id="comment_username" value="<?php echo $comment['username']; ?>">
-                                                            <button class="dropdown-item" type="submit" disabled >Delete comment</button>
-                                                        </form>
+                                                        <a class="dropdown-item disabled">Delete comment</a>
                                                     <?php } ?>
                                                 </li>
                                             </ul>
@@ -260,7 +261,7 @@
                                 </div>
 
                                 <!-- EDIT COMMENT -->
-                                <div class="edit-comment-container" id="edit-comment-container<?php echo $comment['comment_id']; ?>" style="display: none;">
+                                <div class="edit-comment-container" id="edit-comment-container<?php echo $comment['comment_id']; ?>">
                                     <span class="comment-username"><?php echo $comment['username']; ?></span>
                                     <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>
                                     <form class="edit-comment-form" action="../controller/UserHomeController.php?action=handleEditComment" method="post">
@@ -281,11 +282,6 @@
             </div>
         </div>
     </div>
-    
 
-    
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

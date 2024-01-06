@@ -40,11 +40,11 @@ class UserHomeController {
                 $post_content = trim($_POST["post_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messagePost"] = "Session Expired";
+                    $_SESSION["error_message_submit_post"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 } 
                 else if ($post_topic === "" && $post_content === "") {
-                    $_SESSION["error_messagePost"] = "Fields should not be blank";
+                    $_SESSION["error_message_submit_post"] = "Fields should not be blank";
                     header('Location:../view/user-home.php');
                 }
                 else{
@@ -52,12 +52,12 @@ class UserHomeController {
                     $submittedPost = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
 
                     if ($submittedPost === true) {
-                        $_SESSION["success_messagePost"] = "Posted successfully!";
+                        $_SESSION["success_message_submit_post"] = "Posted successfully!";
                         header('Location:../view/user-home.php');
                     } 
                     else if ($submittedPost === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messagePost"] = "Error posting";
+                        $_SESSION["error_message_submit_post"] = "Error posting";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here
@@ -142,7 +142,7 @@ class UserHomeController {
                 $post_id = trim($_POST["post_id"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageDeletePost"] = "Session Expired";
+                    $_SESSION["error_message_delete_post"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 }
                 else {
@@ -150,12 +150,12 @@ class UserHomeController {
                     $deletedPost = UserPostModel::deletePost($post_id);
         
                     if ($deletedPost === true) {
-                        $_SESSION["success_messageDeletePost"] = "Post is deleted successfully!";
+                        $_SESSION["success_message_delete_post"] = "Post is deleted successfully!";
                         header('Location:../view/user-home.php');           
                     } 
                     else if ($deletedPost === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageDeletePost"] = "Error in deleting post";
+                        $_SESSION["error_message_delete_post"] = "Error in deleting post";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here
@@ -183,11 +183,11 @@ class UserHomeController {
                 $comment_content = trim($_POST["comment_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageComment"] = "Session Expired";
+                    $_SESSION["error_message_submit_comment"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 } 
                 else if ($comment_content === "") {
-                    $_SESSION["error_messageComment"] = "Fields should not be blank";
+                    $_SESSION["error_message_submit_comment"] = "Fields should not be blank";
                     header('Location:../view/user-home.php');
                 }
                 else{
@@ -195,12 +195,12 @@ class UserHomeController {
                     $submittedComment = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);
     
                     if ($submittedComment === true) {
-                        $_SESSION["success_messageComment"] = "Comment posted successfully!";
+                        $_SESSION["success_message_submit_comment"] = "Comment posted successfully!";
                         header('Location:../view/user-home.php');
                     } 
                     else if ($submittedComment === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageComment"] = "Error posting comment";
+                        $_SESSION["error_message_submit_comment"] = "Error posting comment";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here
@@ -285,11 +285,11 @@ class UserHomeController {
                 $comment_username = $_POST["comment_username"];
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageDeleteComment"] = "Session Expired";
+                    $_SESSION["error_message_delete_comment"] = "Session Expired";
                     header('Location:../view/user-home.php');             
                 }
                 else if ($username !== $comment_username) {
-                    $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                    $_SESSION["error_message_delete_comment"] = "Error in deleting comment";
                     header('Location:../view/user-home.php');             
                 }
                 else {
@@ -297,12 +297,12 @@ class UserHomeController {
                     $deletedComment = UserCommentModel::deleteComment($comment_id);
         
                     if ($deletedComment === true) {
-                        $_SESSION["success_messageDeleteComment"] = "Comment is deleted successfully!";
+                        $_SESSION["success_message_delete_comment"] = "Comment is deleted successfully!";
                         header('Location:../view/user-home.php');           
                     } 
                     else if ($deletedComment === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                        $_SESSION["error_message_delete_comment"] = "Error in deleting comment";
                         header('Location:../view/user-home.php');
                     }
                     // Don't put else block here

@@ -2,6 +2,7 @@
 include_once("../model/UserAuthModel.php");
 include_once("../controller/SessionController.php");
 
+// Connect to database
 $db = new PDO("mysql:host=localhost;dbname=BlogSite", "root", "");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $model = new UserAuthModel($db); // The database connection will be injected later
@@ -37,13 +38,13 @@ class UserAuthController {
                 $sessionController = new SessionController();
                 $sessionController->startSession($authenticatedUser["account_id"], $authenticatedUser["username"]);
 
-                // Redirect to home dashboard
+                // Redirect to home page after authentication
                 header("Location: ../view/user-home.php");
                 exit();
             } 
             else {
                 session_start();
-                $_SESSION["error_messageLogin"] = "Invalid username or password";
+                $_SESSION["error_message_login"] = "Invalid username or password";
 
                 // Redirect back to the login page
                 header("Location: ../view/user-login.php");
