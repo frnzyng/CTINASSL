@@ -11,25 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/1f47064a19.js" crossorigin="anonymous"></script>
-    <!-- TOGGLE EDIT FORM -->
-    <script>
-        function toggleEditForm(post_id) {
-            var editPost = document.getElementById('edit-post-container' + post_id);
-            var post = document.getElementById('post-container' + post_id);
-            editPost.style.display = (editPost.style.display === 'none') ? 'block' : 'none';
-            post.style.display = (post.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function toggleEditComment(comment_id) {
-            var editComment = document.getElementById('edit-comment-container' + comment_id);
-            var comment = document.getElementById('comment-container' + comment_id);
-            editComment.style.display = (editComment.style.display === 'none') ? 'block' : 'none';
-            comment.style.display = (comment.style.display === 'block') ? 'none' : 'block';
-        }
-    </script>
 </head>
 <body>
 
+<script src="js/toggler.js"></script>
     <!-- Navigation Bar -->
     <div class="container px-0 fixed-top bg-white">
         <header>        
@@ -68,10 +53,8 @@
 
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
-            <div class="create-post-container">   
+            <div class="create-post-container" id="create-post-container" style="display: none;">   
                 <h4>Create Post</h4>
-
-                
 
                 <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
                     <div class="topic-container">
@@ -83,7 +66,7 @@
                         <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required placeholder="Tell us more about it!"></textarea>
                     </div>
                     <div class="button-container">
-                        <a class="cancel-button">Cancel</a>
+                        <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Cancel</a>
                         <input class="submit-button" type="submit" value="Post">
                     </div>
                 </form>
@@ -93,10 +76,10 @@
         <!-- Displaying posts and comments -->
         <div class="row justify-content-center align-items-center mx-2">
             <?php include_once("../controller/UserHomeController.php"); ?>
-            <div class="post-block">
+            <div class="post-block" id="post-block" style="display: flex;">
                 <div class="heading">
                     <h4>All Posts</h4>
-                    <button class="create-post-button">Create Post</button>
+                    <a class="create-post-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Create Post</a>
                 </div>
                 <?php
                     try {
@@ -146,7 +129,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <?php if ($post['username'] == $sessionController->getUsername()) { ?>
-                                            <a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Edit post</a>
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="Toggler.toggleEditPost(<?php echo $post['post_id']; ?>)">Edit post</a>
                                         <?php } else { ?>
                                             <a class="dropdown-item disabled">Edit post</a>
                                         <?php } ?>
@@ -171,11 +154,11 @@
                         <div class="section2-post">
                             <p class="post-username">Posted by <?php echo $post['username'] . " - " . $userHomeController->timeAgo($post['post_datetime']); ?></p>
                             <p class="post-content"><?php echo $post['post_content']; ?></p>
-                            <a class="create-comment-button"><i class="fa-solid fa-message"></i></a>
+                            <a class="create-comment-button" onclick="Toggler.toggleComments(<?php echo $post['post_id']; ?>)"><i class="fa-solid fa-message"></i></a>
                         </div>
                     </div>
 
-                    <!-- EDIT POST -->
+                    <!-- Edit Post -->
                     <div class="edit-post-container" id="edit-post-container<?php echo $post['post_id']; ?>" style="display: none;">   
                         <h4>Edit Post</h4>
                         <form class="post-form" id="edit-post-container" action="../controller/UserHomeController.php?action=handleEditPost" method="post">
@@ -189,13 +172,13 @@
                                 <textarea class="edit-content-input" name="new_post_content" id="new_post_content" rows="5" maxlength="250" required><?php echo $post['post_content']; ?></textarea>
                             </div>
                             <div class="button-container">
-                                <a class="cancel-button" href="javascript:void(0);" onclick="toggleEditForm(<?php echo $post['post_id']; ?>)">Cancel</a>
+                                <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleEditPost(<?php echo $post['post_id']; ?>)">Cancel</a>
                                 <input class="submit-button" type="submit" value="Post">
                             </div>
                         </form>
                     </div>
 
-                    <div class="comments-block">
+                    <div class="comments-block" id="comments-block<?php echo $post['post_id']; ?>" style="display: none;">
                         <h5>Comments</h5>
                         <p class="status-message">
                             <?php
@@ -249,7 +232,7 @@
                                             <ul class="dropdown-menu">
                                             <li>
                                                 <?php if ($comment['username'] == $sessionController->getUsername()) { ?>
-                                                    <a class="dropdown-item" href="javascript:void(0);" onclick="toggleEditComment(<?php echo $comment['comment_id']; ?>)">Edit comment</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);" onclick="Toggler.toggleEditComment(<?php echo $comment['comment_id']; ?>)">Edit comment</a>
                                                 <?php } else { ?>
                                                     <a class="dropdown-item disabled">Edit comment</a>
                                                 <?php } ?>
@@ -278,10 +261,15 @@
 
                                 <!-- EDIT COMMENT -->
                                 <div class="edit-comment-container" id="edit-comment-container<?php echo $comment['comment_id']; ?>" style="display: none;">
-                                    <form class="comment-form" action="../controller/UserHomeController.php?action=handleEditComment" method="post">
-                                        <input class="comment-input" type="text" name="new_comment_content" id="new_comment_content" rows="1" maxlength="50" required value="<?php echo $comment['comment_content']; ?>"></input>
+                                    <span class="comment-username"><?php echo $comment['username']; ?></span>
+                                    <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>
+                                    <form class="edit-comment-form" action="../controller/UserHomeController.php?action=handleEditComment" method="post">
+                                        <input class="edit-comment-input" type="text" name="new_comment_content" id="new_comment_content" rows="1" maxlength="50" required value="<?php echo $comment['comment_content']; ?>"></input>
                                         <input type="hidden" name="comment_id" id="comment_id" value="<?php echo $comment['comment_id']; ?>">
-                                        <input class="submit-button" type="submit" value="Update">
+                                        <div class="button-container">
+                                            <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleEditComment(<?php echo $comment['comment_id']; ?>)">Cancel</a>
+                                            <input class="submit-button" type="submit" value="Save">
+                                        </div>                                        
                                     </form>
                                 </div>
                             <?php endforeach; ?>
