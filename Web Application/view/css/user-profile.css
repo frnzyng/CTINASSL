@@ -8,6 +8,7 @@
 .create-post-container {
     width: 750px;
     margin-top: 150px;
+    display: none;
 }
 
 .post-form {
@@ -56,7 +57,7 @@
 }
   
 .content-input {
-    width: 100%;     
+    width: 100%;   
     border-radius: 20px;
     border-style: none; 
     background-color: var(--clr-accent-light);
@@ -74,16 +75,22 @@
   
 .cancel-button {
     width: 150px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 16px;
+    padding-right: 16px;
     border-color: var(--clr-accent);
     border-radius: 15px;
     border-style: solid;
     border-width: 2px;
-    background-color: var(--clr-light);   
-    color: var(--clr-accent); 
+    background-color: var(--clr-light);
+    color: var(--clr-accent);
     font-weight: var(--fw-bold);
+    text-align: center;
 }
 
 .cancel-button:hover {
+    background-color: var(--clr-button-hover);
     color: var(--clr-accent-light); 
 }
   
@@ -96,6 +103,7 @@
 .post-block {
     width: 750px;
     margin-top: 150px;
+    margin-bottom: 150px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -103,7 +111,7 @@
     gap: 20px;
 }
 
-.heading {
+.block-heading {
     width: 100%;
     margin-bottom: 25px;   
     display: flex;
@@ -121,6 +129,12 @@
     border-width: 0;
     background-color: var(--clr-accent);
     color: var(--clr-light); 
+    text-align: center;
+}
+
+.create-post-button:hover {
+    background-color: var(--clr-button-hover);
+    color: var(--clr-accent-light); 
 }
 
 .post-container {
@@ -147,51 +161,51 @@
     word-wrap: break-word;
 }
 
-.create-comment-button {
+.view-comments-button {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-.fa-solid.fa-ellipsis {
-    font-size: 1.5rem;
-    color: var(--clr-accent-light2);
-    cursor: pointer;
+/* Edit Post */
+.edit-post-container {
+    width: 100%;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: none;
+    border-radius: 20px;
+    background-color: var(--clr-accent-light);
 }
 
-.fa-solid.fa-ellipsis:hover {
-    color: var(--clr-accent);
+.edit-topic-input {
+    width: 100%;
+    border-radius: 15px;
+    border-style: none;
+    background-color: var(--clr-light);
 }
 
-.fa-solid.fa-message {
-    font-size: 1.25rem;
-    color: var(--clr-accent-light2);
-    cursor: pointer;
+.edit-content-input {
+    width: 100%;   
+    border-radius: 20px;
+    border-style: none; 
+    background-color: var(--clr-light);
+    resize: none;
 }
-
-.fa-solid.fa-message:hover {
-    color: var(--clr-accent);
-}
-
 
 /* Comments */
 .comments-block {
     width: 100%;
     margin-top: 20px;
-}
-
-.comment-form-container {
-    border-color: var(--clr-light);
-    border-radius: 25px;
-    border-style: solid;
-    border-width: 2px;
+    display: none;
 }
 
 .comment-form {
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -207,14 +221,49 @@
     resize: none;
 }
 
+/* Edit Comment */
+.edit-comment-container {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: none;
+    border-color: var(--clr-accent-light2);
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.edit-comment-form {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}  
+
+.edit-comment-input {
+    width: 100%;
+    background-color: var(--clr-accent-light);
+    border-radius: 15px;
+    border-style: none;
+    resize: none;
+}
+
 .comment-container {
     width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 24px;
     padding-right: 24px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     border-color: var(--clr-accent-light2);
     border-radius: 20px;
     border-style: solid;
@@ -233,4 +282,5 @@
 
 .comment-content {
     margin: 0px;
+    word-wrap: break-word;
 }

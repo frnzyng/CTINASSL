@@ -58,12 +58,6 @@ h5 {
     font-weight: var(--fw-bold);
 }
 
-.status-message {
-    color: var(--clr-accent);
-    font-weight: var(--fw-bold);
-    margin: 0;
-}
-
 input[type="text"] {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -116,8 +110,11 @@ nav {
     padding-bottom: 30px;
 }
 
-.greetings {
+.greetings-container {
     width: 300px;
+}
+
+.greetings {
     font-weight: bold;
 }
 
@@ -135,8 +132,13 @@ nav ul {
     color: var(--clr-accent);
 }
 
-.logout-button {
+.logout-container {
     width: 300px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logout-button {
     padding: 0px;
     background-color: var(--clr-light);
     border-style: none;
@@ -148,8 +150,35 @@ nav ul {
     color: var(--clr-accent);
 }
 
+
+/* Status Message */
+.status-message {
+    color: var(--clr-accent);
+    font-weight: var(--fw-bold);
+    margin: 0;
+}
+
+
+/* Settings and comments toggler */
+.fa-solid.fa-ellipsis {
+    font-size: 1.5rem;
+    color: var(--clr-accent-light2);
+    cursor: pointer;
+}
+
+.fa-solid.fa-message {
+    font-size: 1.25rem;
+    color: var(--clr-accent-light2);
+    cursor: pointer;
+}
+
+.fa-solid.fa-ellipsis:hover, .fa-solid.fa-message:hover {
+    color: var(--clr-accent);
+}
+
+/* Media Screens */
 @media (max-width: 1200px) {
-    .greetings, .logout-button {
+    .greetings-container, .logout-container {
         display: none;
     }  
 }

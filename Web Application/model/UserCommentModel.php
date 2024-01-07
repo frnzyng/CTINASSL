@@ -67,6 +67,37 @@ class UserCommentModel {
         }
     }   
 
+    public static function editComment($comment_id, $new_comment_content) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Prepare query to update a comment
+            $stmtUpdateComment = $db->prepare("UPDATE tblComments SET comment_content = :new_comment_content, comment_datetime = NOW() WHERE comment_id = :comment_id");
+            $stmtUpdateComment->bindParam(':new_comment_content', $new_comment_content);
+            $stmtUpdateComment->bindParam(':comment_id', $comment_id);
+    
+            // Execute the query
+            $result = $stmtUpdateComment->execute();
+    
+            // Returns 1 if true, 0 if false
+            return $result;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }  
+
     public static function deleteComment($comment_id) {
         try {
             $servername = "localhost";
@@ -105,36 +136,5 @@ class UserCommentModel {
             $db = null;
         }
     }
-
-    public static function editComment($comment_id, $new_comment_content) {
-        try {
-            $servername = "localhost";
-            $dbUsername = "root";
-            $dbPassword = "";
-            $dbname = "BlogSite";
-    
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-            // Prepare query to update a comment
-            $stmtUpdateComment = $db->prepare("UPDATE tblComments SET comment_content = :new_comment_content, comment_datetime = NOW() WHERE comment_id = :comment_id");
-            $stmtUpdateComment->bindParam(':new_comment_content', $new_comment_content);
-            $stmtUpdateComment->bindParam(':comment_id', $comment_id);
-    
-            // Execute the query
-            $result = $stmtUpdateComment->execute();
-    
-            // Returns 1 if true, 0 if false
-            return $result;
-        } 
-        catch (PDOException $e) {
-            // Handle PDO exceptions
-            echo "PDO Exception: " . $e->getMessage();
-        } 
-        finally {
-            // Close the database connection
-            $db = null;
-        }
-    }  
 }
 ?>

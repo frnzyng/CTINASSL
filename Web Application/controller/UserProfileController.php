@@ -1,4 +1,5 @@
 <?php
+
 // Check for the action parameter in the URL
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $controller = new UserProfileController();
@@ -15,8 +16,15 @@ else if ($action === 'handleDeletePost') {
 else if ($action === 'handleDeleteComment') {
     $controller->handleDeleteComment();
 }
+else if ($action === 'handleEditPost') {
+    $controller->handleEditPost();
+}
+else if ($action === 'handleEditComment') {
+    $controller->handleEditComment();
+}
 
 class UserProfileController {
+    
     public function handlePostSubmission() {
         try {
             include_once("../controller/SessionController.php");
@@ -32,11 +40,11 @@ class UserProfileController {
                 $post_content = trim($_POST["post_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messagePost"] = "Session Expired";
+                    $_SESSION["error_message_submit_post"] = "Session Expired";
                     header('Location:../view/user-profile.php');             
                 } 
                 else if ($post_topic === "" && $post_content === "") {
-                    $_SESSION["error_messagePost"] = "Fields should not be blank";
+                    $_SESSION["error_message_submit_post"] = "Fields should not be blank";
                     header('Location:../view/user-profile.php');
                 }
                 else{
@@ -44,12 +52,79 @@ class UserProfileController {
                     $submittedPost = UserPostModel::submitPost($account_id, $username, $post_topic, $post_content);
 
                     if ($submittedPost === true) {
-                        $_SESSION["success_messagePost"] = "Posted successfully!";
+                        $_SESSION["success_message_submit_post"] = "Posted successfully!";
                         header('Location:../view/user-profile.php');
                     } 
                     else if ($submittedPost === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messagePost"] = "Error posting";
+                        $_SESSION["error_message_submit_post"] = "Error posting";
+                        header('Location:../view/user-profile.php');
+                    }
+                    // Don't put else block here
+                }
+            }
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public static function handlePostRetrieval() {
+        try {
+            include_once("../controller/SessionController.php");
+            
+            // Get session
+            $sessionController = new SessionController();
+            $account_id = $sessionController->getAccountId();
+
+            include_once("../model/UserPostModel.php");
+            $retrievedPosts = UserPostModel::getUserAccountPost($account_id);
+
+            return $retrievedPosts;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public function handleEditPost() {
+        try {
+            include_once("../controller/SessionController.php");
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Get session
+                $sessionController = new SessionController();
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                
+                // Validate and sanitize form inputs  
+                $post_id = trim($_POST["post_id"]);
+                $new_post_topic = trim($_POST["new_post_topic"]);
+                $new_post_content = trim($_POST["new_post_content"]);
+
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message_edit_post"] = "Session Expired";
+                    header('Location:../view/user-profile.php');             
+                } 
+                else if ($post_id === "" && $post_id === null) {
+                    $_SESSION["error_message_edit_post"] = "Post not found";
+                    header('Location:../view/user-profile.php');
+                }
+                else if ($new_post_topic === "" && $new_post_content === "") {
+                    $_SESSION["error_message_edit_post"] = "Fields should not be blank";
+                    header('Location:../view/user-profile.php');
+                }
+                else{
+                    include_once("../model/UserPostModel.php");
+                    $editedPost = UserPostModel::editPost($post_id, $new_post_topic, $new_post_content);
+
+                    if ($editedPost === true) {
+                        $_SESSION["success_message_edit_post"] = "Posted is updated successfully!";
+                        header('Location:../view/user-profile.php');
+                    } 
+                    else if ($editedPost === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_message_edit_post"] = "Error updating post";
                         header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
@@ -70,10 +145,10 @@ class UserProfileController {
                 $sessionController = new SessionController();
                 $account_id = $sessionController->getAccountId();
                 $username = $sessionController->getUsername();
-                $post_id = $_POST["post_id"];
+                $post_id = trim($_POST["post_id"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageDeletePost"] = "Session Expired";
+                    $_SESSION["error_message_delete_post"] = "Session Expired";
                     header('Location:../view/user-profile.php');             
                 }
                 else {
@@ -81,12 +156,12 @@ class UserProfileController {
                     $deletedPost = UserPostModel::deletePost($post_id);
         
                     if ($deletedPost === true) {
-                        $_SESSION["success_messageDeletePost"] = "Post is deleted successfully!";
+                        $_SESSION["success_message_delete_post"] = "Post is deleted successfully!";
                         header('Location:../view/user-profile.php');           
                     } 
                     else if ($deletedPost === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageDeletePost"] = "Error in deleting post";
+                        $_SESSION["error_message_delete_post"] = "Error in deleting post";
                         header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
@@ -98,22 +173,6 @@ class UserProfileController {
         }
     }
 
-    public static function handlePostRetrieval() {
-        try {
-            include_once("../controller/SessionController.php");
-            // Get session
-            $sessionController = new SessionController();
-            $account_id = $sessionController->getAccountId();
-
-            include_once("../model/UserPostModel.php");
-            $retrievedPosts = UserPostModel::getUserAccountPost($account_id);
-
-            return $retrievedPosts;
-        }
-        catch (Exception $e) {  
-            echo $e->getMessage();
-        }
-    }
 
     public function handleCommentSubmission() {
         try {
@@ -130,11 +189,11 @@ class UserProfileController {
                 $comment_content = trim($_POST["comment_content"]);
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageComment"] = "Session Expired";
+                    $_SESSION["error_message_submit_comment"] = "Session Expired";
                     header('Location:../view/user-profile.php');             
                 } 
                 else if ($comment_content === "") {
-                    $_SESSION["error_messageComment"] = "Fields should not be blank";
+                    $_SESSION["error_message_submit_comment"] = "Fields should not be blank";
                     header('Location:../view/user-profile.php');
                 }
                 else{
@@ -142,12 +201,12 @@ class UserProfileController {
                     $submittedComment = UserCommentModel::submitComment($post_id, $account_id, $username, $comment_content);
     
                     if ($submittedComment === true) {
-                        $_SESSION["success_messageComment"] = "Comment posted successfully!";
+                        $_SESSION["success_message_submit_comment"] = "Comment posted successfully!";
                         header('Location:../view/user-profile.php');
                     } 
                     else if ($submittedComment === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageComment"] = "Error posting comment";
+                        $_SESSION["error_message_submit_comment"] = "Error posting comment";
                         header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
@@ -155,6 +214,66 @@ class UserProfileController {
             }         
         }
         catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function handleCommentRetrieval($post_id) {
+        try {
+            include_once("../model/UserCommentModel.php");
+            $retrievedComments = UserCommentModel::getComment($post_id);
+
+            return $retrievedComments;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public function handleEditComment() {
+        try {
+            include_once("../controller/SessionController.php");
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Get session
+                $sessionController = new SessionController();
+                $account_id = $sessionController->getAccountId();
+                $username = $sessionController->getUsername();
+                
+                // Validate and sanitize form inputs  
+                $comment_id = trim($_POST["comment_id"]);
+                $new_comment_content = trim($_POST["new_comment_content"]);
+
+                if ($account_id === null && $username === null) {
+                    $_SESSION["error_message_edit_comment"] = "Session Expired";
+                    header('Location:../view/user-profile.php');             
+                } 
+                else if ($comment_id === "" && $comment_id === null) {
+                    $_SESSION["error_message_edit_comment"] = "Comment not found";
+                    header('Location:../view/user-profile.php');
+                }
+                else if ($new_comment_content === "" && $new_comment_content === null) {
+                    $_SESSION["error_message_edit_comment"] = "Fields should not be blank";
+                    header('Location:../view/user-profile.php');
+                }
+                else{
+                    include_once("../model/UserCommentModel.php");
+                    $editedComment = UserCommentModel::editComment($comment_id, $new_comment_content);
+
+                    if ($editedComment === true) {
+                        $_SESSION["success_message_edit_comment"] = "Comment is updated successfully!";
+                        header('Location:../view/user-profile.php');
+                    } 
+                    else if ($editedComment === false) {
+                        // If an exception occurred in the model, store the error in the session
+                        $_SESSION["error_message_edit_comment"] = "Error updating comment";
+                        header('Location:../view/user-profile.php');
+                    }
+                    // Don't put else block here
+                }
+            }
+        }
+        catch (Exception $e) {  
             echo $e->getMessage();
         }
     }
@@ -172,11 +291,11 @@ class UserProfileController {
                 $comment_username = $_POST["comment_username"];
 
                 if ($account_id === null && $username === null) {
-                    $_SESSION["error_messageDeleteComment"] = "Session Expired";
+                    $_SESSION["error_message_delete_comment"] = "Session Expired";
                     header('Location:../view/user-profile.php');             
                 }
                 else if ($username !== $comment_username) {
-                    $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                    $_SESSION["error_message_delete_comment"] = "Error in deleting comment";
                     header('Location:../view/user-profile.php');             
                 }
                 else {
@@ -184,29 +303,17 @@ class UserProfileController {
                     $deletedComment = UserCommentModel::deleteComment($comment_id);
         
                     if ($deletedComment === true) {
-                        $_SESSION["success_messageDeleteComment"] = "Comment is deleted successfully!";
+                        $_SESSION["success_message_delete_comment"] = "Comment is deleted successfully!";
                         header('Location:../view/user-profile.php');           
                     } 
                     else if ($deletedComment === false) {
                         // If an exception occurred in the model, store the error in the session
-                        $_SESSION["error_messageDeleteComment"] = "Error in deleting comment";
+                        $_SESSION["error_message_delete_comment"] = "Error in deleting comment";
                         header('Location:../view/user-profile.php');
                     }
                     // Don't put else block here
                 }
             }
-        }
-        catch (Exception $e) {  
-            echo $e->getMessage();
-        }
-    }
-
-    public static function handleCommentRetrieval($post_id) {
-        try {
-            include_once("../model/UserCommentModel.php");
-            $retrievedComments = UserCommentModel::getComment($post_id);
-
-            return $retrievedComments;
         }
         catch (Exception $e) {  
             echo $e->getMessage();
@@ -239,6 +346,6 @@ class UserProfileController {
         }
     
         return $diffString;
-    }   
+    }    
 }
 ?>

@@ -21,21 +21,22 @@
     <div class="container px-0 fixed-top bg-white">
         <header>        
             <nav class="nav justify-content-center align-items-center mx-3">
-                <?php
-                    include_once("../controller/SessionController.php");
-                    $sessionController = new SessionController();
+                <div class="greetings-container">
+                    <?php
+                        include_once("../controller/SessionController.php");
+                        $sessionController = new SessionController();
 
-                    // Check if the account ID exists before displaying
-                    $accountUsername = $sessionController->getUsername();
+                        // Check if the account ID exists before displaying
+                        $accountUsername = $sessionController->getUsername();
 
-                    if ($accountUsername !== null) {
-                        echo "<span class='greetings'> Hi " . $accountUsername . "! </span>";
-                    } 
-                    else {
-                        echo "<span class='greetings'>Not logged in</span>";
-                    }
-                ?>
-
+                        if ($accountUsername !== null) {
+                            echo "<span class='greetings'> Hi " . $accountUsername . "! </span>";
+                        } 
+                        else {
+                            echo "<span class='greetings'>Not logged in</span>";
+                        }
+                    ?>
+                </div>
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
@@ -47,51 +48,54 @@
                         <a href="user-settings.php"><i class="fa-solid fa-gear"></i></a>
                     </li>
                 </ul>
-
-                <form action="../controller/UserAuthController.php?action=handleLogout" method="post">
-                    <button class="logout-button" type="submit">Logout</button>
-                </form>
+                <div class="logout-container">
+                    <form action="../controller/UserAuthController.php?action=handleLogout" method="post">
+                        <button class="logout-button" type="submit">Logout</button>
+                    </form>
+                </div>
             </nav>
         </header>
     </div>
-
+ 
     <div class="container px-0">
+        <!-- Create Post -->
         <div class="row justify-content-center align-items-center mx-2">
             <div class="create-post-container" id="create-post-container">   
                 <h4>Create Post</h4>
-
                 <form class="post-form" action="../controller/UserHomeController.php?action=handlePostSubmission" method="post">
                     <div class="topic-container">
                         <label for="post_topic">Topic</label>
                         <input class="topic-input" type="text" name="post_topic" id="post_topic" maxlength="50" required placeholder="What's on your mind?">
-                    </div>  
-
+                    </div>
                     <div class="content-container">
                         <label for="post_content">Content</label>
                         <textarea class="content-input" name="post_content" id="post_content" rows="5" maxlength="250" required placeholder="Tell us more about it!"></textarea>
                     </div>
-
                     <div class="button-container">
                         <a class="cancel-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Cancel</a>
                         <input class="submit-button" type="submit" value="Post">
                     </div>
                 </form>
-
             </div>
         </div>
 
         <!-- Displaying posts and comments -->
         <div class="row justify-content-center align-items-center mx-2">
-            <?php include_once("../controller/UserHomeController.php"); ?>
+            <?php 
+                include_once("../controller/UserHomeController.php"); 
+                $userHomeController = new UserHomeController();
+            ?>
             
+            <!-- Post Block -->
             <div class="post-block" id="post-block">
-                <div class="heading">
+                <div class="block-heading">
                     <h4>All Posts</h4>
                     <a class="create-post-button" href="javascript:void(0);" onclick="Toggler.toggleCreatePost()">Create Post</a>
                 </div>
+
                 <?php
                     try {
-                        $userHomeController = new UserHomeController();
+                        // Get all posts
                         $posts = UserHomeController::handlePostRetrieval();
                     } 
                     catch (Exception $e) {
@@ -129,7 +133,9 @@
                     ?>
                 </p>
 
+                <!-- Display all posts -->
                 <?php foreach ($posts as $post): ?>
+                    <!-- Post -->
                     <div class="post-container" id="post-container<?php echo $post['post_id']; ?>">
                         <div class="section1-post">
                             <h5><?php echo $post['post_topic']; ?></h5>
@@ -159,7 +165,7 @@
                         <div class="section2-post">
                             <p class="post-username">Posted by <?php echo $post['username'] . " - " . $userHomeController->timeAgo($post['post_datetime']); ?></p>
                             <p class="post-content"><?php echo $post['post_content']; ?></p>
-                            <a class="create-comment-button" onclick="Toggler.toggleComments(<?php echo $post['post_id']; ?>)"><i class="fa-solid fa-message"></i></a>
+                            <a class="view-comments-button" onclick="Toggler.toggleComments(<?php echo $post['post_id']; ?>)"><i class="fa-solid fa-message"></i></a>
                         </div>
                     </div>
 
@@ -183,8 +189,10 @@
                         </form>
                     </div>
 
+                    <!-- Comments Block -->
                     <div class="comments-block" id="comments-block<?php echo $post['post_id']; ?>">
                         <h5>Comments</h5>
+
                         <p class="status-message">
                             <?php
                                 // Display any status messages
@@ -214,6 +222,8 @@
                                 }
                             ?>
                         </p>
+
+                        <!-- Write a Comment  -->
                         <form class="comment-form" action="../controller/UserHomeController.php?action=handleCommentSubmission" method="post">
                             <input class="comment-input" type="text" name="comment_content" id="comment_content" rows="1" maxlength="50" required placeholder="Write a comment..."></input>
                             <input type="hidden" name="post_id" id="post_id" value="<?php echo $post['post_id']; ?>">
@@ -222,14 +232,18 @@
 
                         <?php
                             try {
-                                // Get comments for the current post
+                                // Get comments for each post
                                 $comments = UserHomeController::handleCommentRetrieval($post['post_id']);
-                            } catch (Exception $e) {
+                            } 
+                            catch (Exception $e) {
                                 echo "Error retrieving comments: " . $e->getMessage();
                             }
                         ?>
+
+                        <!-- Display all comments -->
                         <?php if (!empty($comments)): ?>
                             <?php foreach ($comments as $comment): ?>
+                                <!-- Comment -->
                                 <div class="comment-container" id="comment-container<?php echo $comment['comment_id']; ?>">
                                     <div class="section1-comment">
                                         <span class="comment-username"><?php echo $comment['username']; ?></span>
@@ -260,7 +274,7 @@
                                     <p class="comment-content"><?php echo $comment['comment_content']; ?></p>
                                 </div>
 
-                                <!-- EDIT COMMENT -->
+                                <!-- Edit Comment -->
                                 <div class="edit-comment-container" id="edit-comment-container<?php echo $comment['comment_id']; ?>">
                                     <span class="comment-username"><?php echo $comment['username']; ?></span>
                                     <p class="comment-datetime"><?php echo $userHomeController->timeAgo($comment['comment_datetime']); ?></p>

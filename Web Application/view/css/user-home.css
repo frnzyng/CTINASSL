@@ -111,7 +111,7 @@
     gap: 20px;
 }
 
-.heading {
+.block-heading {
     width: 100%;
     margin-bottom: 25px;   
     display: flex;
@@ -161,31 +161,11 @@
     word-wrap: break-word;
 }
 
-.create-comment-button {
+.view-comments-button {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.fa-solid.fa-ellipsis {
-    font-size: 1.5rem;
-    color: var(--clr-accent-light2);
-    cursor: pointer;
-}
-
-.fa-solid.fa-ellipsis:hover {
-    color: var(--clr-accent);
-}
-
-.fa-solid.fa-message {
-    font-size: 1.25rem;
-    color: var(--clr-accent-light2);
-    cursor: pointer;
-}
-
-.fa-solid.fa-message:hover {
-    color: var(--clr-accent);
 }
 
 /* Edit Post */
@@ -214,7 +194,6 @@
     background-color: var(--clr-light);
     resize: none;
 }
-
 
 /* Comments */
 .comments-block {
