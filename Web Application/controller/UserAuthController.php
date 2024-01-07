@@ -27,7 +27,8 @@ class UserAuthController {
 
     public function handleLogin() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $username = $_POST["username"];
+            // Validate and sanitize form inputs  
+            $username = trim($_POST["username"]);
             $password = $_POST["password"];
 
             // Authenticate user using the injected model

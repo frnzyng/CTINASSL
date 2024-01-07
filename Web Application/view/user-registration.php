@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
+    <title>BlogSite - Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/user-registration.css">
@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
     <!-- Navigation Bar -->
     <div class="container px-0">
         <header>        
@@ -22,6 +24,7 @@
         </header>
     </div>
 
+    <!-- Registration -->
     <div class="container">
         <div class="row justify-content-center align-items-center mx-2">
             <div class="registration-container">
@@ -32,31 +35,36 @@
                         session_start();
 
                         // Display any status messages
-                        if (isset($_SESSION["success_messageRegister"])) {
-                            echo $_SESSION["success_messageRegister"];
-                            unset($_SESSION["success_messageRegister"]); // Clear the error message from session
+                        if (isset($_SESSION["success_message_register"])) {
+                            echo $_SESSION["success_message_register"];
+                            unset($_SESSION["success_message_register"]);
                         }
-                        else if (isset($_SESSION["error_messageRegister"])) {
-                            echo $_SESSION["error_messageRegister"];
-                            unset($_SESSION["error_messageRegister"]); // Clear the error message from session
+                        else if (isset($_SESSION["error_message_register"])) {
+                            echo $_SESSION["error_message_register"];
+                            unset($_SESSION["error_message_register"]);
                         }
                     ?>
                 </p>
 
                 <form class="registration-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
-                    <label for="username">Username</label>
-                    <input class="username-input" type="text" name="username" id="username" maxlength="25" required><br>
-
-                    <label for="password">Password</label>
-                    <input class="password-input" type="password" name="password" id="password" minlength="4" required><br>
-
-                    <label for="email">Email</label>
-                    <input class="email-input" type="email" name="email" id="email" maxlength="50" required><br>
-
+                    <div class="username-container">
+                        <label for="username">Username</label>
+                        <input class="username-input" type="text" name="username" id="username" maxlength="25" required>
+                    </div>
+                    <div class="password-container">
+                        <label for="password">Password</label>
+                        <input class="password-input" type="password" name="password" id="password" minlength="4" required>
+                    </div>
+                    <div class="email-container">
+                        <label for="email">Email</label>
+                        <input class="email-input" type="email" name="email" id="email" maxlength="50" required>
+                    </div>
                     <input class="submit-button" type="submit" value="Register">
                 </form>
 
-                <p>Already have an account? <a href="user-login.php">Login</a></p>
+                <div class="toggler-container">
+                    <p>Already have an account? <a href="user-login.php">Login</a></p>
+                </div>
             </div>
         </div>    
     </div>

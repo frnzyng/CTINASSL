@@ -8,18 +8,19 @@ class AdminAuthModel {
 
     public function authenticateAdmin($username, $password) {
         // Prepare and execute a query to retrieve user data
-        $stmt = $this->db->prepare("SELECT account_id, username, password FROM tblAdminAccounts WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+        $stmtAuthenticate = $this->db->prepare("SELECT account_id, username, password FROM tblAdminAccounts WHERE username = :username");
+        $stmtAuthenticate->bindParam(':username', $username);
+        $stmtAuthenticate->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Fetches the row from the result set
+        $adminAccount = $stmtAuthenticate->fetch(PDO::FETCH_ASSOC);
 
-        // Check if an admin with the given username exists
-        if ($user) {
-            // Verify the password
-            if (password_verify($password, $user["password"])) {
+        // Check if the admin account exists
+        if ($adminAccount) {
+            // Verify the password of the account
+            if (password_verify($password, $adminAccount["password"])) {
                 // Authentication successful
-                return $user;
+                return $adminAccount;
             }
         }
 

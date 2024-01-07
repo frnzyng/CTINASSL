@@ -13,14 +13,14 @@ class UserAuthModel {
         $stmtAuthenticate->execute();
 
         // Fetches the row from the result set
-        $result = $stmtAuthenticate->fetch(PDO::FETCH_ASSOC);
+        $userAccount = $stmtAuthenticate->fetch(PDO::FETCH_ASSOC);
 
         // Check if the user account exists
-        if ($result) {
+        if ($userAccount) {
             // Verify the password of the account
-            if (password_verify($password, $result["password"])) {
+            if (password_verify($password, $userAccount["password"])) {
                 // Authentication successful
-                return $result;
+                return $userAccount;
             }
         }
 

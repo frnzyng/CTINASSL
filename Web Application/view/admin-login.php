@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
+    <title>BlogSite - Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/login.css">
@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
     <!-- Navigation Bar -->
     <div class="container px-0">
         <header>        
@@ -22,41 +24,41 @@
         </header>
     </div>
 
-    <!-- Login Form -->
+    <!-- Login -->
     <div class="container">
         <div class="row justify-content-center align-items-center mx-2">
             <div class = "login-container">
-                <h3> Admin Login</h3>
+                <h3>Admin Login</h3>
                 
                 <p class="status-message">
                     <?php
                         session_start();
 
-                        // Display any error messages
-                        if (isset($_SESSION["error_messageLogin"])) {
-                            echo $_SESSION["error_messageLogin"];
-                            unset($_SESSION["error_messageLogin"]); // Clear the error message from session
+                        // Display any status messages
+                        if (isset($_SESSION["error_message_login"])) {
+                            echo $_SESSION["error_message_login"];
+                            unset($_SESSION["error_message_login"]);
                         }
                     ?>
                 </p>
 
                 <form class="login-form" action="../controller/AdminAuthController.php?action=handleLogin" method="post">
-                    <label for="username">Username</label>
-                    <input class="username-input" type="text" name="username" required><br>
-            
-                    <label for="password">Password</label>
-                    <input class="password-input" type="password" name="password" required><br>
-            
+                    <div class="username-container">
+                        <label for="username">Username</label>
+                        <input class="username-input" type="text" name="username" required>
+                    </div>
+                    <div class="password-container">
+                        <label for="password">Password</label>
+                        <input class="password-input" type="password" name="password" required>
+                    </div>
                     <input class="submit-button" type="submit" value="Login">
                 </form>
 
-                <p><a class="toggle-link" href="user-login.php">Switch to user?</a></p>
+                <p><a class="toggler-link" href="user-login.php">Switch to user?</a></p>
             </div>
             
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
 </body>
 </html>

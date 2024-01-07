@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>BlogSite - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/login.css">
@@ -29,7 +29,7 @@
         <div class="row justify-content-center align-items-center mx-2">
             <div class = "login-container">
                 <h3>Login</h3>
-                
+
                 <p class="status-message">
                     <?php
                         session_start();
@@ -43,18 +43,20 @@
                 </p>
 
                 <form class="login-form" action="../controller/UserAuthController.php?action=handleLogin" method="post">
-                    <label for="username">Username</label>
-                    <input class="username-input" type="text" name="username" required><br>
-
-                    <label for="password">Password</label>
-                    <input class="password-input" type="password" name="password" required><br>
-                    
+                    <div class="username-container">
+                        <label for="username">Username</label>
+                        <input class="username-input" type="text" name="username" required>
+                    </div>
+                    <div class="password-container">
+                        <label for="password">Password</label>
+                        <input class="password-input" type="password" name="password" required>
+                    </div>
                     <input class="submit-button" type="submit" value="Login">
                 </form>
 
-                <div>
+                <div class="toggler-container">
                     <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>
-                    <p><a class="toggle-link" href="admin-login.php">Switch to admin?</a></p>
+                    <p><a class="toggler-link" href="admin-login.php">Switch to admin?</a></p>
                 </div>
             </div>      
         </div>

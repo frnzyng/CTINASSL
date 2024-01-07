@@ -1,8 +1,8 @@
 <?php
-// Don't move; put session here too
 include_once("../model/AdminAuthModel.php");
 include_once("../controller/SessionController.php");
 
+// Connect to database
 $db = new PDO("mysql:host=localhost;dbname=BlogSite", "root", "");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $model = new AdminAuthModel($db); // The database connection will be injected later
@@ -27,32 +27,31 @@ class AdminAuthController {
 
     public function handleLogin() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $username = $_POST["username"];
+            // Validate and sanitize form inputs 
+            $username = trim($_POST["username"]);
             $password = $_POST["password"];
 
-            // Authenticate user using the injected model
+            // Authenticate admin using the injected model
             $authenticatedAdmin = $this->model->authenticateAdmin($username, $password);
 
             if ($authenticatedAdmin) {
-                // Start a session and store user ID
-                session_start();
-                $_SESSION["user_id"] = $authenticatedAdmin["account_id"];
+                // Start a session and store admin ID
+                $sessionController = new SessionController();
+                $sessionController->startSessionAdmin($authenticatedAdmin["account_id"], $authenticatedAdmin["username"]);
 
-                // Redirect to home dashboard
+                // Redirect to home dashboard after authentication
                 header("Location: ../view/admin-dashboard.php");
                 exit();
-            } else {
+            } 
+            else {
                 session_start();
-                $_SESSION["error_messageLogin"] = "Invalid username or password";
+                $_SESSION["error_message_login"] = "Invalid username or password";
 
                 // Redirect back to the login page
                 header("Location: ../view/admin-login.php");
                 exit();
             }
         }
-
-        // Load login view (form)
-        include('../view/admin-login.php');
     }
 
     public function handleLogout() {

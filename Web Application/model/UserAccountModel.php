@@ -1,5 +1,4 @@
 <?php 
-
 class UserAccountModel {
 
     public static function registerUser($username, $password, $email) {
