@@ -127,7 +127,7 @@
     padding-right: 32px;
     border-radius: 15px;
     border-width: 0;
-    background-color: var(--clr-accent);
+    background-color: var(--clr-button);
     color: var(--clr-light); 
     text-align: center;
 }

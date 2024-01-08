@@ -37,7 +37,7 @@ class AdminAuthController {
             if ($authenticatedAdmin) {
                 // Start a session and store admin ID
                 $sessionController = new SessionController();
-                $sessionController->startSessionAdmin($authenticatedAdmin["account_id"], $authenticatedAdmin["username"]);
+                $sessionController->startSession($authenticatedAdmin["account_id"], $authenticatedAdmin["username"]);
 
                 // Redirect to home dashboard after authentication
                 header("Location: ../view/admin-dashboard.php");

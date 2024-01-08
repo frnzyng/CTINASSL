@@ -1,0 +1,56 @@
+.dashboard-block {
+    width: 1300px;
+    margin-top: 150px;
+    margin-bottom: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.account-management-container, .post-management-container, .comment-management-container {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.account-management-button, .post-management-button, .comment-management-button {
+    width: 380px;
+    height: 100px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 32px;
+    padding-right: 32px;
+    border-radius: 15px;
+    border-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--clr-button);
+    color: var(--clr-light); 
+    text-align: center;
+}
+
+.account-management-button:hover, .post-management-button:hover, .comment-management-button:hover {
+    background-color: var(--clr-button-hover);
+    color: var(--clr-accent-light); 
+}
+
+.fa-solid.fa-image-portrait.button, .fa-solid.fa-copy.button, .fa-solid.fa-message.button {
+    padding: 15px;
+    color: var(--clr-light);
+    font-size: 2.8rem;
+}
