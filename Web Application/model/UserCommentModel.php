@@ -136,5 +136,36 @@ class UserCommentModel {
             $db = null;
         }
     }
+
+    public static function countComments() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare query to get the number of user accounts
+            $stmtCountPosts = $db->prepare("SELECT COUNT(*) as number_of_comments FROM tblComments");
+            $stmtCountPosts->execute();
+
+            $result = array();
+            while ($row = $stmtCountPosts->fetch(PDO::FETCH_ASSOC)) {
+                $result['Number of Comments'] = $row['number_of_comments'];
+            }
+
+            return $result;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
 }
 ?>

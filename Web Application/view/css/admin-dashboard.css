@@ -1,7 +1,13 @@
+.fa-solid.fa-house {
+    padding: 10px;
+    color: var(--clr-accent);
+    font-size: 1.8rem;
+}
+
 .dashboard-block {
     width: 1300px;
     margin-top: 150px;
-    margin-bottom: 150px;
+    margin-bottom: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,9 +33,17 @@
     gap: 0px;
 }
 
+.chart-container {
+    padding: 10px;
+}
+
+.chart-title {
+    padding-bottom: 30px;
+}
+
 .account-management-button, .post-management-button, .comment-management-button {
-    width: 380px;
-    height: 100px;
+    width: 350px;
+    height: 90px;
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 32px;

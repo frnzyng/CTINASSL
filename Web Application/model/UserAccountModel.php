@@ -110,7 +110,6 @@ class UserAccountModel {
         }
     }
     
-
     public static function updateAccountEmail($account_id, $new_email, $password) {
         try {
             $servername = "localhost";
@@ -220,6 +219,37 @@ class UserAccountModel {
                 }
             }
             
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
+
+    public static function countUserAccounts() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare query to get the number of user accounts
+            $stmtCountUserAccounts = $db->prepare("SELECT COUNT(*) as number_of_user_accounts FROM tblUserAccounts");
+            $stmtCountUserAccounts->execute();
+
+            $result = array();
+            while ($row = $stmtCountUserAccounts->fetch(PDO::FETCH_ASSOC)) {
+                $result['Number of Users'] = $row['number_of_user_accounts'];
+            }
+
+            return $result;
         } 
         catch (PDOException $e) {
             // Handle PDO exceptions
