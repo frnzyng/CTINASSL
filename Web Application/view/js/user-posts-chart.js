@@ -1,7 +1,7 @@
-// User Accounts
+// Posts
 document.addEventListener("DOMContentLoaded", function () {
     // Specify the action you want to perform
-    const action = 'getCountUserAccounts';
+    const action = 'getCountPosts';
     
     // Fetch data from your PHP script
     fetch(`../../controller/AdminDashboardController.php?action=${action}`)
@@ -15,16 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('Received data:', data);
 
             // Create a pie chart using Chart.js
-            var ctx = document.getElementById('userAccountsChart').getContext('2d');
-            var userAccountsChart = new Chart(ctx, {
+            var ctx = document.getElementById('postsChart').getContext('2d');
+            var postsChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(data),
                     datasets: [{
                         data: Object.values(data),
                         backgroundColor: [
-                            '#A97DFF',
-                            '#F1F1F1'
+                            '#C5A8FF'
                             // Add more colors as needed
                         ],
                         borderWidth: 1
@@ -34,4 +33,3 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-
