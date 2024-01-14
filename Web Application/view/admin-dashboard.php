@@ -16,7 +16,9 @@
 <body>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="js/user-accounts-chart.js"></script>
+    <script src="js/user-account-chart.js"></script>
+    <script src="js/user-post-chart.js"></script>
+    <script src="js/user-comment-chart.js"></script>
 
     <!-- Navigation Bar -->
     <div class="container px-0 fixed-top bg-white">
@@ -24,48 +26,60 @@
             <nav class="nav justify-content-center align-items-center mx-3">
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
-                        <a href="user-home.php"><i class="fa-solid fa-house"></i></a>
+                        <a href="admin-dashboard.php"><i class="fa-solid fa-house"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="user-profile.php"><i class="fa-solid fa-image-portrait"></i></a>
+                        <a href="admin-account-management.php"><i class="fa-solid fa-image-portrait"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="user-profile.php"><i class="fa-solid fa-copy"></i></a>
+                        <a href="admin-post-management.php"><i class="fa-solid fa-copy"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="user-profile.php"><i class="fa-solid fa-message"></i></a>
+                        <a href="admin-comment-management.php"><i class="fa-solid fa-message"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a href="user-settings.php"><i class="fa-solid fa-gear"></i></a>
+                        <a href="admin-settings.php"><i class="fa-solid fa-gear"></i></a>
                     </li>
                 </ul>
             </nav>
         </header>
     </div>
 
-    <?php include_once('../controller/AdminDashboardController.php'); ?>
+    <!-- Dashboard -->
     <div class="container px-0">
         <div class="row justify-content-center align-items-center mx-2">
             <div class="dashboard-block">
-                <h4>Welcome Admin!</h4>
+                <?php include_once('../controller/AdminDashboardController.php'); ?>
+                <?php
+                    include_once("../controller/AdminSessionController.php");
+                    $sessionController = new AdminSessionController();
+
+                    // Check if the account ID exists before displaying
+                    $adminUsername = $sessionController->getAdminUsername();
+                ?>
+                <?php if ($adminUsername !== null) { ?>
+                    <h4>Welcome Admin! <?php echo $adminUsername ?></h4>
+                <?php } else { ?>
+                    <h4> Not logged in</h4>
+                <?php } ?>
                 <div class="dashboard-container">
                     <div class="account-management-container">
                         <div class="chart-container">
-                            <canvas id="userAccountsChart" width="275" height="275"></canvas>
+                            <canvas id="userAccountsChart" width="250" height="250"></canvas>
                         </div>
-                        <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountUserAccounts())?> Users</h4>
-                        <a class="account-management-button" href="#"><i class="fa-solid fa-image-portrait button"></i>Account Management</a>
+                        <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountAccounts())?> Users</h4>
+                        <a class="account-management-button" href="admin-account-management.php"><i class="fa-solid fa-image-portrait button"></i>Account Management</a>
                     </div>
                     <div class="post-management-container">
                         <div class="chart-container">
-                            <canvas id="postsChart" width="275" height="275"></canvas>
+                            <canvas id="postsChart" width="250" height="250"></canvas>
                         </div>
                         <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountPosts())?> Posts</h4>
                         <a class="post-management-button" href="#"><i class="fa-solid fa-copy button"></i>Post Management</a>
                     </div>
                     <div class="comment-management-container">
                         <div class="chart-container">
-                            <canvas id="commentsChart" width="275" height="275"></canvas>
+                            <canvas id="commentsChart" width="250" height="250"></canvas>
                         </div>
                         <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountComments())?> Comments</h4>
                         <a class="account-management-button" href="#"><i class="fa-solid fa-message button"></i>Comment Management</a>

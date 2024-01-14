@@ -39,6 +39,7 @@ button {
     padding-bottom: 8px;
     padding-left: 16px;
     padding-right: 16px;
+    border-style: none;
     font-weight: var(--fw-bold);
     cursor: pointer;
 }
@@ -92,14 +93,16 @@ input[type="submit"] {
     padding-bottom: 10px;
     padding-left: 16px;
     padding-right: 16px;
-    border: none;
+    border-color: var(--clr-button);
+    border-style: solid;
     background-color: var(--clr-button);
     font-weight: var(--fw-bold);
-    color: var(--clr-light); 
+    color: var(--clr-light);
     cursor: pointer;
 }
 
 input[type="submit"]:hover {
+    border-color: var(--clr-button-hover);
     background-color: var(--clr-button-hover);
     color: var(--clr-accent-light); 
 }

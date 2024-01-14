@@ -1,0 +1,135 @@
+.fa-solid.fa-image-portrait {
+    padding: 10px;
+    color: var(--clr-accent);
+    font-size: 1.8rem;
+}
+
+/* Account Management */
+.account-management-block {
+    width: 1300px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Chart */
+.chart-block {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.chart-container {
+    padding: 10px;
+}
+
+
+/* Table */
+.table-block {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.fa-solid.fa-pencil, .fa-solid.fa-trash-can {
+    padding: 5px;
+    color: var(--clr-accent);
+    font-size: 1.2rem;
+}
+
+.fa-solid.fa-pencil:hover, .fa-solid.fa-trash-can:hover {
+    color: var(--clr-button-hover);
+}
+
+.delete-form {
+    display: inline;
+}
+
+.delete-button, .delete-button:hover {
+    padding: 0px;
+    background-color: transparent;
+}
+
+/* Edit Account */
+.edit-account-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-account-container {
+    width: 800px;
+    margin: auto;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: none;
+    border-radius: 20px;
+    background-color: var(--clr-accent-light);
+}
+
+.edit-account-form {
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.edit-username-container, .edit-password-container, .edit-email-container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edit-username-input, .edit-password-input, .edit-email-input {
+    width: 100%;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    border-style: none;
+    background-color: var(--clr-light);
+}
+
+.button-container {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.cancel-button {
+    width: 150px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-color: var(--clr-button);
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 2px;
+    background-color: var(--clr-light);
+    color: var(--clr-button);
+    font-weight: var(--fw-bold);
+    text-align: center;
+}
+
+.cancel-button:hover {
+    border-color: var(--clr-button-hover);
+    background-color: var(--clr-button-hover);
+    color: var(--clr-accent-light); 
+}
+
+.submit-button {
+    width: 150px;
+    border-radius: 15px;
+}

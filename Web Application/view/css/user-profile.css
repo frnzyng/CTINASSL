@@ -75,21 +75,22 @@
   
 .cancel-button {
     width: 150px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 16px;
     padding-right: 16px;
-    border-color: var(--clr-accent);
+    border-color: var(--clr-button);
     border-radius: 15px;
     border-style: solid;
     border-width: 2px;
     background-color: var(--clr-light);
-    color: var(--clr-accent);
+    color: var(--clr-button);
     font-weight: var(--fw-bold);
     text-align: center;
 }
 
 .cancel-button:hover {
+    border-color: var(--clr-button-hover);
     background-color: var(--clr-button-hover);
     color: var(--clr-accent-light); 
 }

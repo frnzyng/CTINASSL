@@ -230,7 +230,7 @@ class UserAccountModel {
         }
     }
 
-    public static function countUserAccounts() {
+    public static function countAccounts() {
         try {
             $servername = "localhost";
             $dbUsername = "root";
@@ -241,11 +241,11 @@ class UserAccountModel {
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Prepare query to get the number of user accounts
-            $stmtCountUserAccounts = $db->prepare("SELECT COUNT(*) as number_of_user_accounts FROM tblUserAccounts");
-            $stmtCountUserAccounts->execute();
+            $stmtCountAccounts = $db->prepare("SELECT COUNT(*) as number_of_user_accounts FROM tblUserAccounts");
+            $stmtCountAccounts->execute();
 
             $result = array();
-            while ($row = $stmtCountUserAccounts->fetch(PDO::FETCH_ASSOC)) {
+            while ($row = $stmtCountAccounts->fetch(PDO::FETCH_ASSOC)) {
                 $result['Number of Users'] = $row['number_of_user_accounts'];
             }
 
@@ -258,6 +258,57 @@ class UserAccountModel {
         finally {
             // Close the database connection
             $db = null;
+        }
+    }
+
+    public static function getAccounts() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare query to get all the user accounts
+            $stmtGetAccounts = $db->prepare("SELECT * FROM tblUserAccounts");
+            $stmtGetAccounts->execute();
+
+            $result = $stmtGetAccounts->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
+
+    public static function deleteAccount($account_id) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare query to delete the user account
+            $stmtDeleteAccount = $db->prepare("DELETE FROM tblUserAccounts WHERE account_id = :account_id");
+            $stmtDeleteAccount->bindParam('account_id', $account_id);
+
+            $result = $stmtDeleteAccount->execute();
+
+            return $result;
+        }
+        catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

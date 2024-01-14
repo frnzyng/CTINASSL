@@ -1,6 +1,6 @@
 <?php
 include_once("../model/AdminAuthModel.php");
-include_once("../controller/SessionController.php");
+include_once("../controller/AdminSessionController.php");
 
 // Connect to database
 $db = new PDO("mysql:host=localhost;dbname=BlogSite", "root", "");
@@ -36,7 +36,7 @@ class AdminAuthController {
 
             if ($authenticatedAdmin) {
                 // Start a session and store admin ID
-                $sessionController = new SessionController();
+                $sessionController = new AdminSessionController();
                 $sessionController->startSession($authenticatedAdmin["account_id"], $authenticatedAdmin["username"]);
 
                 // Redirect to home dashboard after authentication

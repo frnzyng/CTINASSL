@@ -41,4 +41,11 @@ class Toggler {
         editComment.style.display = (editCommentDisplay === 'none') ? 'block' : 'none';
         commentContainer.style.display = (commentContainerDisplay === 'block') ? 'none' : 'block';
     }
+
+    static toggleEditAccount(account_id) {
+        var editAccount = document.getElementById('edit-account-container' + account_id);
+
+        var editAccountDisplay = window.getComputedStyle(editAccount).getPropertyValue('display');
+        editAccount.style.display = (editAccountDisplay === 'none') ? 'block' : 'none';
+    }
 }

@@ -3,8 +3,8 @@
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $controller = new AdminDashboardController();
 
-if ($action === 'getCountUserAccounts') {
-    echo json_encode($controller->getCountUserAccounts());
+if ($action === 'getCountAccounts') {
+    echo json_encode($controller->getCountAccounts());
 }
 else if ($action === 'getCountPosts') {
     echo json_encode($controller->getCountPosts());
@@ -15,11 +15,11 @@ else if ($action === 'getCountComments') {
 
 class AdminDashboardController {
 
-    public static function getCountUserAccounts() {
+    public static function getCountAccounts() {
         try {
             include_once("../model/UserAccountModel.php");
 
-            $count = UserAccountModel::countUserAccounts();
+            $count = UserAccountModel::countAccounts();
 
             return $count;
         }
