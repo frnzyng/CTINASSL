@@ -37,6 +37,10 @@
     margin-bottom: 50px;
 }
 
+.status-message {
+    text-align: center;
+}
+
 .fa-solid.fa-pencil, .fa-solid.fa-trash-can {
     padding: 5px;
     color: var(--clr-accent);
@@ -58,14 +62,17 @@
 
 /* Edit Account */
 .edit-account-block {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .edit-account-container {
-    width: 800px;
-    margin: auto;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding-top: 22px;
     padding-bottom: 22px;
     padding-left: 24px;

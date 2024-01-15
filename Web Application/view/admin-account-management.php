@@ -73,9 +73,16 @@
                     <p class="status-message">
                         <?php
                             session_start();
-
                             // Display any status messages
-                            if (isset($_SESSION["success_message_delete_account"])) {
+                            if (isset($_SESSION["success_message_edit_account"])) {
+                                echo $_SESSION["success_message_edit_account"];
+                                unset($_SESSION["success_message_edit_account"]); // Clear the error message from session
+                            }
+                            else if (isset($_SESSION["error_message_edit_account"])) {
+                                echo $_SESSION["error_message_edit_account"];
+                                unset($_SESSION["error_message_edit_account"]); // Clear the error message from session
+                            }
+                            else if (isset($_SESSION["success_message_delete_account"])) {
                                 echo $_SESSION["success_message_delete_account"];
                                 unset($_SESSION["success_message_delete_account"]);
                             }
@@ -85,7 +92,7 @@
                             }
                         ?>
                     </p>
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="table-user-accounts">
                         <thead>
                             <th>Account ID</th>
                             <th>Username</th>
@@ -108,24 +115,23 @@
                                     </form>    
                                 </td>
                             </tr>
-
                             <!-- Edit Account -->
                             <div class="edit-account-block">
                                 <div class="edit-account-container" id="edit-account-container<?php echo $account['account_id']; ?>">
                                     <h3>Edit Account</h3>
 
-                                    <form class="edit-account-form" action="../controller/UserRegistrationController.php?action=handleUserRegistration" method="post">
+                                    <form class="edit-account-form" action="../controller/AdminAccountManagementController.php?action=handleEditAccount" method="post">
                                         <input type="hidden" name="account_id" value="<?php echo $account['account_id']; ?>">
                                         <div class="edit-username-container">
-                                            <label for="username">Username</label>
+                                            <label>Username</label>
                                             <input class="edit-username-input" type="text" name="new_username" id="new_username" maxlength="25" required value="<?php echo $account['username']; ?>">
                                         </div>
                                         <div class="edit-password-container">
-                                            <label for="password">Password</label>
+                                            <label>Password</label>
                                             <input class="edit-password-input" type="password" name="new_password" id="new_password" minlength="4" required value="<?php echo $account['password']; ?>">
                                         </div>
                                         <div class="edit-email-container">
-                                            <label for="email">Email</label>
+                                            <label>Email</label>
                                             <input class="edit-email-input" type="email" name="new_email" id="new_email" maxlength="50" required value="<?php echo $account['email']; ?>">
                                         </div>
                                         <div class="button-container">
@@ -139,6 +145,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>

@@ -56,7 +56,7 @@ class AdminAuthController {
 
     public function handleLogout() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $sessionController = new SessionController();
+            $sessionController = new AdminSessionController();
 
             $sessionController->endSession();
 

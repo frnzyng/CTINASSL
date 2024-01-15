@@ -289,6 +289,88 @@ class UserAccountModel {
         }
     }
 
+    public static function updateAccount($account_id, $new_username, $new_password, $new_email) {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare query to check if account with the given account id exists
+            $stmtAccountExist = $db->prepare("SELECT account_id, username, password FROM tblUserAccounts WHERE account_id = :account_id");
+            $stmtAccountExist->bindParam(':account_id', $account_id);
+            $stmtAccountExist->execute();
+
+            // Fetches the row from the result set
+            $account = $stmtAccountExist->fetch(PDO::FETCH_ASSOC);
+
+            // Verify account
+            if ($account) {
+                // Prepare query to check if username already exists except for the account to be edited
+                $stmtUsernameExist = $db->prepare("SELECT username FROM tblUserAccounts WHERE username = :new_username AND account_id != :account_id");
+                $stmtUsernameExist->bindParam(':new_username', $new_username);
+                $stmtUsernameExist->bindParam(':account_id', $account_id);
+                $stmtUsernameExist->execute();
+
+                // Prepare query to check if email already exists except for the account to be edited
+                $stmtEmailExist = $db->prepare("SELECT email FROM tblUserAccounts WHERE email = :new_email AND account_id != :account_id");
+                $stmtEmailExist->bindParam(':new_email', $new_email);
+                $stmtEmailExist->bindParam(':account_id', $account_id);
+                $stmtEmailExist->execute();
+
+                // Prepare query to get password
+                $stmtGetPassword = $db->prepare("SELECT password FROM tblUserAccounts WHERE account_id = :account_id");
+                $stmtGetPassword->bindParam(':account_id', $account_id);
+                $stmtGetPassword->execute();
+                $retrievedPassword = $stmtGetPassword->fetchAll(PDO::FETCH_ASSOC);
+
+                // Verify if username already exists
+                if ($stmtUsernameExist->rowCount() > 0) {
+                    return "Username already exists";
+                }
+                else if ($stmtEmailExist->rowCount() > 0) {
+                    return "Email already exists";
+                }
+                else if ($retrievedPassword[0]['password'] === $new_password) {
+                    // Prepare query to update username
+                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET username = :new_username, password = :new_password, email = :new_email WHERE account_id = :account_id");
+                    $stmtUpdate->bindParam(':new_username', $new_username);
+                    $stmtUpdate->bindParam(':new_password', $new_password);
+                    $stmtUpdate->bindParam(':new_email', $new_email);
+                    $stmtUpdate->bindParam(':account_id', $account_id);
+
+                    // Execute the query
+                    $result = $stmtUpdate->execute();
+
+                    // Returns 1 if true, 0 if false
+                    return $result;
+                }
+                else {
+                    $passwordHash = password_hash($new_password, PASSWORD_BCRYPT);
+
+                    // Prepare query to update username
+                    $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET username = :new_username, password = :new_password, email = :new_email WHERE account_id = :account_id");
+                    $stmtUpdate->bindParam(':new_username', $new_username);
+                    $stmtUpdate->bindParam(':new_password', $passwordHash);
+                    $stmtUpdate->bindParam(':new_email', $new_email);
+                    $stmtUpdate->bindParam(':account_id', $account_id);
+
+                    // Execute the query
+                    $result = $stmtUpdate->execute();
+
+                    // Returns 1 if true, 0 if false
+                    return $result;
+                }
+            }
+        }
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public static function deleteAccount($account_id) {
         try {
             $servername = "localhost";
