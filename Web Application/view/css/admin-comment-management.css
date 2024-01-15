@@ -1,11 +1,11 @@
-.fa-solid.fa-image-portrait {
+.fa-solid.fa-message {
     padding: 10px;
     color: var(--clr-accent);
     font-size: 1.8rem;
 }
 
-/* Account Management */
-.account-management-block {
+/* Comment Management */
+.comment-management-block {
     width: 1300px;
     margin-top: 150px;
     margin-bottom: 50px;
@@ -61,14 +61,14 @@
 }
 
 /* Edit Account */
-.edit-account-block {
+.edit-comment-block {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.edit-account-container {
+.edit-comment-container {
     width: 100%;
     max-width: 800px;
     margin-top: 20px;
@@ -82,13 +82,13 @@
     background-color: var(--clr-accent-light);
 }
 
-.edit-account-form {
+.edit-comment-form {
     width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
-.edit-username-container, .edit-password-container, .edit-email-container {
+.edit-content-container {
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -97,13 +97,12 @@
     gap: 8px;
 }
 
-.edit-username-input, .edit-password-input, .edit-email-input {
-    width: 100%;
-    margin-bottom: 16px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    border-style: none;
+.edit-content-input {
+    width: 100%;   
+    border-radius: 20px;
+    border-style: none; 
     background-color: var(--clr-light);
+    resize: none;
 }
 
 .button-container {

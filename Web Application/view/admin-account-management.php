@@ -16,7 +16,7 @@
 <body>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="js/toggler.js"></script>
+    <script src="js/admin-toggler.js"></script>
     <script src="js/user-account-chart.js"></script>
 
     <!-- Navigation Bar -->
@@ -51,11 +51,11 @@
                 
                 <!-- Chart -->
                 <div class="chart-block">
-                    <?php include_once('../controller/AdminDashboardController.php'); ?>
+                    <?php include_once('../controller/AdminAccountManagementController.php'); ?>
                     <div class="chart-container">
                         <canvas id="userAccountsChart" width="250" height="250"></canvas>
                     </div>
-                    <h4> <?php echo implode(AdminDashboardController::getCountAccounts())?> Users</h4>
+                    <h4> <?php echo implode(AdminAccountManagementController::getCountAccounts())?> Users</h4>
                 </div>
 
                 <!-- Table -->
@@ -64,10 +64,10 @@
                         include_once("../controller/AdminAccountManagementController.php");
                         try {
                             // Get all accounts
-                            $accounts = AdminAccountManagementController::handleAccounRetrieval();
+                            $accounts = AdminAccountManagementController::handleAccountRetrieval();
                         } 
                         catch (Exception $e) {
-                            echo "Error retrieving posts: " . $e->getMessage();
+                            echo "Error retrieving accounts: " . $e->getMessage();
                         }
                     ?>
                     <p class="status-message">
@@ -118,8 +118,7 @@
                             <!-- Edit Account -->
                             <div class="edit-account-block">
                                 <div class="edit-account-container" id="edit-account-container<?php echo $account['account_id']; ?>">
-                                    <h3>Edit Account</h3>
-
+                                    <h4>Edit Account</h4>
                                     <form class="edit-account-form" action="../controller/AdminAccountManagementController.php?action=handleEditAccount" method="post">
                                         <input type="hidden" name="account_id" value="<?php echo $account['account_id']; ?>">
                                         <div class="edit-username-container">

@@ -34,6 +34,7 @@ class UserCommentModel {
         }
     }    
 
+    // Gets all the comments on a specific post; change to getPostComments
     public static function getComment($post_id) {
         try {
             $servername = "localhost";
@@ -47,6 +48,39 @@ class UserCommentModel {
             // Prepare query to retrieve comments
             $stmtGetComments = $db->prepare("SELECT * FROM tblComments WHERE post_id = :post_id");
             $stmtGetComments->bindParam(':post_id', $post_id);
+
+            // Execute the query
+            $stmtGetComments->execute();
+
+            // Retrieve all results as an associative array
+            $retrievedComments = $stmtGetComments->fetchAll(PDO::FETCH_ASSOC);
+
+            // Return the retrieved comments
+            return $retrievedComments;
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }   
+
+    // Gets all comments
+    public static function getAllComment() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Prepare query to retrieve comments
+            $stmtGetComments = $db->prepare("SELECT * FROM tblComments");
 
             // Execute the query
             $stmtGetComments->execute();

@@ -335,7 +335,8 @@ class UserAccountModel {
                     return "Email already exists";
                 }
                 else if ($retrievedPassword[0]['password'] === $new_password) {
-                    // Prepare query to update username
+                    // No need to hash password if it is still the same
+                    // Prepare query to update account info
                     $stmtUpdate = $db->prepare("UPDATE tblUserAccounts SET username = :new_username, password = :new_password, email = :new_email WHERE account_id = :account_id");
                     $stmtUpdate->bindParam(':new_username', $new_username);
                     $stmtUpdate->bindParam(':new_password', $new_password);

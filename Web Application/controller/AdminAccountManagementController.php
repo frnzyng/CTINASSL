@@ -3,7 +3,10 @@
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $controller = new AdminAccountManagementController();
 
-if ($action === 'handleEditAccount') {
+if ($action === 'getCountAccounts') {
+    echo json_encode($controller->getCountAccounts());
+}
+else if ($action === 'handleEditAccount') {
     $controller->handleEditAccount();
 }
 else if ($action === 'handleDeleteAccount') {
@@ -11,8 +14,21 @@ else if ($action === 'handleDeleteAccount') {
 }
 
 class AdminAccountManagementController {
+
+    public static function getCountAccounts() {
+        try {
+            include_once("../model/UserAccountModel.php");
+
+            $count = UserAccountModel::countAccounts();
+
+            return $count;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
     
-    public static function handleAccounRetrieval() {
+    public static function handleAccountRetrieval() {
         try {
             include_once("../model/UserAccountModel.php");
             $retrievedAccounts = UserAccountModel::getAccounts();

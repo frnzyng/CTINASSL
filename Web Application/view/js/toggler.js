@@ -41,15 +41,4 @@ class Toggler {
         editComment.style.display = (editCommentDisplay === 'none') ? 'block' : 'none';
         commentContainer.style.display = (commentContainerDisplay === 'block') ? 'none' : 'block';
     }
-
-    static toggleEditAccount(account_id) {
-        var editAccount = document.getElementById('edit-account-container' + account_id);
-        var tableUserAccounts = document.getElementById('table-user-accounts');
-
-        var editAccountDisplay = window.getComputedStyle(editAccount).getPropertyValue('display');
-        var tableUserAccountsDisplay = window.getComputedStyle(tableUserAccounts).getPropertyValue('display');
-
-        editAccount.style.display = (editAccountDisplay === 'none') ? 'block' : 'none';
-        tableUserAccounts.style.display = (tableUserAccountsDisplay === 'table') ? 'none' : 'table';
-    }
 }

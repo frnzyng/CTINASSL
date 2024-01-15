@@ -75,14 +75,14 @@
                             <canvas id="postsChart" width="250" height="250"></canvas>
                         </div>
                         <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountPosts())?> Posts</h4>
-                        <a class="post-management-button" href="#"><i class="fa-solid fa-copy button"></i>Post Management</a>
+                        <a class="post-management-button" href="admin-post-management.php"><i class="fa-solid fa-copy button"></i>Post Management</a>
                     </div>
                     <div class="comment-management-container">
                         <div class="chart-container">
                             <canvas id="commentsChart" width="250" height="250"></canvas>
                         </div>
                         <h4 class="chart-title"> <?php echo implode(AdminDashboardController::getCountComments())?> Comments</h4>
-                        <a class="account-management-button" href="#"><i class="fa-solid fa-message button"></i>Comment Management</a>
+                        <a class="account-management-button" href="admin-comment-management.php"><i class="fa-solid fa-message button"></i>Comment Management</a>
                     </div>
                 </div>
             </div>
