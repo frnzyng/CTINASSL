@@ -29,6 +29,8 @@ class UserSettingsController {
                 // Validate and sanitize form inputs
                 $new_username = trim($_POST["new_username"]);
                 $password = $_POST["password"];
+                $action = "change username";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($account_id === null) {
                     $_SESSION["error_message_change_username"] = "Session Expired";
@@ -47,8 +49,13 @@ class UserSettingsController {
                     $updatedAccount = UserAccountModel::updateAccountUsername($account_id, $new_username, $password);
 
                     if ($updatedAccount === true) {
-                        $_SESSION["success_message_change_username"] = "Changes are saved successfully!";
-                        header('Location:../view/user-ch-username.php');
+                        $recordedLog = UserAccountModel::recordActivityLog($account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_change_username"] = "Changes are saved successfully!";
+                            $_SESSION['username'] = $new_username;
+                            header('Location:../view/user-ch-username.php');
+                        }
                     } 
                     else if ($updatedAccount === false) {
                         // If an exception occurred in the model, store the error in the session
@@ -85,6 +92,8 @@ class UserSettingsController {
                 // Validate and sanitize form inputs               
                 $new_email = trim($_POST["new_email"]);
                 $password = $_POST["password"];
+                $action = "change email";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($account_id === null) {
                     $_SESSION["error_message_change_email"] = "Session Expired";
@@ -99,8 +108,12 @@ class UserSettingsController {
                     $updatedAccount = UserAccountModel::updateAccountEmail($account_id, $new_email, $password);
 
                     if ($updatedAccount === true) {
-                        $_SESSION["success_message_change_email"] = "Changes are saved successfully!";
-                        header('Location:../view/user-ch-email.php');
+                        $recordedLog = UserAccountModel::recordActivityLog($account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_change_email"] = "Changes are saved successfully!";
+                            header('Location:../view/user-ch-email.php');
+                        }
                     } 
                     else if ($updatedAccount === false) {
                         // If an exception occurred in the model, store the error in the session
@@ -142,6 +155,8 @@ class UserSettingsController {
                 $current_password = $_POST["current_password"];
                 $new_password = $_POST["new_password"];
                 $retyped_password = $_POST["retyped_password"];
+                $action = "change password";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
     
                 if ($account_id === null) {
                     $_SESSION["error_message_change_password"] = "Session Expired";
@@ -164,8 +179,12 @@ class UserSettingsController {
                     $updatedAccount = UserAccountModel::updateAccountPassword($account_id, $current_password, $new_password);
 
                     if ($updatedAccount === true) {
-                        $_SESSION["success_message_change_password"] = "Changes are saved successfully!";
-                        header('Location:../view/user-ch-password.php');
+                        $recordedLog = UserAccountModel::recordActivityLog($account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_change_password"] = "Changes are saved successfully!";
+                            header('Location:../view/user-ch-password.php');
+                        }
                     } 
                     else if ($updatedAccount === false) {
                         // If an exception occurred in the model, store the error in the session

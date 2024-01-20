@@ -30,8 +30,11 @@ class UserAuthController {
             // Validate and sanitize form inputs  
             $username = trim($_POST["username"]);
             $password = $_POST["password"];
+            $action = "login";
+            $ip_address = $_SERVER['REMOTE_ADDR'];
 
-            // Authenticate user using the injected model
+
+            // Authenticate user using the injected model and record the user log
             $authenticatedUser = $this->model->authenticateUser($username, $password);
 
             if ($authenticatedUser) {
@@ -39,9 +42,14 @@ class UserAuthController {
                 $sessionController = new SessionController();
                 $sessionController->startSession($authenticatedUser["account_id"], $authenticatedUser["username"]);
 
-                // Redirect to home page after authentication
-                header("Location: ../view/user-home.php");
-                exit();
+                $account_id = $sessionController->getAccountId();
+                $recordedLog = $this->model->recordUserLog($account_id, $action, $ip_address);
+
+                // Redirect to home page after authentication and record of log
+                if ($recordedLog) {
+                    header("Location: ../view/user-home.php");
+                    exit();
+                }
             } 
             else {
                 session_start();
@@ -58,10 +66,20 @@ class UserAuthController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sessionController = new SessionController();
 
-            $sessionController->endSession();
+            // Validate and sanitize form inputs  
+            $account_id = $sessionController->getAccountId();
+            $action = "logout";
+            $ip_address = $_SERVER['REMOTE_ADDR'];
 
-            header("Location: ../view/user-login.php");
-            exit();
+            $recordedLog = $this->model->recordUserLog($account_id, $action, $ip_address);
+
+            if ($recordedLog) {
+                $sessionController = new SessionController();
+                $sessionController->endSession();
+    
+                header("Location: ../view/user-login.php");
+                exit();
+            }
         }
     }
 }
