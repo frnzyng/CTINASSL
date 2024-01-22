@@ -41,19 +41,21 @@ class AdminCommentManagementController {
 
     public function handleEditComment() {
         try {
-            include_once("../controller/SessionController.php");
+            include_once("../controller/AdminSessionController.php");
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Get session
-                $sessionController = new SessionController();
-                $account_id = $sessionController->getAccountId();
-                $username = $sessionController->getUsername();
+                $sessionController = new AdminSessionController();
+                $admin_account_id = $sessionController->getAdminAccountId();
+                $admin_username = $sessionController->getAdminUsername();
                 
                 // Validate and sanitize form inputs  
                 $comment_id = trim($_POST["comment_id"]);
                 $new_comment_content = trim($_POST["new_comment_content"]);
+                $action = "Edited user's comment";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
-                if ($account_id === null && $username === null) {
+                if ($admin_account_id === null && $admin_username === null) {
                     $_SESSION["error_message_edit_comment"] = "Session Expired";
                     header('Location:../view/admin-comment-management.php');             
                 } 
@@ -70,8 +72,13 @@ class AdminCommentManagementController {
                     $editedComment = UserCommentModel::editComment($comment_id, $new_comment_content);
 
                     if ($editedComment === true) {
-                        $_SESSION["success_message_edit_comment"] = "Comment is updated successfully!";
-                        header('Location:../view/admin-comment-management.php');
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_edit_comment"] = "Comment is updated successfully!";
+                            header('Location:../view/admin-comment-management.php');
+                        }
                     } 
                     else if ($editedComment === false) {
                         // If an exception occurred in the model, store the error in the session
@@ -89,17 +96,21 @@ class AdminCommentManagementController {
 
     public static function handleDeleteComment() {
         try {
-            include_once("../controller/SessionController.php");
+            include_once("../controller/AdminSessionController.php");
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Validate and sanitize form 
-                $sessionController = new SessionController();
-                $account_id = $sessionController->getAccountId();
-                $username = $sessionController->getUsername();
+                // Get session
+                $sessionController = new AdminSessionController();
+                $admin_account_id = $sessionController->getAdminAccountId();
+                $admin_username = $sessionController->getAdminUsername();
+
+                // Validate and sanitize form inputs
                 $comment_id = $_POST["comment_id"];
                 $comment_username = $_POST["comment_username"];
+                $action = "Deleted user's comment";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
-                if ($account_id === null && $username === null) {
+                if ($admin_account_id === null && $admin_username === null) {
                     $_SESSION["error_message_delete_comment"] = "Session Expired";
                     header('Location:../view/admin-comment-management.php');             
                 }
@@ -112,8 +123,13 @@ class AdminCommentManagementController {
                     $deletedComment = UserCommentModel::deleteComment($comment_id);
         
                     if ($deletedComment === true) {
-                        $_SESSION["success_message_delete_comment"] = "Comment is deleted successfully!";
-                        header('Location:../view/admin-comment-management.php');           
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_delete_comment"] = "Comment is deleted successfully!";
+                            header('Location:../view/admin-comment-management.php'); 
+                        }          
                     } 
                     else if ($deletedComment === false) {
                         // If an exception occurred in the model, store the error in the session

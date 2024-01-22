@@ -30,7 +30,7 @@ class UserAuthController {
             // Validate and sanitize form inputs  
             $username = trim($_POST["username"]);
             $password = $_POST["password"];
-            $action = "login";
+            $action = "Login";
             $ip_address = $_SERVER['REMOTE_ADDR'];
 
 
@@ -68,7 +68,7 @@ class UserAuthController {
 
             // Validate and sanitize form inputs  
             $account_id = $sessionController->getAccountId();
-            $action = "logout";
+            $action = "Logout";
             $ip_address = $_SERVER['REMOTE_ADDR'];
 
             $recordedLog = $this->model->recordUserLog($account_id, $action, $ip_address);

@@ -29,7 +29,7 @@ class UserSettingsController {
                 // Validate and sanitize form inputs
                 $new_username = trim($_POST["new_username"]);
                 $password = $_POST["password"];
-                $action = "change username";
+                $action = "Change username";
                 $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($account_id === null) {
@@ -92,7 +92,7 @@ class UserSettingsController {
                 // Validate and sanitize form inputs               
                 $new_email = trim($_POST["new_email"]);
                 $password = $_POST["password"];
-                $action = "change email";
+                $action = "Change email";
                 $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($account_id === null) {
@@ -155,7 +155,7 @@ class UserSettingsController {
                 $current_password = $_POST["current_password"];
                 $new_password = $_POST["new_password"];
                 $retyped_password = $_POST["retyped_password"];
-                $action = "change password";
+                $action = "Change password";
                 $ip_address = $_SERVER['REMOTE_ADDR'];
     
                 if ($account_id === null) {

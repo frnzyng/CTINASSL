@@ -47,15 +47,17 @@ class AdminPostManagementController {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Get session
                 $sessionController = new AdminSessionController();
-                $account_id = $sessionController->getAdminAccountId();
+                $admin_account_id = $sessionController->getAdminAccountId();
                 $username = $sessionController->getAdminUsername();
                 
                 // Validate and sanitize form inputs  
                 $post_id = trim($_POST["post_id"]);
                 $new_post_topic = trim($_POST["new_post_topic"]);
                 $new_post_content = trim($_POST["new_post_content"]);
+                $action = "Edited user's post";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
-                if ($account_id === null && $username === null) {
+                if ($admin_account_id === null && $username === null) {
                     $_SESSION["error_message_edit_post"] = "Session Expired";
                     header('Location:../view/admin-post-management.php');             
                 } 
@@ -72,8 +74,13 @@ class AdminPostManagementController {
                     $editedPost = UserPostModel::editPost($post_id, $new_post_topic, $new_post_content);
 
                     if ($editedPost === true) {
-                        $_SESSION["success_message_edit_post"] = "Posted is updated successfully!";
-                        header('Location:../view/admin-post-management.php');
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_edit_post"] = "Posted is updated successfully!";
+                            header('Location:../view/admin-post-management.php');
+                        }
                     } 
                     else if ($editedPost === false) {
                         // If an exception occurred in the model, store the error in the session
@@ -96,11 +103,13 @@ class AdminPostManagementController {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Get session
                 $sessionController = new AdminSessionController();
-                $admin_post_id = $sessionController->getAdminAccountId();
+                $admin_account_id = $sessionController->getAdminAccountId();
                 $admin_username = $sessionController->getAdminUsername();
                 
                 // Validate and sanitize form inputs  
                 $post_id = trim($_POST["post_id"]);
+                $action = "Deleted user's post";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($admin_post_id === null && $admin_username === null) {
                     $_SESSION["error_message_delete_post"] = "Session Expired";
@@ -115,8 +124,13 @@ class AdminPostManagementController {
                     $deletedPost = UserPostModel::deletePost($post_id);
 
                     if ($deletedPost === true) {
-                        $_SESSION["success_message_delete_post"] = "Post is deleted successfully!";
-                        header('Location:../view/admin-post-management.php');
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_delete_post"] = "Post is deleted successfully!";
+                            header('Location:../view/admin-post-management.php');
+                        }
                     } 
                     else if ($deletedPost === false) {
                         // If an exception occurred in the model, store the error in the session

@@ -30,6 +30,8 @@ class AdminAuthController {
             // Validate and sanitize form inputs 
             $username = trim($_POST["username"]);
             $password = $_POST["password"];
+            $action = "Login";
+            $ip_address = $_SERVER['REMOTE_ADDR'];
 
             // Authenticate admin using the injected model
             $authenticatedAdmin = $this->model->authenticateAdmin($username, $password);
@@ -39,9 +41,15 @@ class AdminAuthController {
                 $sessionController = new AdminSessionController();
                 $sessionController->startSession($authenticatedAdmin["account_id"], $authenticatedAdmin["username"]);
 
+                $admin_account_id = $sessionController->getAdminAccountId();
+                $recordedLog = $this->model->recordAdminLog($admin_account_id, $action, $ip_address);
+                
                 // Redirect to home dashboard after authentication
-                header("Location: ../view/admin-dashboard.php");
-                exit();
+                if ($recordedLog) {
+                    header("Location: ../view/admin-dashboard.php");
+                    exit(); 
+                }
+                
             } 
             else {
                 session_start();
@@ -58,10 +66,20 @@ class AdminAuthController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sessionController = new AdminSessionController();
 
-            $sessionController->endSession();
+            // Validate and sanitize form inputs  
+            $admin_account_id = $sessionController->getAdminAccountId();
+            $action = "Logout";
+            $ip_address = $_SERVER['REMOTE_ADDR'];
 
-            header("Location: ../view/admin-login.php");
-            exit();
+            $recordedLog = $this->model->recordAdminLog($admin_account_id, $action, $ip_address);
+
+            if ($recordedLog) {
+                $sessionController = new AdminSessionController();
+                $sessionController->endSession();
+
+                header("Location: ../view/admin-login.php");
+                exit();
+            }
         }
     }
 }

@@ -55,6 +55,8 @@ class AdminAccountManagementController {
                 $new_username = trim($_POST["new_username"]);
                 $new_password = $_POST["new_password"];
                 $new_email = trim($_POST["new_email"]);
+                $action = "Edited user's account information";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
 
                 if ($admin_account_id === null && $admin_username === null) {
@@ -70,9 +72,14 @@ class AdminAccountManagementController {
                     $updatedAccount = UserAccountModel::updateAccount($account_id, $new_username, $new_password, $new_email);
 
                     if ($updatedAccount === true) {
-                        $_SESSION["success_message_edit_account"] = "Account is updated successfully!";
-                        header('Location:../view/admin-account-management.php');
-                    } 
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_edit_account"] = "Account is updated successfully!";
+                            header('Location:../view/admin-account-management.php');
+                        }
+                     } 
                     else if ($updatedAccount === false) {
                         // If an exception occurred in the model, store the error in the session
                         $_SESSION["error_message_edit_account"] = "Error updating account";
@@ -107,6 +114,8 @@ class AdminAccountManagementController {
                 
                 // Validate and sanitize form inputs  
                 $account_id = trim($_POST["account_id"]);
+                $action = "Deleted user account";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
 
                 if ($admin_account_id === null && $admin_username === null) {
                     $_SESSION["error_message_delete_account"] = "Session Expired";
@@ -121,8 +130,13 @@ class AdminAccountManagementController {
                     $deletedAccount = UserAccountModel::deleteAccount($account_id);
 
                     if ($deletedAccount === true) {
-                        $_SESSION["success_message_delete_account"] = "Account is deleted successfully!";
-                        header('Location:../view/admin-account-management.php');
+                        include_once("../model/AdminAccountModel.php");
+                        $recordedLog = AdminAccountModel::recordActivityLog($admin_account_id, $action, $ip_address);
+
+                        if ($recordedLog) {
+                            $_SESSION["success_message_delete_account"] = "Account is deleted successfully!";
+                            header('Location:../view/admin-account-management.php');
+                        }
                     } 
                     else if ($deletedAccount === false) {
                         // If an exception occurred in the model, store the error in the session
