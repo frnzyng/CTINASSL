@@ -1,0 +1,23 @@
+.fa-solid.fa-gear {
+    padding: 10px;
+    color: var(--clr-accent);
+    font-size: 1.8rem;
+}
+
+/* Admin Log */
+.admin-activity-log-block {
+    width: 1300px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Table */
+.table-block {
+    width: 100%;
+    margin-bottom: 50px;
+}

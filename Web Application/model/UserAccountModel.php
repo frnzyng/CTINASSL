@@ -436,5 +436,71 @@ class UserAccountModel {
             $db = null;
         }
     }
+
+    public static function getUserLog() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare and execute a query to get user log record
+            $stmtGetUserLog = $db->prepare("SELECT * FROM tblUserLog");
+            
+            // Execute the query
+            $stmtGetUserLog->execute();
+            
+            // Retrieve all results as an associative array
+            $retrievedUserLog = $stmtGetUserLog->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Returns 1 if true, 0 if false
+            return $retrievedUserLog;
+            
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
+
+    public static function getActivityLog() {
+        try {
+            $servername = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "BlogSite";
+    
+            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbUsername, $dbPassword);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare and execute a query to get user log record
+            $stmtGetActivityLog = $db->prepare("SELECT * FROM tblUserActivityLog");
+            
+            // Execute the query
+            $stmtGetActivityLog->execute();
+            
+            // Retrieve all results as an associative array
+            $retrievedActivityLog = $stmtGetActivityLog->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Returns 1 if true, 0 if false
+            return $retrievedActivityLog;
+            
+        } 
+        catch (PDOException $e) {
+            // Handle PDO exceptions
+            echo "PDO Exception: " . $e->getMessage();
+        } 
+        finally {
+            // Close the database connection
+            $db = null;
+        }
+    }
 }
 ?>

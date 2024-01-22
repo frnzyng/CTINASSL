@@ -151,5 +151,29 @@ class AdminAccountManagementController {
             echo $e->getMessage();
         }
     }
+
+    public static function handleUserLogRetrieval() {
+        try {
+            include_once("../model/UserAccountModel.php");
+            $retrievedAdminLog = UserAccountModel::getUserLog();
+
+            return $retrievedAdminLog;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
+
+    public static function handleUserActivityLogRetrieval() {
+        try {
+            include_once("../model/UserAccountModel.php");
+            $retrievedActivityLog = UserAccountModel::getActivityLog();
+
+            return $retrievedActivityLog;
+        }
+        catch (Exception $e) {  
+            echo $e->getMessage();
+        }
+    }
 }
 ?>

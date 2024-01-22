@@ -58,6 +58,12 @@
                     <h4> <?php echo implode(AdminAccountManagementController::getCountAccounts())?> Users</h4>
                 </div>
 
+                <!-- Account Logs -->
+                <div class="account-logs-container">
+                    <a class="user-log-button" href="admin-user-log.php">User Log</a>
+                    <a class="user-activity-log-button" href="admin-user-activity-log.php">User Activity Log</a>
+                </div>
+
                 <!-- Table -->
                 <div class="table-block table-responsive">
                     <?php

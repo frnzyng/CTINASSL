@@ -16,6 +16,33 @@
     gap: 20px;
 }
 
+.account-logs-container {
+    width: 100%;
+    margin-bottom: 25px;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px
+}
+
+.user-log-button, .user-activity-log-button {
+    width: 200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 32px;
+    padding-right: 32px;
+    border-radius: 15px;
+    border-width: 0;
+    background-color: var(--clr-button);
+    color: var(--clr-light); 
+    text-align: center;
+}
+
+.user-log-button:hover, .user-activity-log-button:hover {
+    background-color: var(--clr-button-hover);
+    color: var(--clr-accent-light); 
+}
+
 /* Chart */
 .chart-block {
     width: 100%;
