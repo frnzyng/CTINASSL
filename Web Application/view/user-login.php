@@ -10,11 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <!-- Bootstrap Script -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    
+
     <!-- Navigation Bar -->
     <div class="container px-0">
         <header>        
@@ -51,8 +52,13 @@
                         <label for="password">Password</label>
                         <input class="password-input" type="password" name="password" required>
                     </div>
+                    <div class="recaptcha-container">
+                        <div class="g-recaptcha" data-sitekey="6Lc4yG4pAAAAAIyK9wPzrODf-0SGTPo8z2sfwphs"></div>
+                    </div>
                     <input class="submit-button" type="submit" value="Login">
                 </form>
+
+                <!--<script src="js/recaptcha.js"></script> -->
 
                 <div class="toggler-container">
                     <p>Don't have an account? <a href="user-registration.php">Create Account</a></p>

@@ -32,12 +32,34 @@ class UserAuthController {
             $password = $_POST["password"];
             $action = "Login";
             $ip_address = $_SERVER['REMOTE_ADDR'];
+            $response = $_POST['g-recaptcha-response'];
+            $secret = '6Lc4yG4pAAAAAMZ6bPgjF7XwHb8t2k6Y2Oj25IFU';
+            $remoteip = $_SERVER['REMOTE_ADDR'];
+            
 
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $data = array(
+                'secret' => $secret,
+                'response' => $response,
+                'remoteip' => $remoteip
+            );
+
+            $options = array(
+                'http' => array (
+                    'method' => 'POST',
+                    'content' => http_build_query($data)
+                )
+            );
+
+            $context  = stream_context_create($options);
+            $verify = file_get_contents($url, false, $context);
+            $captcha_success = json_decode($verify);
 
             // Authenticate user using the injected model and record the user log
             $authenticatedUser = $this->model->authenticateUser($username, $password);
 
-            if ($authenticatedUser) {
+            if ($captcha_success->success == true) {
+                if ($authenticatedUser) {
                 // Start a session and store user ID
                 $sessionController = new SessionController();
                 $sessionController->startSession($authenticatedUser["account_id"], $authenticatedUser["username"]);
@@ -45,19 +67,28 @@ class UserAuthController {
                 $account_id = $sessionController->getAccountId();
                 $recordedLog = $this->model->recordUserLog($account_id, $action, $ip_address);
 
-                // Redirect to home page after authentication and record of log
-                if ($recordedLog) {
-                    header("Location: ../view/user-home.php");
+                    // Redirect to home page after authentication and record of log
+                    if ($recordedLog) {
+                        header("Location: ../view/user-home.php");
+                        exit();
+                    }
+                } 
+                else {
+                    session_start();
+                    $_SESSION["error_message_login"] = "Invalid username or password";
+
+                    // Redirect back to the login page
+                    header("Location: ../view/user-login.php");
                     exit();
                 }
-            } 
-            else {
+            }
+            else if ($captcha_success->success == false) {
                 session_start();
-                $_SESSION["error_message_login"] = "Invalid username or password";
+                    $_SESSION["error_message_login"] = "Please complete reCAPTCHA";
 
-                // Redirect back to the login page
-                header("Location: ../view/user-login.php");
-                exit();
+                    // Redirect back to the login page
+                    header("Location: ../view/user-login.php");
+                    exit();
             }
         }
     }
